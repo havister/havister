@@ -1,0 +1,65 @@
+/*
+ *  Home.css
+*/
+
+sup, sub {
+    color: #808080;
+    font-style: italic;
+}
+.navbar {
+    margin-bottom: 0;
+}
+.section {
+    margin-bottom: 50px;
+    margin-top: 0;
+}
+.jumbotron {
+    background-image: url("jumbo-harvest-min.jpg");
+    background-size: cover;
+    display:table;
+    height: 570px;
+    width: 100%;
+}
+.jumbotron > .container {
+    display:table-cell;
+    text-shadow: 1px 1px 20px white;
+    vertical-align: middle;
+}
+.jumbotron > .container > h4 {
+    letter-spacing: -0.05em;
+    line-height: 1.428571429;
+    word-spacing: 0.05em;
+}
+.section > .image {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.section > .image > img {
+    height: 546px;
+    width: 1140px;
+}
+.footer {
+    background-color: #202820;
+    color: #A0A0A0;
+    width: 100%;
+}
+.footer > .container {
+    padding-bottom: 20px;
+    padding-top: 30px;
+}
+.footer ul {
+    list-style-type: none;
+    margin-left: -12px;
+    padding-left: 0;
+}
+.footer ul > li {
+    display: inline;
+    margin-left: 12px;
+}
+.footer a {
+    color: white;
+}
+.footer .notice {
+    font-size: 50%;
+    font-weight: 100;
+}
