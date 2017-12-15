@@ -1,9 +1,6 @@
 /*
  *  home.css
 */
-
-{% load static %}
-
 sup, sub {
     color: #808080;
     font-style: italic;
@@ -16,7 +13,7 @@ sup, sub {
     margin-top: 0;
 }
 .jumbotron {
-    background-image: url("{% static "images/jumbo-harvest-min.jpg" %}");
+    background-image: url("../images/jumbo-harvest-min.jpg");
     background-size: cover;
     display:table;
     height: 570px;
