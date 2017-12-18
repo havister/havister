@@ -1,38 +1,38 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% block title %}Havister{% endblock %}
 {% block style %}{% static 'css/home.css' %}{% endblock %}
 
 {% block content %}
-<div class="section jumbotron">
-  <div class="container text-center">
-    <h1>Havister</h1>
-    <h4>봄이 오면 씨를 뿌리고, 가을이 오면 수확해야 합니다.
-      <br><strong>하비스터</strong>는 금융 투자 시장에서
-      <br>계절의 변화를 주시합니다.</h4>
+  <div class="section jumbotron">
+    <div class="container text-center">
+      <h1>Havister</h1>
+      <h4>봄이 오면 씨를 뿌리고, 가을이 오면 수확해야 합니다.
+        <br><strong>하비스터</strong>는 금융 투자 시장에서
+        <br>계절의 변화를 주시합니다.</h4>
+    </div>
   </div>
-</div>
 
-<div class="section container">
-  <h2 class="page-header">경기는 순환합니다.</h2>
-  <p class="lead">마치 계절들의 순환<sup><small>cycle</small></sup>과 비슷합니다.
-    <br>봄이 지나면 경기가 정점<sup><small>여름</small></sup>에 오르고,
-    가을이 지나면 경기가 바닥<sup><small>겨울</small></sup>에 이릅니다.</p>
-  <p class="image"><img src="{% static 'images/the-business-cycle.png' %}" alt="The Business Cycle Image"></p>
-</div>
+  <div class="section container">
+    <h2 class="page-header">경기는 순환합니다.</h2>
+    <p class="lead">마치 계절들의 순환<sup><small>cycle</small></sup>과 비슷합니다.
+      <br>봄이 지나면 경기가 정점<sup><small>여름</small></sup>에 오르고,
+      가을이 지나면 경기가 바닥<sup><small>겨울</small></sup>에 이릅니다.</p>
+    <p class="image"><img src="{% static 'images/the-business-cycle.png' %}" alt="The Business Cycle Image"></p>
+  </div>
 
-<div class="section container">
-  <h2 class="page-header">투자 심리는 어떨까요?</h2>
-  <p class="lead">한 템포 느리게, 경기를 쫓아 순환합니다.
-    <br>봄이 오면 안도하고, 여름이 오면 흥분하며, 가을이 오면 걱정하고, 겨울이 오면 절망에 빠집니다.</p>
-  <p class="image"><img src="{% static 'images/investor-sentiment.png' %}" alt="Investor Sentiment Image"></p>
-</div>
+  <div class="section container">
+    <h2 class="page-header">투자 심리는 어떨까요?</h2>
+    <p class="lead">한 템포 느리게, 경기를 쫓아 순환합니다.
+      <br>봄이 오면 안도하고, 여름이 오면 흥분하며, 가을이 오면 걱정하고, 겨울이 오면 절망에 빠집니다.</p>
+    <p class="image"><img src="{% static 'images/investor-sentiment.png' %}" alt="Investor Sentiment Image"></p>
+  </div>
 
-<div class="section container">
-  <h2 class="page-header">언제 씨를 뿌려야 할까요?</h2>
-  <p class="lead">여름에 고민하다 가을에 씨를 뿌리지 마세요. 곧 후회하게 될지 모릅니다.
-    <br>마치 농부처럼, 겨울에 준비하고 봄에 씨를 뿌리세요. 그러면 가을에 수확할 수 있습니다.</p>
-  <p class="image"><img src="{% static 'images/timing-for-investment.png' %}" alt="Timing for Investment Image"></p>
-</div>
-{% endblock %}
+  <div class="section container">
+    <h2 class="page-header">언제 씨를 뿌려야 할까요?</h2>
+    <p class="lead">여름에 고민하다 가을에 씨를 뿌리지 마세요. 곧 후회하게 될지 모릅니다.
+      <br>마치 농부처럼, 겨울에 준비하고 봄에 씨를 뿌리세요. 그러면 가을에 수확할 수 있습니다.</p>
+    <p class="image"><img src="{% static 'images/timing-for-investment.png' %}" alt="Timing for Investment Image"></p>
+  </div>
+{% endblock content %}

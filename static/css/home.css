@@ -1,64 +1,77 @@
 /*
  *  home.css
 */
-sup, sub {
-    color: #808080;
+sup {
     font-style: italic;
+    color: #808080;
 }
+
 .navbar {
     margin-bottom: 0;
 }
+
 .section {
-    margin-bottom: 50px;
     margin-top: 0;
+    margin-bottom: 50px;
 }
+
 .jumbotron {
+    display: table;
+    width: 100%;
+    height: 570px;
     background-image: url("../images/jumbo-harvest-min.jpg");
     background-size: cover;
-    display:table;
-    height: 570px;
-    width: 100%;
 }
+
 .jumbotron > .container {
-    display:table-cell;
-    text-shadow: 1px 1px 20px white;
+    display: table-cell;
     vertical-align: middle;
+    text-shadow: 1px 1px 20px white;
 }
+
 .jumbotron > .container > h4 {
-    letter-spacing: -0.05em;
     line-height: 1.428571429;
+    letter-spacing: -.05em;
     word-spacing: 0.05em;
 }
+
 .section > .image {
+    margin-right: -15px;
     margin-bottom: 0;
     margin-left: -15px;
-    margin-right: -15px;
 }
+
 .section > .image > img {
-    height: 546px;
     width: 1140px;
+    height: 546px;
 }
+
 .footer {
-    background-color: #202820;
-    color: #A0A0A0;
     width: 100%;
+    color: #a0a0a0;
+    background-color: #202820;
 }
+
 .footer > .container {
-    padding-bottom: 20px;
     padding-top: 30px;
+    padding-bottom: 20px;
 }
+
 .footer ul {
-    list-style-type: none;
     margin-left: -12px;
     padding-left: 0;
+    list-style-type: none;
 }
+
 .footer ul > li {
     display: inline;
     margin-left: 12px;
 }
+
 .footer a {
     color: white;
 }
+
 .footer .notice {
     font-size: 50%;
     font-weight: 100;
