@@ -1,3 +1,12 @@
-from django.shortcuts import render
+"""havister index views
+"""
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.views import generic
 
-# Create your views here.
+from .models import Item
+
+class HomeView(generic.TemplateView):
+    template_name = 'index/home.html'
+
