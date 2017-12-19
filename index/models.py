@@ -5,8 +5,8 @@ from django.db import models
 class Item(models.Model):
     """index item
     """
-    code = models.CharField(max_length=6, primary_key=True)
-    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=6, unique=True)
+    name = models.SlugField(max_length=50)
     market = models.BooleanField(default=False)
     future = models.BooleanField(default=False)
     option = models.BooleanField(default=False)
@@ -17,4 +17,3 @@ class Item(models.Model):
 
     class Meta:
         db_table = 'index_item'
-
