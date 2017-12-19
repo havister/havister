@@ -17,3 +17,4 @@ class Item(models.Model):
 
     class Meta:
         db_table = 'index_item'
+
