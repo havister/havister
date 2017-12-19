@@ -7,6 +7,7 @@ class Item(models.Model):
     """
     code = models.CharField(max_length=6, primary_key=True)
     name = models.CharField(max_length=50)
+    market = models.BooleanField(default=False)
     future = models.BooleanField(default=False)
     option = models.BooleanField(default=False)
     fund = models.BooleanField(default=False)
