@@ -3,10 +3,11 @@
 from django.db import models
 
 class Item(models.Model):
-    """index item
+    """index item model
     """
-    code = models.CharField(max_length=10, unique=True)
-    name = models.SlugField(max_length=50)
+    code = models.CharField(max_length=10, primary_key=True)
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=50, unique=True)
     market = models.BooleanField(default=False)
     future = models.BooleanField(default=False)
     option = models.BooleanField(default=False)
