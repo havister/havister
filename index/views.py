@@ -7,6 +7,10 @@ from django.views import generic
 
 from .models import Item
 
-class HomeView(generic.TemplateView):
+class HomeView(generic.ListView):
     template_name = 'index/home.html'
+    context_object_name = 'item_list'
+
+    def get_queryset(self):
+        return Item.objects.order_by('name')
 
