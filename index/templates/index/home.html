@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <!-- Custom metas -->
+    <meta name="description" content="Havister Index, 하비스터 지수">
+    <meta name="keywords" content="Index, 지수">
+{% endblock %}
+
+{% block title %}지수 : Havister{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <!-- Content -->
+    <div class="section container">
+      <h1 class="page-header">지수 <small>Index</small></h1>
+      <div class="alert alert-info" role="alert">
+        <strong>지수 선정 원칙!</strong> &nbsp;
+        시장 이해를 위한 종합 지수, 선물 옵션과 같은 파생상품과 ETF 등의 펀드상품에서 기초 자산으로 운용되는 지수들을 선정하였습니다.
+        <br>하비스터만의 특별한 차트와 통계를 통해 시장의 특성을 보다 깊이 이해하고, 지수 기반 상품들의 투자 전략을 수립하고 검증해 보세요.
+      </div>
+        {% if item_list %}
+          <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>지수</th>
+              <th>시장</th>
+              <th>선물</th>
+              <th>옵션</th>
+              <th>펀드</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for item in item_list %}
+            <tr>
+              <td><a href="/index/{{ item.slug }}/">{{ item.name }}</a></td>
+              <td>{% if item.market %}종합{% endif %}</td>
+              <td>{% if item.future %}운용{% endif %}</td>
+              <td>{% if item.option %}운용{% endif %}</td>
+              <td>{% if item.fund %}운용{% endif %}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+          </table>
+        {% endif %}
+    </div>
+{% endblock content %}
+
