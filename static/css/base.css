@@ -11,8 +11,17 @@ sup {
 }
 
 .section {
-    margin-top: 0;
-    margin-bottom: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.section-big {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.section:first-child {
+    padding-top: 0;
 }
 
 .jumbotron {
@@ -26,19 +35,13 @@ sup {
 .jumbotron > .container {
     display: table-cell;
     vertical-align: middle;
-    text-shadow: 1px 1px 20px white;
+    text-shadow: 1px 1px 30px white;
 }
 
 .jumbotron > .container > h4 {
     line-height: 1.428571429;
     letter-spacing: -.05em;
     word-spacing: 0.05em;
-}
-
-.section > .image {
-    margin-right: -15px;
-    margin-bottom: 0;
-    margin-left: -15px;
 }
 
 .section > .image > img {
@@ -76,4 +79,13 @@ sup {
     font-size: 50%;
     font-weight: 100;
 }
+
+.border-top {
+    border-top: 1px dotted #808080;
+}
+
+.border-bottom {
+    border-bottom: 1px dotted #808080;
+}
+
 

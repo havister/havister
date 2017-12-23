@@ -8,6 +8,7 @@ class Item(models.Model):
     code = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
+    country = models.CharField(max_length=50)
     market = models.BooleanField(default=False)
     future = models.BooleanField(default=False)
     option = models.BooleanField(default=False)
