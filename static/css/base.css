@@ -11,17 +11,12 @@ sup {
 }
 
 .section {
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding-top: 80px;
+    padding-bottom: 80px;
 }
 
-.section-big {
-    padding-top: 100px;
-    padding-bottom: 100px;
-}
-
-.section:first-child {
-    padding-top: 0;
+.section-last {
+    padding-top: 80px;
 }
 
 .jumbotron {
@@ -51,6 +46,7 @@ sup {
 
 .footer {
     width: 100%;
+    margin-top: 100px;
     color: #a0a0a0;
     background-color: #202820;
 }
@@ -87,5 +83,4 @@ sup {
 .border-bottom {
     border-bottom: 1px dotted #808080;
 }
-
 

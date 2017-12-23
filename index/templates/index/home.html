@@ -8,42 +8,60 @@
 
 {% block title %}지수 : Havister{% endblock %}
 
+{% block extra_style %}
+    <!-- Datatable style -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css">
+{% endblock extra_style %}
+
 {% load staticfiles %}
 
 {% block content %}
     <!-- Content -->
-    <div class="section container">
+    <div class="container">
       <h1 class="page-header">지수 <small>Index</small></h1>
       <div class="alert alert-info" role="alert">
         <strong>지수 선정 원칙!</strong> &nbsp;
         시장 이해를 위한 종합 지수, 선물 옵션과 같은 파생상품과 ETF 등의 펀드상품에서 기초 자산으로 운용되는 지수들을 선정하였습니다.
       </div>
-        {% if item_list %}
-          <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>국가</th>
-              <th>지수</th>
-              <th>시장</th>
-              <th>선물</th>
-              <th>옵션</th>
-              <th>펀드</th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for item in item_list %}
-            <tr>
-              <td>{{ item.country }}</td>
-              <td><a href="/index/{{ item.slug }}/">{{ item.name }}</a></td>
-              <td>{% if item.market %}종합{% endif %}</td>
-              <td>{% if item.future %}운용{% endif %}</td>
-              <td>{% if item.option %}운용{% endif %}</td>
-              <td>{% if item.fund %}운용{% endif %}</td>
-            </tr>
-          {% endfor %}
-          </tbody>
-          </table>
-        {% endif %}
+    {% if item_list %}
+      <table id="data-table" class="table table-striped">
+      <thead>
+        <tr>
+          <th>국가</th>
+          <th>지수</th>
+          <th>시장</th>
+          <th>선물</th>
+          <th>옵션</th>
+          <th>펀드</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in item_list %}
+        <tr>
+          <td>{{ item.country }}</td>
+          <td><a href="/index/{{ item.slug }}/">{{ item.name }}</a></td>
+          <td>{% if item.market %}종합{% endif %}</td>
+          <td>{% if item.future %}운용{% endif %}</td>
+          <td>{% if item.option %}운용{% endif %}</td>
+          <td>{% if item.fund %}운용{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+      </table>
+    {% endif %}
     </div>
 {% endblock content %}
 
+{% block extra_script %}
+    <!-- Datatable script -->
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $("#data-table").DataTable();
+      });
+    </script>
+{% endblock extra_script %}
