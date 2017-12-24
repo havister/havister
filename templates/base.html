@@ -46,15 +46,15 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/index/">지수</a></li>
-            <li><a href="#stock">주식</a></li>
-            <li><a href="#bond">채권</a></li>
-            <li><a href="#commodity">상품</a></li>
-            <li><a href="#currency">외환</a></li>
+            <li class="{% block nav_index %}{% endblock %}"><a href="/index/">지수</a></li>
+            <li class="{% block nav_stock %}{% endblock %}"><a href="#stock">주식</a></li>
+            <li class="{% block nav_bond %}{% endblock %}"><a href="#bond">채권</a></li>
+            <li class="{% block nav_commodity %}{% endblock %}"><a href="#commodity">상품</a></li>
+            <li class="{% block nav_currency %}{% endblock %}"><a href="#currency">외환</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#donation"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; 기부</a></li>
-            <li><a href="#partner"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; 파트너</a></li>
+            <li class="{% block nav_donation %}{% endblock %}"><a href="#donation"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; 기부</a></li>
+            <li class="{% block nav_partner %}{% endblock %}"><a href="#partner"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; 파트너</a></li>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
