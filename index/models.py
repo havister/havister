@@ -29,7 +29,7 @@ class AbstractPrice(models.Model):
     low = models.DecimalField(max_digits=7, decimal_places=2)
     close = models.DecimalField(max_digits=7, decimal_places=2)
     difference = models.DecimalField(max_digits=6, decimal_places=2)
-    change = models.DecimalField(verbose_name='change (%)', max_digits=5, decimal_places=2)
+    change = models.DecimalField('change (%)', max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.code
