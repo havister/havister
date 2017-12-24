@@ -32,7 +32,7 @@
       {% for item in item_list %}
         <tr>
           <td>{{ item.country }}</td>
-          <td><a href="/index/{{ item.slug }}/">{{ item.name }}</a></td>
+          <td><a href="{% url 'index:detail' item.slug %}">{{ item.name }}</a></td>
           <td>{% if item.market %}종합{% endif %}</td>
           <td>{% if item.future %}운용{% endif %}</td>
           <td>{% if item.option %}운용{% endif %}</td>
