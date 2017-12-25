@@ -33,12 +33,6 @@ sup {
     text-shadow: 1px 1px 30px white;
 }
 
-.jumbotron > .container > h4 {
-    line-height: 1.428571429;
-    letter-spacing: -.05em;
-    word-spacing: 0.05em;
-}
-
 .section > .image > img {
     width: 1140px;
     height: 546px;
@@ -46,14 +40,13 @@ sup {
 
 .footer {
     width: 100%;
-    margin-top: 100px;
-    color: #a0a0a0;
-    background-color: #202820;
+    margin-top: 80px;
 }
 
 .footer > .container {
-    padding-top: 30px;
-    padding-bottom: 20px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-top: 1px dotted #808080;
 }
 
 .footer ul {
@@ -68,7 +61,6 @@ sup {
 }
 
 .footer a {
-    color: white;
 }
 
 .footer .notice {
