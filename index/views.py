@@ -5,15 +5,20 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 
-from .models import Item, CalendarMonth, SettlementMonth
+from .models import Index, CalendarMonth, SettlementMonth
 
-class HomeView(generic.ListView):
-    template_name = 'index/home.html'
-    context_object_name = 'item_list'
+class ListView(generic.ListView):
+    template_name = 'index/list.html'
+    context_object_name = 'index_list'
 
     def get_queryset(self):
-        return Item.objects.order_by('name')
+        return Index.objects.order_by('name')
 
-class DetailView(generic.TemplateView):
+class DetailView(generic.ListView):
     template_name = 'index/detail.html'
+    context_object_name = 'index_detail'
+
+    def get_queryset(self):
+        self.index = get_object_or_404(Index, slug=self.args[0])
+        return CalendarMonth.objects.filter(index=self.index)
 

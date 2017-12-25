@@ -16,7 +16,7 @@
         <strong>지수 선정 원칙!</strong> &nbsp;
         시장 이해를 위한 종합 지수, 선물 옵션과 같은 파생상품과 ETF 등의 펀드상품에서 기초 자산으로 운용되는 지수들을 선정하였습니다.
       </div>
-    {% if item_list %}
+    {% if index_list %}
       <table class="table table-striped">
       <thead>
         <tr>
@@ -29,14 +29,14 @@
         </tr>
       </thead>
       <tbody>
-      {% for item in item_list %}
+      {% for index in index_list %}
         <tr>
-          <td>{{ item.country }}</td>
-          <td><a href="{% url 'index:detail' item.slug %}">{{ item.name }}</a></td>
-          <td>{% if item.market %}종합{% endif %}</td>
-          <td>{% if item.future %}운용{% endif %}</td>
-          <td>{% if item.option %}운용{% endif %}</td>
-          <td>{% if item.fund %}운용{% endif %}</td>
+          <td>{{ index.country }}</td>
+          <td><a href="{% url 'index:detail' index.slug %}">{{ index.name }}</a></td>
+          <td>{% if index.market %}종합{% endif %}</td>
+          <td>{% if index.future %}운용{% endif %}</td>
+          <td>{% if index.option %}운용{% endif %}</td>
+          <td>{% if index.fund %}운용{% endif %}</td>
         </tr>
       {% endfor %}
       </tbody>

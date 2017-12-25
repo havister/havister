@@ -2,9 +2,9 @@
 """
 from django.contrib import admin
 
-from .models import Item, CalendarMonth, SettlementMonth
+from .models import Index, CalendarMonth, SettlementMonth
 
-admin.site.register(Item)
+admin.site.register(Index)
 admin.site.register(CalendarMonth)
 admin.site.register(SettlementMonth)
 

@@ -2,8 +2,8 @@
 """
 from django.db import models
 
-class Item(models.Model):
-    """지수 구분"""
+class Index(models.Model):
+    """지수"""
     code = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
@@ -17,12 +17,12 @@ class Item(models.Model):
         return self.name
 
     class Meta:
-        db_table = 'index_item'
+        db_table = 'index'
 
 class AbstractPrice(models.Model):
     """abstract class"""
     date = models.DateField()
-    code = models.ForeignKey('Item', on_delete=models.CASCADE)
+    index = models.ForeignKey('Index', on_delete=models.CASCADE)
     base = models.DecimalField(max_digits=7, decimal_places=2)
     open = models.DecimalField(max_digits=7, decimal_places=2)
     high = models.DecimalField(max_digits=7, decimal_places=2)
