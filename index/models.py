@@ -28,22 +28,27 @@ class AbstractPrice(models.Model):
     high = models.DecimalField(max_digits=7, decimal_places=2)
     low = models.DecimalField(max_digits=7, decimal_places=2)
     close = models.DecimalField(max_digits=7, decimal_places=2)
-    difference = models.DecimalField(max_digits=6, decimal_places=2)
+    difference = models.DecimalField(max_digits=7, decimal_places=2)
     change = models.DecimalField('change (%)', max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return self.code
+        return self.index
 
     class Meta:
         abstract = True
 
+class Day(AbstractPrice):
+    """일간"""
+    class Meta:
+        db_table = 'index_day'
+
 class CalendarMonth(AbstractPrice):
-    """달력월"""
+    """달력 월간"""
     class Meta:
         db_table = 'index_calendar_month'
 
 class SettlementMonth(AbstractPrice):
-    """결제월"""
+    """결제 월간"""
     class Meta:
         db_table = 'index_settlement_month'
 

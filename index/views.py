@@ -1,11 +1,9 @@
 """havister index views
 """
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404
 from django.views import generic
 
-from .models import Index, CalendarMonth, SettlementMonth
+from .models import Index, Day, CalendarMonth, SettlementMonth
 
 class ListView(generic.ListView):
     template_name = 'index/list.html'
