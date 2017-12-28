@@ -18,6 +18,8 @@ class Index(models.Model):
 
     class Meta:
         db_table = 'index'
+        verbose_name = 'index'
+        verbose_name_plural = 'indices'
 
 class AbstractBC(models.Model):
     """abstract base-close"""
@@ -56,19 +58,27 @@ class Day(AbstractBOHLC):
     """일간"""
     class Meta:
         db_table = 'index_day'
+        verbose_name = 'day'
+        verbose_name_plural = 'days'
 
 class TwelveReversal(AbstractBC):
     """12(%) 전환"""
     class Meta:
         db_table = 'index_twelve_reversal'
+        verbose_name = 'twelve reversal'
+        verbose_name_plural = 'twelve reversals'
 
 class CalendarMonth(AbstractBOHLC):
     """달력 월간"""
     class Meta:
         db_table = 'index_calendar_month'
+        verbose_name = 'calendar month'
+        verbose_name_plural = 'calendar months'
 
 class SettlementMonth(AbstractBOHLC):
     """결제 월간"""
     class Meta:
         db_table = 'index_settlement_month'
+        verbose_name = 'settlement month'
+        verbose_name_plural = 'settlement months'
 
