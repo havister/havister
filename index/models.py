@@ -19,8 +19,23 @@ class Index(models.Model):
     class Meta:
         db_table = 'index'
 
-class AbstractPrice(models.Model):
-    """abstract class"""
+class AbstractBC(models.Model):
+    """abstract base-close"""
+    date = models.DateField()
+    index = models.ForeignKey('Index', on_delete=models.CASCADE)
+    base = models.DecimalField(max_digits=7, decimal_places=2)
+    close = models.DecimalField(max_digits=7, decimal_places=2)
+    difference = models.DecimalField(max_digits=7, decimal_places=2)
+    change = models.DecimalField('change (%)', max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return self.index
+
+    class Meta:
+        abstract = True
+
+class AbstractBOHLC(models.Model):
+    """abstract base-open-high-low-close"""
     date = models.DateField()
     index = models.ForeignKey('Index', on_delete=models.CASCADE)
     base = models.DecimalField(max_digits=7, decimal_places=2)
@@ -37,17 +52,22 @@ class AbstractPrice(models.Model):
     class Meta:
         abstract = True
 
-class Day(AbstractPrice):
+class Day(AbstractBOHLC):
     """일간"""
     class Meta:
         db_table = 'index_day'
 
-class CalendarMonth(AbstractPrice):
+class TwelveReversal(AbstractBC):
+    """12(%) 전환"""
+    class Meta:
+        db_table = 'index_twelve_reversal'
+
+class CalendarMonth(AbstractBOHLC):
     """달력 월간"""
     class Meta:
         db_table = 'index_calendar_month'
 
-class SettlementMonth(AbstractPrice):
+class SettlementMonth(AbstractBOHLC):
     """결제 월간"""
     class Meta:
         db_table = 'index_settlement_month'
