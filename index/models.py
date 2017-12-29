@@ -24,11 +24,11 @@ class Index(models.Model):
 class AbstractBC(models.Model):
     """abstract base-close"""
     date = models.DateField()
-    index = models.ForeignKey('Index', on_delete=models.CASCADE)
     base = models.DecimalField(max_digits=7, decimal_places=2)
     close = models.DecimalField(max_digits=7, decimal_places=2)
     difference = models.DecimalField(max_digits=7, decimal_places=2)
     change = models.DecimalField('change (%)', max_digits=5, decimal_places=2)
+    index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.index
@@ -39,7 +39,6 @@ class AbstractBC(models.Model):
 class AbstractBOHLC(models.Model):
     """abstract base-open-high-low-close"""
     date = models.DateField()
-    index = models.ForeignKey('Index', on_delete=models.CASCADE)
     base = models.DecimalField(max_digits=7, decimal_places=2)
     open = models.DecimalField(max_digits=7, decimal_places=2)
     high = models.DecimalField(max_digits=7, decimal_places=2)
@@ -47,6 +46,7 @@ class AbstractBOHLC(models.Model):
     close = models.DecimalField(max_digits=7, decimal_places=2)
     difference = models.DecimalField(max_digits=7, decimal_places=2)
     change = models.DecimalField('change (%)', max_digits=5, decimal_places=2)
+    index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.index
