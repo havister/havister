@@ -2,11 +2,12 @@
 """
 from django.conf.urls import url
 
-from .views import ListView, DetailView
+from .views import IndexList, IndexDetail
 
 app_name = 'index'
+
 urlpatterns = [
-    url(r'^$', ListView.as_view(), name='list'),
-    url(r'^(?P<slug>[\w-]+)/$', DetailView.as_view(), name='detail'),
+    url(r'^$', IndexList.as_view(), name='list'),
+    url(r'^(?P<slug>[\w-]+)/$', IndexDetail.as_view(), name='detail'),
 ]
 

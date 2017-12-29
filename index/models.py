@@ -61,24 +61,24 @@ class Day(AbstractBOHLC):
         verbose_name = 'day'
         verbose_name_plural = 'days'
 
-class TwelveReversal(AbstractBC):
-    """12(%) 전환"""
+class Month(AbstractBOHLC):
+    """월간"""
     class Meta:
-        db_table = 'index_twelve_reversal'
-        verbose_name = 'twelve reversal'
-        verbose_name_plural = 'twelve reversals'
+        db_table = 'index_month'
+        verbose_name = 'month'
+        verbose_name_plural = 'months'
 
-class CalendarMonth(AbstractBOHLC):
-    """달력 월간"""
+class Reversal(AbstractBC):
+    """전환(12%)"""
     class Meta:
-        db_table = 'index_calendar_month'
-        verbose_name = 'calendar month'
-        verbose_name_plural = 'calendar months'
+        db_table = 'index_reversal'
+        verbose_name = 'reversal'
+        verbose_name_plural = 'reversals'
 
-class SettlementMonth(AbstractBOHLC):
-    """결제 월간"""
+class Settlement(AbstractBOHLC):
+    """결제(월)"""
     class Meta:
-        db_table = 'index_settlement_month'
-        verbose_name = 'settlement month'
-        verbose_name_plural = 'settlement months'
+        db_table = 'index_settlement'
+        verbose_name = 'settlement'
+        verbose_name_plural = 'settlements'
 

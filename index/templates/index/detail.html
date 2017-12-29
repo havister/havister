@@ -1,1 +1,20 @@
+{% extends 'index/base.html' %}
+
+{% block meta %}
+    <!-- Custom metas -->
+    <meta name="description" content="{{ index.name }} : Index : Havister">
+    <meta name="keywords" content="{{ index.name }} Index">
+{% endblock %}
+
+{% block title %}{{ index.name }} : Index : Havister{% endblock %}
+
+{% block content %}
+    <!-- Content -->
+    <div class="container">
+      <h1 class="page-header">{{ index.name }} <small>({{ index.code }})</small></h1>
+    {% if month_list %}
+      <p>month_list</p>
+    {% endif %}
+    </div>
+{% endblock content %}
 

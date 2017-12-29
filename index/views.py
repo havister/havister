@@ -3,20 +3,27 @@
 from django.shortcuts import get_object_or_404
 from django.views import generic
 
-from .models import Index, Day, TwelveReversal, CalendarMonth, SettlementMonth
+from .models import Index, Day, Month, Reversal, Settlement
 
-class ListView(generic.ListView):
-    template_name = 'index/list.html'
+class IndexList(generic.ListView):
     context_object_name = 'index_list'
+    template_name = 'index/list.html'
 
     def get_queryset(self):
         return Index.objects.order_by('-market', '-future', '-option', '-fund')
 
-class DetailView(generic.ListView):
+class IndexDetail(generic.DetailView):
+    context_object_name = 'index'
+    model = Index
     template_name = 'index/detail.html'
-    context_object_name = 'index_detail'
 
-    def get_queryset(self):
-        self.index = get_object_or_404(Index, slug=self.kwargs['slug'])
-        return CalendarMonth.objects.filter(index=self.index)
+    def get_context_data(self, **kwargs):
+        # base 
+        context = super(IndexDetail, self).get_context_data(**kwargs)
+        # extra
+        context_index = kwargs['object']
+        context['month_list'] = Month.objects.filter(index=context_index)
+        context['reversal_list'] = Reversal.objects.filter(index=context_index)
+        context['settlement_list'] = Settlement.objects.filter(index=context_index)
+        return context
 
