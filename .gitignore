@@ -3,5 +3,4 @@ manifest.yml
 .venv/
 __pycache__
 *.pyc
-*.sql
 
