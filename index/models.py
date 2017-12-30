@@ -27,7 +27,7 @@ class AbstractBC(models.Model):
     base = models.DecimalField(max_digits=7, decimal_places=2)
     close = models.DecimalField(max_digits=7, decimal_places=2)
     difference = models.DecimalField(max_digits=7, decimal_places=2)
-    change = models.DecimalField('change (%)', max_digits=5, decimal_places=2)
+    change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -45,7 +45,7 @@ class AbstractBOHLC(models.Model):
     low = models.DecimalField(max_digits=7, decimal_places=2)
     close = models.DecimalField(max_digits=7, decimal_places=2)
     difference = models.DecimalField(max_digits=7, decimal_places=2)
-    change = models.DecimalField('change (%)', max_digits=5, decimal_places=2)
+    change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE)
 
     def __str__(self):
