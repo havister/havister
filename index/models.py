@@ -32,7 +32,7 @@ class AbstractBC(models.Model):
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.index
+        return "{0} ({1})".format(self.date, self.index)
 
     class Meta:
         abstract = True
@@ -50,7 +50,7 @@ class AbstractBOHLC(models.Model):
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.index
+        return "{0} ({1})".format(self.date, self.index)
 
     class Meta:
         abstract = True
