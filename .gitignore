@@ -1,7 +1,7 @@
-.venv/
 goorm.manifest
 manifest.yml
 .venv/
 __pycache__
 *.pyc
+*.sql
 
