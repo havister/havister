@@ -33,20 +33,23 @@
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Month', 'Point'],
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Month');
+        data.addColumn('number', 'Point');
+
+        data.addRows([
           {% for month in month_list %}
-          ['{{ month.date|date:'Y년 m월' }}', {{ month.close }}],
+          [{v:new Date({{ month.date|date:'Y,n,j' }}), f:'{{ month.date|date:'Y'}}년 {{ month.date|date:'n'}}월'}, {{ month.close }}],
           {% endfor %}
         ]);
         var options = {
-          chartArea: {left: 40, top: 10, width: 1080, height: 450},
-          crosshair: {color: 'navy', trigger: 'selection'},
-          width: '100%',
+          width: 1140,
           height: 500,
+          chartArea: {left: 70, top: 10, width: 1070, height: 450},
+          crosshair: {color: 'black', trigger: 'selection'},
           legend: 'none',
-          hAxis: {format: 'y년', showTextEvery:60},
-          vAxis: {minValue: 0}
+          hAxis: {format: 'y년'},
+          vAxis: {viewWindowMode: 'max'}
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('month-chart'));
