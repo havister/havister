@@ -1,4 +1,4 @@
-INSERT INTO index_day(date,base,open,high,low,close,difference,change,index_code) VALUES
+INSERT INTO index_day(`date`,`base`,`open`,`high`,`low`,`close`,`difference`,`change`,`index_code`) VALUES
  ('1990-01-03',100.00,100.00,100.00,100.00,100.00,0.00,0.00,'KS200')
 ,('1990-01-04',100.00,102.00,102.00,102.00,102.00,2.00,2.00,'KS200')
 ,('1990-01-05',102.00,100.38,100.38,100.38,100.38,-1.62,-1.59,'KS200')
