@@ -3,4 +3,5 @@ manifest.yml
 .venv/
 __pycache__
 *.pyc
+*.bak
 

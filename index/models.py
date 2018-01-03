@@ -70,14 +70,14 @@ class Month(AbstractBOHLC):
         verbose_name_plural = 'months'
 
 class Reversal(AbstractBC):
-    """전환(12%)"""
+    """전환(30%)"""
     class Meta:
         db_table = 'index_reversal'
         verbose_name = 'reversal'
         verbose_name_plural = 'reversals'
 
 class Settlement(AbstractBOHLC):
-    """결제(월)"""
+    """결제(월간)"""
     class Meta:
         db_table = 'index_settlement'
         verbose_name = 'settlement'

@@ -12,12 +12,12 @@
     <!-- Content -->
     <div class="container">
       <h1 class="page-header">{{ index.name }} <small>({{ index.code }})</small></h1>
-      <div class="well">{{ index.about|linebreaksbr }}</div>
+      <p>{{ index.about|linebreaksbr }}</p>
     </div>
     {% if month_list %}
     <div class="container">
-      <h3 class="page-header">영역 차트 <small>Area Chart</small></h3>
-      <div id="month-chart" class="chart-area">
+      <h3 class="section-header">월간 차트 <small>: 기본 분석</small></h3>
+      <div id="month-chart" class="chart">
       </div>
     </div>
     {% endif %}
@@ -34,22 +34,23 @@
 
       function drawChart() {
         var data = new google.visualization.DataTable();
-        data.addColumn('date', 'Month');
-        data.addColumn('number', 'Point');
-
+        data.addColumn({type: 'date', label: 'Month'});
+        data.addColumn({type: 'number', label: 'Point'});
         data.addRows([
           {% for month in month_list %}
           [{v:new Date({{ month.date|date:'Y,n,j' }}), f:'{{ month.date|date:'Y'}}년 {{ month.date|date:'n'}}월'}, {{ month.close }}],
           {% endfor %}
         ]);
         var options = {
-          width: 1140,
-          height: 500,
-          chartArea: {left: 70, top: 10, width: 1070, height: 450},
+          width: 970,
+          height: 429,
+          backgroundColor: '#f5f5f5',
+          chartArea: {left: 0, top: 0, width: 970, height: 400},
           crosshair: {color: 'black', trigger: 'selection'},
-          legend: 'none',
           hAxis: {format: 'y년'},
-          vAxis: {viewWindowMode: 'max'}
+          vAxis: {textPosition: 'in'},
+          explorer: {axis: 'horizontal', keepInBounds: true, maxZoomOut: 1},
+          legend: 'none'
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('month-chart'));

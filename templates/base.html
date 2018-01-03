@@ -4,14 +4,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- The above 2 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="author" content="Havister, 하비스터">
     {% block meta %}{% endblock %}
 
     <link rel="icon" href="{% static 'favicon.ico' %}">
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Havister{% endblock %}</title>
 
     <!-- Bootstrap 3.3.7 core CSS -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -37,14 +36,9 @@
     <nav class="navbar navbar-inverse navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="navbar-brand" href="{% url 'home' %}">Havister</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <div id="navbar">
           <ul class="nav navbar-nav">
             <li class="{% block nav_index %}{% endblock %}"><a href="/index/">지수</a></li>
             <li class="{% block nav_stock %}{% endblock %}"><a href="#stock">주식</a></li>
@@ -56,7 +50,7 @@
             <li class="{% block nav_donation %}disabled{% endblock %}"><a href="#donation"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; 기부</a></li>
             <li class="{% block nav_partner %}disabled{% endblock %}"><a href="#partner"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; 파트너</a></li>
           </ul>
-        </div><!--/.navbar-collapse -->
+        </div><!--/#navbar -->
       </div>
     </nav>
 
@@ -64,22 +58,29 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="container text-center">
-        <ul>
-          <li><a href="/index/">지수</a></li>
-          <li><a href="#stock">주식</a></li>
-          <li><a href="#bond">채권</a></li>
-          <li><a href="#commodity">상품</a></li>
-          <li><a href="#currency">외환</a></li>
-          <li><a href="#donation">기부</a></li>
-          <li><a href="#partner">파트너</a></li>
-        </ul>
-        <p>하비스터(Havister)는 수확하는 사람 또는 로봇을 의미합니다.
-          하비스터는 '계절들의 순환'을 테마로 금융정보를 제공합니다.</p>
-        <p class="notice">하비스터에서 제공하는 금융정보는 투자 참고 사항이며, 오류 및 지연이 발생할 수 있습니다.<br>
-          하비스터는 제공된 정보에 의한 투자 결과에 대해 법적인 책임을 지지 않습니다.</p>
-        <p><a href="mailto:contact@havister.com">contact@havister.com</a> &nbsp;
-          <button type="button" id="copy" class="btn btn-default btn-xs"><small>주소 복사</small></button></p>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-4">
+            <ul>
+              <li><a href="/index/">지수</a></li>
+              <li><a href="#stock">주식</a></li>
+              <li><a href="#bond">채권</a></li>
+              <li><a href="#commodity">상품</a></li>
+              <li><a href="#currency">외환</a></li>
+            </ul>
+          </div>
+          <div class="col-xs-4 text-center">
+            <p>&copy; 2018 Havister</p>
+          </div>
+          <div class="col-xs-4 text-right">
+            <ul>
+              <li><a href="#legal-notice">법적고지</a></li>
+              <li><a href="mailto:contact@havister.com">문의</a></li>
+              <li><a href="#donation">기부</a></li>
+              <li><a href="#partner">파트너</a></li>
+            </ul>
+          </div>
+        </div><!--/.row -->
       </div>
     </footer>
 

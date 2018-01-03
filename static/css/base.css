@@ -1,53 +1,129 @@
 /*
- *  home.css
+ * static/css/base.css
 */
-sup {
-    font-style: italic;
-    color: #808080;
+
+/* Non-responsive overrides
+ *
+ * Utilize the following CSS to disable the responsive-ness of the container,
+ * grid system, and navbar.
+*/
+
+/* Reset the container */
+body,
+.navbar-static-top {
+    min-width: 970px;
 }
 
-.navbar {
-    margin-bottom: 0;
+.container {
+    width: 970px;
+    max-width: none !important;
+    padding: 0;
+}
+
+.container .navbar-header,
+.container .navbar-collapse {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+/* Always float the navbar header */
+.navbar-header {
+    float: left;
+}
+
+/* Undo the collapsing navbar */
+.navbar-collapse {
+    display: block !important;
+    height: auto !important;
+    padding-bottom: 0;
+    overflow: visible !important;
+    visibility: visible !important;
+}
+
+.navbar-toggle {
+    display: none;
+}
+
+.navbar-collapse {
+    border-top: 0;
+}
+
+.navbar-brand {
+    margin-left: -15px;
+}
+
+/* Always apply the floated nav */
+.navbar-nav {
+    float: left;
+    margin: 0;
+}
+
+.navbar-nav > li {
+    float: left;
+}
+
+.navbar-nav > li > a {
+    padding: 15px;
+}
+
+/* Redeclare since we override the float above */
+.navbar-nav.navbar-right {
+    float: right;
+}
+
+/*
+ * Custom Extra
+*/
+.jumbotron {
+    color: white;
+    background-color: forestgreen;
+}
+
+.page-header {
+    border-bottom: 1px solid #ddd;
+}
+
+.section-header {
+    margin: 40px 0 20px 0;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #ddd;
 }
 
 .section {
-    padding-top: 80px;
-    padding-bottom: 80px;
+    padding: 20px 0 20px 0;
 }
 
-.section-last {
-    padding-top: 80px;
-}
-
-.jumbotron {
-    display: table;
-    width: 100%;
+.section img {
+    width: 880px;
     height: 400px;
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+.lead {
+    font-size: 16px;
+}
+
+.chart {
+    width: 970px;
+    height: 430px;
     margin-bottom: 20px;
-    background-image: url("../images/jumbo-harvest.jpg");
-    background-size: cover;
-}
-
-.jumbotron > .container {
-    display: table-cell;
-    vertical-align: middle;
-    text-shadow: 1px 1px 30px white;
-}
-
-.section > .image > img {
-    width: 1140px;
-    height: 546px;
+    border-bottom: 1px solid #ddd;
 }
 
 .footer {
     width: 100%;
-    margin-top: 80px;
-    border-top: 1px dotted #808080;
+    margin-top: 30px;
+    font-size: 12px;
+    font-weight: 100;
 }
 
 .footer > .container {
     padding-top: 30px;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
+    border-top: 1px solid #ddd;
 }
 
 .footer ul {
@@ -59,18 +135,5 @@ sup {
 .footer ul > li {
     display: inline;
     margin-left: 12px;
-}
-
-.footer .notice {
-    font-size: 11px;
-    font-weight: 100;
-}
-
-.border-top {
-    border-top: 1px dotted #808080;
-}
-
-.border-bottom {
-    border-bottom: 1px dotted #808080;
 }
 

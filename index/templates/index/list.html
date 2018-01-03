@@ -13,35 +13,39 @@
     <div class="container">
       <h1 class="page-header">지수 <small>Index</small></h1>
       <div class="alert alert-info" role="alert">
-        <strong>지수 선정 원칙!</strong> &nbsp;
+        <strong>지수 선정!</strong> &nbsp;
         시장 종합 지수들과 &nbsp;선물 &middot; 옵션 &middot; ETF의 기초로 활용되는 지수들을 선정하여 분석합니다.
       </div>
-    {% if index_list %}
-      <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>지수</th>
-          <th>국가</th>
-          <th>시장</th>
-          <th>선물</th>
-          <th>옵션</th>
-          <th>ETF</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for index in index_list %}
-        <tr>
-          <td><a href="{% url 'index:detail' index.slug %}">{{ index.name }}</a></td>
-          <td>{{ index.country }}</td>
-          <td>{% if index.market %}종합{% endif %}</td>
-          <td>{% if index.future %}기초{% endif %}</td>
-          <td>{% if index.option %}기초{% endif %}</td>
-          <td>{% if index.fund %}기초{% endif %}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-      </table>
-    {% endif %}
+      {% if index_list %}
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>지수</th>
+              <th>국가</th>
+              <th>시장</th>
+              <th>선물</th>
+              <th>옵션</th>
+              <th>ETF</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for index in index_list %}
+            <tr>
+              <td><a href="{% url 'index:detail' index.slug %}">{{ index.name }}</a></td>
+              <td>{{ index.country }}</td>
+              <td>{% if index.market %}종합{% endif %}</td>
+              <td>{% if index.future %}기초{% endif %}</td>
+              <td>{% if index.option %}기초{% endif %}</td>
+              <td>{% if index.fund %}기초{% endif %}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
     </div>
 {% endblock content %}
 
