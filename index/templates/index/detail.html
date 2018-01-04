@@ -21,18 +21,25 @@
       </div>
     </div>
     {% endif %}
+    {% if reversal_list %}
+    <div class="container">
+      <h3 class="section-header">전환 차트 <small>: 순환 분석</small></h3>
+      <div id="reversal-chart" class="chart">
+      </div>
     </div>
+    {% endif %}
 {% endblock content %}
 
 {% block extra_script %}
     <!-- Chart -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    {% if month_list %}
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
+      {% if month_list %}
+      google.charts.setOnLoadCallback(drawMonthChart);
+
+      function drawMonthChart() {
         var data = new google.visualization.DataTable();
         data.addColumn({type: 'date', label: 'Month'});
         data.addColumn({type: 'number', label: 'Point'});
@@ -52,11 +59,44 @@
           explorer: {axis: 'horizontal', keepInBounds: true, maxZoomOut: 1},
           legend: 'none'
         };
-
         var chart = new google.visualization.AreaChart(document.getElementById('month-chart'));
         chart.draw(data, options);
       }
+      {% endif %}
+
+      {% if reversal_list %}
+      google.charts.setOnLoadCallback(drawReversalChart);
+
+      function drawReversalChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn({type: 'date', label: 'Month'});
+        data.addColumn({type: 'number', label: 'Point'});
+        data.addColumn({type: 'boolean', role: 'certainty'});
+        data.addRows([
+          {% for reversal in reversal_list %}
+          [{v:new Date({{ reversal.date|date:'Y,n,j' }}), f:'{{ reversal.date|date:'Y'}}년 {{ reversal.date|date:'n'}}월'}, {{ reversal.close }}, true],
+          {% endfor %}
+        ]);
+        lastRowIndex = data.getNumberOfRows() - 1;
+        lastColIndex = 2;
+        data.setValue(lastRowIndex, lastColIndex, false);
+
+        var options = {
+          width: 970,
+          height: 429,
+          colors: ['#109618'],
+          backgroundColor: '#f5f5f5',
+          chartArea: {left: 0, top: 0, width: 970, height: 400},
+          crosshair: {color: 'black', trigger: 'selection'},
+          hAxis: {format: 'y년'},
+          vAxis: {textPosition: 'in'},
+          explorer: {axis: 'horizontal', keepInBounds: true, maxZoomOut: 1},
+          legend: 'none'
+        };
+        var chart = new google.visualization.AreaChart(document.getElementById('reversal-chart'));
+        chart.draw(data, options);
+      }
+      {% endif %}
     </script>
-    {% endif %}
 {% endblock %}
 

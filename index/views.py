@@ -24,6 +24,5 @@ class IndexDetail(generic.DetailView):
         context_index = kwargs['object']
         context['month_list'] = Month.objects.filter(index=context_index)
         context['reversal_list'] = Reversal.objects.filter(index=context_index)
-        context['settlement_list'] = Settlement.objects.filter(index=context_index)
         return context
 
