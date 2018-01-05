@@ -11,7 +11,7 @@
 {% block content %}
     <!-- Content -->
     <div class="container">
-      <h1 class="page-header">{{ index.name }} <small>({{ index.code }})</small></h1>
+      <h1 class="page-header">{{ index.name }}</h1>
       <p>{{ index.about|linebreaksbr }}</p>
     </div>
     {% if month_list %}
@@ -23,7 +23,7 @@
     {% endif %}
     {% if reversal_list %}
     <div class="container">
-      <h3 class="section-header">전환 차트 <small>: 순환 분석</small></h3>
+      <h3 class="section-header">전환 차트 <small>: 고점 대비 -30% 이하 하락</small></h3>
       <div id="reversal-chart" class="chart">
       </div>
     </div>
@@ -56,7 +56,7 @@
           crosshair: {color: 'black', trigger: 'selection'},
           hAxis: {format: 'y년'},
           vAxis: {textPosition: 'in'},
-          explorer: {axis: 'horizontal', keepInBounds: true, maxZoomOut: 1},
+          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomOut: 1},
           legend: 'none'
         };
         var chart = new google.visualization.AreaChart(document.getElementById('month-chart'));
@@ -71,14 +71,16 @@
         var data = new google.visualization.DataTable();
         data.addColumn({type: 'date', label: 'Month'});
         data.addColumn({type: 'number', label: 'Point'});
+        data.addColumn({type: 'string', role: 'annotation'});
         data.addColumn({type: 'boolean', role: 'certainty'});
         data.addRows([
           {% for reversal in reversal_list %}
-          [{v:new Date({{ reversal.date|date:'Y,n,j' }}), f:'{{ reversal.date|date:'Y'}}년 {{ reversal.date|date:'n'}}월'}, {{ reversal.close }}, true],
+          [{v:new Date({{ reversal.date|date:'Y,n,j' }}), f:'{{ reversal.date|date:'Y'}}년 {{ reversal.date|date:'n'}}월'},
+            {{ reversal.close }}, '{{ reversal.change }}%', true],
           {% endfor %}
         ]);
         lastRowIndex = data.getNumberOfRows() - 1;
-        lastColIndex = 2;
+        lastColIndex = data.getNumberOfColumns() - 1;
         data.setValue(lastRowIndex, lastColIndex, false);
 
         var options = {
@@ -90,7 +92,8 @@
           crosshair: {color: 'black', trigger: 'selection'},
           hAxis: {format: 'y년'},
           vAxis: {textPosition: 'in'},
-          explorer: {axis: 'horizontal', keepInBounds: true, maxZoomOut: 1},
+          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomOut: 1},
+          annotations: {textStyle: {bold: true}},
           legend: 'none'
         };
         var chart = new google.visualization.AreaChart(document.getElementById('reversal-chart'));
