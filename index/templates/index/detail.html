@@ -14,13 +14,56 @@
       <h1 class="page-header">{{ index.name }}</h1>
       <p>{{ index.about|linebreaksbr }}</p>
     </div>
+
     {% if month_list %}
     <div class="container">
       <h3 class="section-header">월간 차트 <small>: 기본 분석</small></h3>
       <div id="month-chart" class="chart">
       </div>
+
+      {% if month_summary_list %}
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <table class="table">
+          <thead>
+            <tr>
+              <th>기간</th>
+              <th class="info">기준</th>
+              <th>고가</th>
+              <th class="active">: 차이</th>
+              <th class="danger">: 변동</th>
+              <th>저가</th>
+              <th class="active">: 차이</th>
+              <th class="danger">: 변동</th>
+              <th>종가</th>
+              <th class="active">: 차이</th>
+              <th class="danger">: 변동</th>
+            </tr>
+          </thead>
+          <tbody class="text-right">
+            {% for summary in month_summary_list %}
+            <tr>
+              <td class="text-left">{{ summary.year }}년</td>
+              <td class="info">{{ summary.base }}</td>
+              <td>{{ summary.high }}</td>
+              <td class="active">{{ summary.high_diff }}</td>
+              <td class="danger">{{ summary.high_change }}%</td>
+              <td>{{ summary.low }}</td>
+              <td class="active">{{ summary.low_diff }}</td>
+              <td class="danger">{{ summary.low_change }}%</td>
+              <td>{{ summary.close }}</td>
+              <td class="active">{{ summary.close_diff }}</td>
+              <td class="danger">{{ summary.close_change }}%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
     </div>
     {% endif %}
+
     {% if reversal_list %}
     <div class="container">
       <h3 class="section-header">전환 차트 <small>: 고점 대비 -30% 이하 하락</small></h3>

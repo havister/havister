@@ -16,6 +16,7 @@
         <strong>지수 선정!</strong> &nbsp;
         시장 종합 지수들과 &nbsp;선물 &middot; 옵션 &middot; ETF의 기초로 활용되는 지수들을 선정하여 분석합니다.
       </div>
+
       {% if index_list %}
       <div class="panel panel-default">
         <div class="panel-body">
@@ -31,7 +32,7 @@
             </tr>
           </thead>
           <tbody>
-          {% for index in index_list %}
+            {% for index in index_list %}
             <tr>
               <td><a href="{% url 'index:detail' index.slug %}">{{ index.name }}</a></td>
               <td>{{ index.country }}</td>
@@ -40,7 +41,7 @@
               <td>{% if index.option %}기초{% endif %}</td>
               <td>{% if index.fund %}기초{% endif %}</td>
             </tr>
-          {% endfor %}
+            {% endfor %}
           </tbody>
           </table>
         </div>
