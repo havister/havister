@@ -64,6 +64,7 @@ body,
 
 .navbar-nav > li > a {
     padding: 15px;
+    font-weight: bold;
 }
 
 /* Redeclare since we override the float above */
@@ -75,8 +76,6 @@ body,
  * Custom Extra
 */
 .jumbotron {
-    color: white;
-    background-color: forestgreen;
 }
 
 .page-header {

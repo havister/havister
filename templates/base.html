@@ -13,7 +13,7 @@
     <title>{% block title %}Havister{% endblock %}</title>
 
     <!-- Bootstrap 3.3.7 core CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link rel="stylesheet" href="{% static 'css/ie10-viewport-bug-workaround.css' %}">
@@ -47,9 +47,9 @@
             <li class="{% block nav_currency %}{% endblock %}"><a href="#currency">외환</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="{% block nav_donation %}disabled{% endblock %}"><a href="#donation">
-              <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; 기부</a></li>
-            <li class="{% block nav_partner %}disabled{% endblock %}">
+            <li class="{% block nav_donation %}{% endblock %}">
+              <a href="#donation"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; 기부</a></li>
+            <li class="{% block nav_partner %}{% endblock %}">
               <a href="#partner"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; 파트너</a></li>
           </ul>
         </div><!--/#navbar -->
@@ -89,7 +89,7 @@
     <!-- Bootstrap 3.3.7 core JavaScript -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
     {% block extra_script %}{% endblock %}
