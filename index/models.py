@@ -29,13 +29,14 @@ class AbstractBC(models.Model):
     close = models.DecimalField(max_digits=7, decimal_places=2)
     difference = models.DecimalField(max_digits=7, decimal_places=2)
     change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
-    index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE)
+    index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
 
     def __str__(self):
         return "{0} ({1})".format(self.date, self.index)
 
     class Meta:
         abstract = True
+        ordering = ['date']
 
 class AbstractBOHLC(models.Model):
     """abstract base-open-high-low-close"""
@@ -47,13 +48,14 @@ class AbstractBOHLC(models.Model):
     close = models.DecimalField(max_digits=7, decimal_places=2)
     difference = models.DecimalField(max_digits=7, decimal_places=2)
     change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
-    index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE)
+    index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
 
     def __str__(self):
         return "{0} ({1})".format(self.date, self.index)
 
     class Meta:
         abstract = True
+        ordering = ['date']
 
 class Day(AbstractBOHLC):
     """일간"""
