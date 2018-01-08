@@ -71,17 +71,17 @@ class Month(AbstractBOHLC):
         verbose_name = 'month'
         verbose_name_plural = 'months'
 
-class Reversal(AbstractBC):
-    """전환(30%)"""
+class Cycle(AbstractBC):
+    """순환(-30%:하락전환)"""
     class Meta:
-        db_table = 'index_reversal'
-        verbose_name = 'reversal'
-        verbose_name_plural = 'reversals'
+        db_table = 'index_cycle'
+        verbose_name = 'cycle'
+        verbose_name_plural = 'cycles'
 
-class Settlement(AbstractBOHLC):
-    """결제(월간)"""
+class Expiration(AbstractBOHLC):
+    """만기(월간)"""
     class Meta:
-        db_table = 'index_settlement'
-        verbose_name = 'settlement'
-        verbose_name_plural = 'settlements'
+        db_table = 'index_expiration'
+        verbose_name = 'expiration'
+        verbose_name_plural = 'expirations'
 

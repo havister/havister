@@ -1,0 +1,50 @@
+{% extends 'index/base.html' %}
+
+{% block meta %}
+    <!-- Custom metas -->
+    <meta name="description" content="{{ index.name }} : Index : Havister">
+    <meta name="keywords" content="{{ index.name }} Index">
+{% endblock %}
+
+{% block title %}{{ index.name }} : Index : Havister{% endblock %}
+
+{% block tab_expiration %}active{% endblock %}
+
+{% block content %}
+{% endblock content %}
+
+{% block extra_script %}
+    {% if expiration_list %}
+    <!-- Chart -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawExpirationChart);
+
+      function drawMonthChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn({type: 'date', label: 'Month'});
+        data.addColumn({type: 'number', label: 'Point'});
+        data.addRows([
+          {% for expiration in expiration_list %}
+          [{v:new Date({{ expiration.date|date:'Y,n,j' }}), f:'{{ expiration.date|date:'Y년 n월' }}'}, {{ expiration.close }}],
+          {% endfor %}
+        ]);
+        var options = {
+          width: 970,
+          height: 429,
+          backgroundColor: '#f5f5f5',
+          chartArea: {left: 0, top: 0, width: 970, height: 400},
+          crosshair: {color: 'black', trigger: 'selection'},
+          hAxis: {format: 'y년'},
+          vAxis: {textPosition: 'in'},
+          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.5, zoomDelta: 1.5},
+          legend: 'none'
+        };
+        var chart = new google.visualization.AreaChart(document.getElementById('month-chart'));
+        chart.draw(data, options);
+      }
+    </script>
+    {% endif %}
+{% endblock extra_script %}
+

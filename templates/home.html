@@ -10,15 +10,20 @@
 
 {% load staticfiles %}
 
-{% block content %}
-    <!-- Content -->
+{% block content-head %}
+    <!-- Content head -->
     <div class="container">
       <div class="jumbotron text-center">
         <h1>Havister</h1>
         <p class="lead">봄이 오면 씨를 뿌리고, 가을이 오면 수확해야 합니다.<br>
           하비스터는 계절의 변화를 주시합니다.</p>
       </div>
+    </div>
+{% endblock content-head %}
 
+{% block content-body %}
+    <!-- Content body -->
+    <div class="container">
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="section text-center">
@@ -55,5 +60,5 @@
         </div><!--/.panel-body -->
       </div><!--/.panel -->
     </div>
-{% endblock content %}
+{% endblock content-body %}
 

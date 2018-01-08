@@ -1,0 +1,93 @@
+{% extends 'index/base.html' %}
+
+{% block meta %}
+    <!-- Custom metas -->
+    <meta name="description" content="{{ index.name }} : Index : Havister">
+    <meta name="keywords" content="{{ index.name }} Index">
+{% endblock %}
+
+{% block title %}{{ index.name }} : Index : Havister{% endblock %}
+
+{% block tab_basic %}active{% endblock %}
+
+{% block content-body %}
+    {% if month_list %}
+    <!-- Content body -->
+    <div class="container">
+      <h3 class="section-header">월간 차트<small>&nbsp; : 기간별 최고&middot;최저&middot;마감 지수를 통해, 변동성과 성장률을 분석합니다.</small></h3>
+      <div id="month-chart" class="chart">
+      </div>
+
+      {% if summary_list %}
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <table class="table">
+          <thead>
+            <tr>
+              <th>기간</th>
+              <th class="active">기준 지수</th>
+              <th>최고 지수</th>
+              <th class="active">: 변화율</th>
+              <th>최저 지수</th>
+              <th class="active">: 변화율</th>
+              <th>마감 지수</th>
+              <th class="active">: 변화율</th>
+            </tr>
+          </thead>
+          <tbody class="text-right">
+            {% for summary in summary_list %}
+            <tr>
+              <td class="text-left"><strong>{{ summary.year }}년</strong></td>
+              <td class="active">{{ summary.base }}</td>
+              <td>{{ summary.high }}</td>
+              <td class="active"><strong>{{ summary.high_change }}</strong>%</td>
+              <td>{{ summary.low }}</td>
+              <td class="active"><strong>{{ summary.low_change }}</strong>%</td>
+              <td>{{ summary.close }}</td>
+              <td class="active"><strong>{{ summary.close_change }}</strong>%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          </table>
+        </div><!--/.panel-body -->
+      </div><!--/.panel -->
+      {% endif %}
+    </div>
+    {% endif %}
+{% endblock content-body %}
+
+{% block extra_script %}
+    {% if month_list %}
+    <!-- Chart -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawMonthChart);
+
+      function drawMonthChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn({type: 'date', label: 'Month'});
+        data.addColumn({type: 'number', label: 'Point'});
+        data.addRows([
+          {% for month in month_list %}
+          [{v:new Date({{ month.date|date:'Y,n,j' }}), f:'{{ month.date|date:'Y년 n월' }}'}, {{ month.close }}],
+          {% endfor %}
+        ]);
+        var options = {
+          width: 970,
+          height: 429,
+          backgroundColor: '#f5f5f5',
+          chartArea: {left: 0, top: 0, width: 970, height: 400},
+          crosshair: {color: 'black', trigger: 'selection'},
+          hAxis: {format: 'y년'},
+          vAxis: {textPosition: 'in'},
+          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.5, zoomDelta: 1.5},
+          legend: 'none'
+        };
+        var chart = new google.visualization.AreaChart(document.getElementById('month-chart'));
+        chart.draw(data, options);
+      }
+    </script>
+    {% endif %}
+{% endblock extra_script %}
+

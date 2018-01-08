@@ -92,9 +92,20 @@ body,
     background-color: black;
 }
 
+.container-fluid.content-head {
+    box-shadow: 0px -1px 0px #ddd inset;
+}
+
+.content-head h1 {
+    margin-top: 10px;
+}
+
+.nav-tabs {
+    margin-top: 20px;
+}
+
 .container .jumbotron {
     margin-bottom: 20px;
-    color: #31708f;
     background-color: #d9edf7;
     border: 1px solid #bce8f1;
 }

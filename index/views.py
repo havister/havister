@@ -3,7 +3,7 @@
 from dateutil.relativedelta import relativedelta
 from django.views import generic
 
-from .models import Index, Day, Month, Reversal, Settlement
+from .models import Index, Day, Month, Cycle, Expiration
 
 class IndexList(generic.ListView):
     context_object_name = 'index_list'
@@ -12,27 +12,25 @@ class IndexList(generic.ListView):
     def get_queryset(self):
         return Index.objects.order_by('-market', '-future', '-option', '-fund')
 
-class IndexDetail(generic.DetailView):
+
+class IndexBasic(generic.DetailView):
     context_object_name = 'index'
     model = Index
-    template_name = 'index/detail.html'
+    template_name = 'index/basic.html'
 
     def get_context_data(self, **kwargs):
         # base 
-        context = super(IndexDetail, self).get_context_data(**kwargs)
-        # index
+        context = super(IndexBasic, self).get_context_data(**kwargs)
+        # index object
         context_index = kwargs['object']
-        # month_list
+        # month list
         context['month_list'] = Month.objects.filter(index=context_index)
+        # summary list 
         if context['month_list']:
-            context['month_summary_list'] = self.get_month_summary_list(context['month_list'])
-        # reversal_list
-        context['reversal_list'] = Reversal.objects.filter(index=context_index)
-        if context['reversal_list']:
-            context['reversal_summary_list'] = self.get_reversal_summary_list(context['reversal_list'])
+            context['summary_list'] = self.get_summary_list(context['month_list'])
         return context
 
-    def get_month_summary_list(self, month_list):
+    def get_summary_list(self, month_list):
         years = [1, 3, 5, 10]
         last_month = month_list.last()
         summary_list = []
@@ -53,28 +51,66 @@ class IndexDetail(generic.DetailView):
             summary['low_change'] = round((summary['low'] - summary['base']) / summary['base'] * 100, 2)
             summary['close'] = last_month.close
             summary['close_change'] = round((summary['close'] - summary['base']) / summary['base'] * 100, 2)
-            # summary_list
+            # summary list
             summary_list.append(summary)
         return summary_list
 
-    def get_reversal_summary_list(self, reversal_list):
-        start_date = reversal_list.first().date
+
+class IndexCycle(generic.DetailView):
+    context_object_name = 'index'
+    model = Index
+    template_name = 'index/cycle.html'
+
+    def get_context_data(self, **kwargs):
+        # base 
+        context = super(IndexCycle, self).get_context_data(**kwargs)
+        # index object
+        context_index = kwargs['object']
+        # cycle list
+        context['cycle_list'] = Cycle.objects.filter(index=context_index)
+        if context['cycle_list']:
+            context['summary_list'] = self.get_summary_list(context['cycle_list'])
+        return context
+
+    def get_summary_list(self, cycle_list):
+        start_date = cycle_list.first().date
         end_date = start_date
         summary_list = []
 
-        for no, reversal in enumerate(reversal_list[1:]):
+        for no, cycle in enumerate(cycle_list[1:]):
             # range
             start_date = end_date
-            end_date = reversal.date
+            end_date = cycle.date
             period = relativedelta(end_date, start_date)
             # summary
             summary = {}
-            summary['no'] = no + 1
             summary['start_date'] = start_date
+            summary['start'] = cycle.base
             summary['end_date'] = end_date
+            summary['end'] = cycle.close
             summary['period'] = "{0}년 {1}개월 {2}일".format(period.years, period.months, period.days)
-            summary['change'] = reversal.change 
-            # summary_list
+            summary['change'] = cycle.change 
+            # summary list
             summary_list.append(summary)
         return summary_list
+
+
+class IndexExpiration(generic.DetailView):
+    context_object_name = 'index'
+    model = Index
+    template_name = 'index/expiration.html'
+
+    def get_context_data(self, **kwargs):
+        # base 
+        context = super(IndexExpiration, self).get_context_data(**kwargs)
+        # index object
+        context_index = kwargs['object']
+        # expiration list
+        context['expiration_list'] = Month.objects.filter(index=context_index)
+        if context['expiration_list']:
+            context['summary_list'] = self.get_summary_list(context['expiration_list'])
+        return context
+
+    def get_summary_list(self, expiration_list):
+        pass
 

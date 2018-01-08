@@ -1,4 +1,4 @@
-{% extends 'index/base.html' %}
+{% extends 'base.html' %}
 
 {% block meta %}
     <!-- Custom metas -->
@@ -8,15 +8,22 @@
 
 {% block title %}지수 : Havister{% endblock %}
 
-{% block content %}
-    <!-- Content -->
-    <div class="container">
-      <h1 class="page-header">지수 <small>Index</small></h1>
+{% block nav_index %}active{% endblock %}
+
+{% block content-head %}
+    <!-- Content head -->
+    <div class="container content-head">
+      <h1>지수<small>&nbsp; : Index</small></h1>
       <div class="alert alert-info" role="alert">
         <strong>지수 선정!</strong> &nbsp;
         시장 종합 지수들과 &nbsp;선물 &middot; 옵션 &middot; ETF의 기초로 활용되는 지수들을 선정하여 분석합니다.
       </div>
+    </div>
+{% endblock content-head %}
 
+{% block content-body %}
+    <!-- Content body -->
+    <div class="container">
       {% if index_list %}
       <div class="panel panel-default">
         <div class="panel-body">
@@ -34,7 +41,7 @@
           <tbody>
             {% for index in index_list %}
             <tr>
-              <td><a href="{% url 'index:detail' index.slug %}">{{ index.name }}</a></td>
+              <td><a href="{% url 'index:basic' index.slug %}">{{ index.name }}</a></td>
               <td>{{ index.country }}</td>
               <td>{% if index.market %}종합{% endif %}</td>
               <td>{% if index.future %}기초{% endif %}</td>
@@ -48,5 +55,5 @@
       </div>
       {% endif %}
     </div>
-{% endblock content %}
+{% endblock content-body %}
 

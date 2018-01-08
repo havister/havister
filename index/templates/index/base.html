@@ -2,3 +2,24 @@
 
 {% block nav_index %}active{% endblock %}
 
+{% block content-head %}
+    <div class="container-fluid content-head">
+      <div class="container">
+        <h1>{{ index.name }}<small>&nbsp; : {{ index.country }}
+          {% if index.market %}| 시장{% endif %}
+          {% if index.future %}| 선물{% endif %}
+          {% if index.option %}| 옵션{% endif %}
+          {% if index.fund %}| ETF{% endif %}</small>
+        </h1>
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="{% block tab_basic %}{% endblock %}">
+            <a href="{% url 'index:basic' index.slug %}">기초 분석</a></li>
+          <li role="presentation" class="{% block tab_cycle %}{% endblock %}">
+            <a href="{% url 'index:cycle' index.slug %}">순환 분석</a></li>
+          <li role="presentation" class="{% block tab_expiration %}{% endblock %}">
+            <a href="{% url 'index:expiration' index.slug %}">파생 분석</a></li>
+        </ul>
+      </div>
+    </div>
+{% endblock content-head %}
+
