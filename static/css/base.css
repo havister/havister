@@ -64,7 +64,6 @@ body,
 
 .navbar-nav > li > a {
     padding: 15px;
-    font-weight: bold;
 }
 
 /* Redeclare since we override the float above */
@@ -75,7 +74,29 @@ body,
 /*
  * Custom Extra
 */
-.jumbotron {
+.navbar-inverse {
+    background-color: #444;
+    border-color: black;
+}
+
+.navbar-inverse .navbar-brand {
+    color: white;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #bbb;
+    font-weight: bold;
+}
+
+.navbar-inverse .navbar-nav > .active > a {
+    background-color: black;
+}
+
+.container .jumbotron {
+    margin-bottom: 20px;
+    color: #31708f;
+    background-color: #d9edf7;
+    border: 1px solid #bce8f1;
 }
 
 .page-header {
@@ -97,8 +118,16 @@ body,
     height: 400px;
 }
 
+.panel {
+    box-shadow: none;
+}
+
 .panel-body {
     padding: 15px;
+}
+
+.panel .table {
+    margin-bottom: 0;
 }
 
 .lead {

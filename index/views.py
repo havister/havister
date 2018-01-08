@@ -20,12 +20,16 @@ class IndexDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         # base 
         context = super(IndexDetail, self).get_context_data(**kwargs)
-        # extra
+        # index
         context_index = kwargs['object']
+        # month_list
         context['month_list'] = Month.objects.filter(index=context_index)
-        context['month_summary_list'] = self.get_month_summary_list(context['month_list'])
+        if context['month_list']:
+            context['month_summary_list'] = self.get_month_summary_list(context['month_list'])
+        # reversal_list
         context['reversal_list'] = Reversal.objects.filter(index=context_index)
-        context['reversal_summary_list'] = self.get_reversal_summary_list(context['reversal_list'])
+        if context['reversal_list']:
+            context['reversal_summary_list'] = self.get_reversal_summary_list(context['reversal_list'])
         return context
 
     def get_month_summary_list(self, month_list):
