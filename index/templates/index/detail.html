@@ -138,11 +138,12 @@
         data.addColumn({type: 'date', label: 'Month'});
         data.addColumn({type: 'number', label: 'Point'});
         data.addColumn({type: 'string', role: 'annotation'});
+        data.addColumn({type: 'string', role: 'annotationText'});
         data.addColumn({type: 'boolean', role: 'certainty'});
         data.addRows([
           {% for reversal in reversal_list %}
           [{v:new Date({{ reversal.date|date:'Y,n,j' }}), f:'{{ reversal.date|date:'Y년 n월' }}'},
-            {{ reversal.close }}, '{{ reversal.change }}%', true],
+            {{ reversal.close }}, '{{ forloop.counter0 }}차', '{{ reversal.change }}%', true],
           {% endfor %}
         ]);
         lastRowIndex = data.getNumberOfRows() - 1;
@@ -159,6 +160,7 @@
           hAxis: {format: 'y년'},
           vAxis: {textPosition: 'in'},
           explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.5, zoomDelta: 1.5},
+          annotations: {textStyle: {bold: true}},
           legend: 'none'
         };
         var chart = new google.visualization.AreaChart(document.getElementById('reversal-chart'));
