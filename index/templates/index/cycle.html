@@ -24,7 +24,8 @@
           <table class="table">
           <thead>
             <tr>
-              <th class="active">전환</th>
+              <th>전환</th>
+              <th class="active">상태</th>
               <th>시작일</th>
               <th class="active">: 지수</th>
               <th>마감일</th>
@@ -36,7 +37,8 @@
           <tbody class="text-right">
             {% for summary in summary_list %}
             <tr>
-              <td class="active text-left"><strong>{{ forloop.counter }}차</strong></td>
+              <td class="text-left"><strong>{{ forloop.counter }}차</strong></td>
+              <td class="active text-left">{% if summary.fix %}확정{% else %}진행{% endif %}</td>
               <td class="text-center">{{ summary.start_date|date:'Y-m-d' }}</td>
               <td class="active"><strong>{{ summary.start }}</strong></td>
               <td class="text-center">{{ summary.end_date|date:'Y-m-d' }}</td>
@@ -72,13 +74,10 @@
         data.addRows([
           {% for cycle in cycle_list %}
           [{v:new Date({{ cycle.date|date:'Y,n,j' }}), f:'{{ cycle.date|date:'Y년 n월' }}'},
-            {{ cycle.close }}, '{{ forloop.counter0 }}차', '{{ cycle.change }}%', true],
+            {{ cycle.close }}, '{{ forloop.counter0 }}차', '{{ cycle.change }}%',
+            {% if cycle.fix %}true{% else %}false{% endif %}],
           {% endfor %}
         ]);
-        lastRowIndex = data.getNumberOfRows() - 1;
-        lastColIndex = data.getNumberOfColumns() - 1;
-        data.setValue(lastRowIndex, lastColIndex, false);
-
         var options = {
           width: 970,
           height: 429,
@@ -89,7 +88,6 @@
           hAxis: {format: 'y년'},
           vAxis: {textPosition: 'in'},
           explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.5, zoomDelta: 1.5},
-          annotations: {textStyle: {bold: true}},
           legend: 'none'
         };
         var chart = new google.visualization.AreaChart(document.getElementById('cycle-chart'));

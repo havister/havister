@@ -1,10 +1,10 @@
-# scripts/insert_reversal.py
+# scripts/cycle.py
 #
 # Usage:
-# python manage.py runscript delete_all_questions --script-args arg_code arg_action
+# python manage.py runscript cycle --script-args arg_code arg_action
 
 from decimal import Decimal
-from index.models import Index, Day, Reversal
+from index.models import Index, Day, Cycle
 
 def run(*args):
     # check argumnet
@@ -32,9 +32,9 @@ def run(*args):
     day_list = Day.objects.filter(index=item)
 
     #
-    # make reversal list
+    # make cycle list
     #
-    reversal_list = []
+    cycle_list = []
     # reveral rate 30%
     RATE = Decimal('0.3')
     # base day
@@ -62,7 +62,7 @@ def run(*args):
             if close >= track['l'] + track['ls']:
                 # 하락중 이었나?
                 if direction < 0:
-                    list_append(reversal_list, check)
+                    list_append(cycle_list, check)
                     direction = 1
                 check = day
 
@@ -70,7 +70,7 @@ def run(*args):
         elif close <= track['h'] - track['hs']:
             # 상승중 이었나?
             if direction > 0:
-                list_append(reversal_list, check)
+                list_append(cycle_list, check)
                 direction = -1
                 # 저점 리셋 
                 track['l'] = close
@@ -85,64 +85,59 @@ def run(*args):
         # endif
     # endfor
     else:
-        list_append(reversal_list, check)
+        list_append(cycle_list, check)
+        cycle_list[-1]['fix'] = False
 
     # report 
-    print_list(reversal_list, day, item)
+    print_list(cycle_list, day, item)
 
     # insert
     if arg_action == 'insert':
-        insert_list(reversal_list, item)
+        insert_list(cycle_list, item)
 
 
-def list_append(reversal_list, day):
+def list_append(cycle_list, day):
     # base
-    if reversal_list:
-        # check duplication
-        if reversal_list[-1]['date'] == day.date:
+    if cycle_list:
+        # check date duplication
+        if cycle_list[-1]['date'] == day.date:
             return
-        base = reversal_list[-1]['close']
+        # last close
+        else:
+            base = cycle_list[-1]['close']
     else:
+        # initialize
         base = day.base
-    # difference
-    difference = day.close - base
-    change = round(difference / base * 100, 2)
+    # diff
+    diff = day.close - base
+    change = round(diff / base * 100, 2)
 
-    # reversal
-    reversal = {'date': day.date, 'base': base, 'close':day.close, 'difference': difference, 'change': change}
-    # reversal list
-    reversal_list.append(reversal)
+    # cycle
+    cycle = {'date': day.date, 'base': base, 'close':day.close, 'diff': diff, 'change': change, 'fix': True}
+    # cycle list
+    cycle_list.append(cycle)
     return
 
 
-def print_list(reversal_list, today, item):
+def print_list(cycle_list, today, item):
     # index item
     print("{0}".format(item))
 
     # list
-    for reversal in reversal_list:
-        print("{0} {1} => {2} = {3}({4}%)".format(reversal['date'], reversal['base'], reversal['close'], reversal['difference'], reversal['change']))
-
-    # with today
-    pre_close = reversal['close']
-    if today.close > pre_close:
-        change = round((today.close - pre_close) / pre_close * 100, 2)
-    elif today.close < pre_close:
-        change = round((pre_close - today.close) / pre_close * -100, 2)
-    else:
-        change = Decimal('0.0')
-    print("{0} {1} => {2} = {3}({4}%)".format(today.date, pre_close, today.close, today.close - pre_close, change))
+    for cycle in cycle_list:
+        print("{0} {1} => {2} = {3}({4}%) : {5}".format(cycle['date'], cycle['base'], cycle['close'], cycle['diff'], cycle['change'], cycle['fix']))
     return
 
 
-def insert_list(reversal_list, item):
+def insert_list(cycle_list, item):
     # table insert
-    for reversal in reversal_list:
-        item.reversal_set.create(date=reversal['date'], \
-            base=reversal['base'], \
-            close=reversal['close'], \
-            difference=reversal['difference'], \
-            change=reversal['change'])
+    for cycle in cycle_list:
+        item.cycle_set.create(date=cycle['date'], \
+            base=cycle['base'], \
+            close=cycle['close'], \
+            diff=cycle['diff'], \
+            change=cycle['change'], \
+            fix=cycle['fix'])
     print("\ninsert success\n")
     return
 

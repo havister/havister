@@ -1,6 +1,7 @@
 """havister index views
 """
 from dateutil.relativedelta import relativedelta
+from decimal import Decimal
 from django.views import generic
 
 from .models import Index, Day, Month, Cycle, Expiration
@@ -67,13 +68,33 @@ class IndexCycle(generic.DetailView):
         # index object
         context_index = kwargs['object']
         # cycle list
-        context['cycle_list'] = Cycle.objects.filter(index=context_index)
+        context['cycle_list'] = self.get_cycle_list(context_index)
         if context['cycle_list']:
             context['summary_list'] = self.get_summary_list(context['cycle_list'])
         return context
 
+    def get_cycle_list(self, context_index):
+        cycle_list = list(Cycle.objects.filter(index=context_index))
+        last = cycle_list[-1]
+        today = Day.objects.filter(index=context_index).last()
+
+        # append today
+        if today.date > last.date:
+            if today.close != last.close:
+                diff = today.close - last.close
+                change = round(diff / last.close * 100, 2)
+            else:
+                diff = Decimal('0.00')
+                change = Decimal('0.00')
+            # cycle
+            cycle = Cycle(date=today.date, base=last.close, close=today.close, \
+                diff=diff, change=change, fix=False, index=context_index)
+            # cycle list
+            cycle_list.append(cycle)
+        return cycle_list
+
     def get_summary_list(self, cycle_list):
-        start_date = cycle_list.first().date
+        start_date = cycle_list[0].date
         end_date = start_date
         summary_list = []
 
@@ -90,6 +111,7 @@ class IndexCycle(generic.DetailView):
             summary['end'] = cycle.close
             summary['period'] = "{0}년 {1}개월 {2}일".format(period.years, period.months, period.days)
             summary['change'] = cycle.change 
+            summary['fix'] = cycle.fix 
             # summary list
             summary_list.append(summary)
         return summary_list
