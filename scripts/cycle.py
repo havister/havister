@@ -4,6 +4,7 @@
 # python manage.py runscript cycle --script-args arg_code arg_action
 
 from decimal import Decimal
+
 from index.models import Index, Day, Cycle
 
 def run(*args):
