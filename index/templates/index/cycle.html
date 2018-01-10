@@ -26,7 +26,7 @@
             <tr>
               <th>전환</th>
               <th class="active">상태</th>
-              <th>시작일</th>
+              <th>기준일</th>
               <th class="active">: 지수</th>
               <th>마감일</th>
               <th class="active">: 지수</th>
@@ -39,10 +39,10 @@
             <tr>
               <td class="text-left"><strong>{{ forloop.counter }}차</strong></td>
               <td class="active text-left">{% if summary.fix %}확정{% else %}진행{% endif %}</td>
-              <td class="text-center">{{ summary.start_date|date:'Y-m-d' }}</td>
-              <td class="active"><strong>{{ summary.start }}</strong></td>
-              <td class="text-center">{{ summary.end_date|date:'Y-m-d' }}</td>
-              <td class="active"><strong>{{ summary.end }}</strong></td>
+              <td class="text-center">{{ summary.base_date|date:'Y-m-d' }}</td>
+              <td class="active"><strong>{{ summary.base }}</strong></td>
+              <td class="text-center">{{ summary.close_date|date:'Y-m-d' }}</td>
+              <td class="active"><strong>{{ summary.close }}</strong></td>
               <td class="text-center">{{ summary.period }}</td>
               <td class="active"><strong>{{ summary.change }}</strong>%</td>
             </tr>
@@ -73,7 +73,7 @@
         data.addColumn({type: 'boolean', role: 'certainty'});
         data.addRows([
           {% for cycle in cycle_list %}
-          [{v:new Date({{ cycle.date|date:'Y,n,j' }}), f:'{{ cycle.date|date:'Y년 n월' }}'},
+          [{v:new Date({{ cycle.date|date:'Y,n,j' }}), f:'{{ cycle.date|date:'Y년 n월 j일' }}'},
             {{ cycle.close }}, '{{ forloop.counter0 }}차', '{{ cycle.change }}%',
             {% if cycle.fix %}true{% else %}false{% endif %}],
           {% endfor %}

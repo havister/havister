@@ -24,8 +24,9 @@
           <table class="table">
           <thead>
             <tr>
-              <th>기간</th>
-              <th class="active">기준 지수</th>
+              <th class="active">기간</th>
+              <th>기준</th>
+              <th class="active">: 지수</th>
               <th>최고 지수</th>
               <th class="active">: 변화율</th>
               <th>최저 지수</th>
@@ -37,7 +38,8 @@
           <tbody class="text-right">
             {% for summary in summary_list %}
             <tr>
-              <td class="text-left"><strong>{{ summary.year }}년</strong></td>
+              <td class="active text-left"><strong>{{ summary.year }}년</strong></td>
+              <td class="text-center">{{ summary.base_date|date:'Y-m-d' }}</td>
               <td class="active">{{ summary.base }}</td>
               <td>{{ summary.high }}</td>
               <td class="active"><strong>{{ summary.high_change }}</strong>%</td>
@@ -68,11 +70,35 @@
         var data = new google.visualization.DataTable();
         data.addColumn({type: 'date', label: 'Month'});
         data.addColumn({type: 'number', label: 'Point'});
+        data.addColumn({type:'string', role:'annotation'});
         data.addRows([
           {% for month in month_list %}
-          [{v:new Date({{ month.date|date:'Y,n,j' }}), f:'{{ month.date|date:'Y년 n월' }}'}, {{ month.close }}],
+          [{v:new Date({{ month.date|date:'Y,n,j' }}), f:'{{ month.date|date:'Y년 n월' }}'}, {{ month.close }}, null],
           {% endfor %}
         ]);
+
+        {% if summary_list %}
+        // get annotation date
+        var years = [];
+        var base_dates = [];
+        {% for summary in summary_list %}
+        years.push('{{ summary.year }}년');
+        base_dates.push((new Date({{ summary.base_date|date:'Y,n,j' }})).getTime());
+        {% endfor %}
+        var rows = data.getNumberOfRows();
+        var ri = rows - 1;
+        var len = years.length;
+        // reset annotation
+        for (i = 0; i < len; i++) {
+          for (; ri >= 0; ri--) {
+            if (base_dates[i] === data.getValue(ri, 0).getTime()) {
+              data.setValue(ri, 2, years[i]);
+              break;
+            }
+          }
+        }
+        {% endif %}
+
         var options = {
           width: 970,
           height: 429,
@@ -82,6 +108,7 @@
           hAxis: {format: 'y년'},
           vAxis: {textPosition: 'in'},
           explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.5, zoomDelta: 1.5},
+          annotations: {stem: {color: '#333'}},
           legend: 'none'
         };
         var chart = new google.visualization.AreaChart(document.getElementById('month-chart'));

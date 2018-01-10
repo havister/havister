@@ -15,8 +15,8 @@ class IndexList(generic.ListView):
 
 
 class IndexBasic(generic.DetailView):
-    context_object_name = 'index'
     model = Index
+    context_object_name = 'index'
     template_name = 'index/basic.html'
 
     def get_context_data(self, **kwargs):
@@ -32,7 +32,7 @@ class IndexBasic(generic.DetailView):
         return context
 
     def get_summary_list(self, month_list):
-        years = [1, 3, 5, 10]
+        years = [1, 3, 5, 10, 20]
         last_month = month_list.last()
         summary_list = []
 
@@ -45,6 +45,7 @@ class IndexBasic(generic.DetailView):
             # summary
             summary = {}
             summary['year'] = year
+            summary['base_date'] = first_month.date
             summary['base'] = first_month.base
             summary['high'] = months.order_by('-high').first().high
             summary['high_change'] = round((summary['high'] - summary['base']) / summary['base'] * 100, 2)
@@ -58,8 +59,8 @@ class IndexBasic(generic.DetailView):
 
 
 class IndexCycle(generic.DetailView):
-    context_object_name = 'index'
     model = Index
+    context_object_name = 'index'
     template_name = 'index/cycle.html'
 
     def get_context_data(self, **kwargs):
@@ -94,21 +95,21 @@ class IndexCycle(generic.DetailView):
         return cycle_list
 
     def get_summary_list(self, cycle_list):
-        start_date = cycle_list[0].date
-        end_date = start_date
+        base_date = cycle_list[0].date
+        close_date = base_date
         summary_list = []
 
-        for no, cycle in enumerate(cycle_list[1:]):
+        for cycle in cycle_list[1:]:
             # range
-            start_date = end_date
-            end_date = cycle.date
-            period = relativedelta(end_date, start_date)
+            base_date = close_date
+            close_date = cycle.date
+            period = relativedelta(close_date, base_date)
             # summary
             summary = {}
-            summary['start_date'] = start_date
-            summary['start'] = cycle.base
-            summary['end_date'] = end_date
-            summary['end'] = cycle.close
+            summary['base_date'] = base_date
+            summary['base'] = cycle.base
+            summary['close_date'] = close_date
+            summary['close'] = cycle.close
             summary['period'] = "{0}년 {1}개월 {2}일".format(period.years, period.months, period.days)
             summary['change'] = cycle.change 
             summary['fix'] = cycle.fix 
@@ -118,8 +119,8 @@ class IndexCycle(generic.DetailView):
 
 
 class IndexExpiration(generic.DetailView):
-    context_object_name = 'index'
     model = Index
+    context_object_name = 'index'
     template_name = 'index/expiration.html'
 
     def get_context_data(self, **kwargs):
