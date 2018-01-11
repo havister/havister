@@ -15,7 +15,7 @@
     <!-- Content body -->
     <div class="container">
       <h3 class="section-header">전환 차트<small>&nbsp; : 전환별 경과일과 변화율을 통해, 순환 주기와 진폭을 분석합니다.</small></h3>
-      <div id="cycle-chart" class="chart">
+      <div id="chart" class="chart">
       </div>
 
       {% if summary_list %}
@@ -35,9 +35,9 @@
             </tr>
           </thead>
           <tbody class="text-right">
-            {% for summary in summary_list %}
+            {% for summary in summary_list reversed %}
             <tr>
-              <td class="text-left"><strong>{{ forloop.counter }}차</strong></td>
+              <td class="text-left"><strong>{{ forloop.revcounter }}차</strong></td>
               <td class="active text-left">{% if summary.fix %}확정{% else %}진행{% endif %}</td>
               <td class="text-center">{{ summary.base_date|date:'Y-m-d' }}</td>
               <td class="active"><strong>{{ summary.base }}</strong></td>
@@ -62,9 +62,9 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawCycleChart);
+      google.charts.setOnLoadCallback(drawChart);
 
-      function drawCycleChart() {
+      function drawChart() {
         var data = new google.visualization.DataTable();
         data.addColumn({type: 'date', label: 'Month'});
         data.addColumn({type: 'number', label: 'Point'});
@@ -88,9 +88,9 @@
           hAxis: {format: 'y년'},
           vAxis: {textPosition: 'in'},
           explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.0, zoomDelta: 1.5},
-          legend: 'none'
+          legend: {position: 'none'}
         };
-        var chart = new google.visualization.AreaChart(document.getElementById('cycle-chart'));
+        var chart = new google.visualization.AreaChart(document.getElementById('chart'));
         chart.draw(data, options);
       }
     </script>

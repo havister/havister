@@ -6,7 +6,7 @@ from django.views import generic
 
 from .models import Index, Day, Month, Cycle, Expiration
 
-class IndexList(generic.ListView):
+class ListView(generic.ListView):
     context_object_name = 'index_list'
     template_name = 'index/list.html'
 
@@ -14,14 +14,14 @@ class IndexList(generic.ListView):
         return Index.objects.order_by('-market', '-future', '-option', '-fund')
 
 
-class IndexBasic(generic.DetailView):
+class BasicView(generic.DetailView):
     model = Index
     context_object_name = 'index'
     template_name = 'index/basic.html'
 
     def get_context_data(self, **kwargs):
         # base 
-        context = super(IndexBasic, self).get_context_data(**kwargs)
+        context = super(BasicView, self).get_context_data(**kwargs)
         # index object
         context_index = kwargs['object']
         # month list
@@ -58,14 +58,14 @@ class IndexBasic(generic.DetailView):
         return summary_list
 
 
-class IndexCycle(generic.DetailView):
+class CycleView(generic.DetailView):
     model = Index
     context_object_name = 'index'
     template_name = 'index/cycle.html'
 
     def get_context_data(self, **kwargs):
         # base 
-        context = super(IndexCycle, self).get_context_data(**kwargs)
+        context = super(CycleView, self).get_context_data(**kwargs)
         # index object
         context_index = kwargs['object']
         # cycle list
@@ -79,7 +79,6 @@ class IndexCycle(generic.DetailView):
         last = cycle_list[-1]
         today = Day.objects.filter(index=context_index).last()
 
-        # append today
         if today.date > last.date:
             if today.close != last.close:
                 diff = today.close - last.close
@@ -118,22 +117,45 @@ class IndexCycle(generic.DetailView):
         return summary_list
 
 
-class IndexExpiration(generic.DetailView):
+class ExpirationView(generic.DetailView):
     model = Index
     context_object_name = 'index'
     template_name = 'index/expiration.html'
 
     def get_context_data(self, **kwargs):
         # base 
-        context = super(IndexExpiration, self).get_context_data(**kwargs)
+        context = super(ExpirationView, self).get_context_data(**kwargs)
         # index object
         context_index = kwargs['object']
         # expiration list
-        context['expiration_list'] = Month.objects.filter(index=context_index)
+        context['expiration_list'] = Expiration.objects.filter(index=context_index).reverse()[:12]
         if context['expiration_list']:
-            context['summary_list'] = self.get_summary_list(context['expiration_list'])
+            context['summary_list'] = self.get_summary_list(context_index)
         return context
 
-    def get_summary_list(self, expiration_list):
-        pass
+    def get_summary_list(self, context_index):
+        levels = [[100, 20], [20, 10], [10, 5], [5, 0], [0, -5], [-5, -10], [-10, -20], [-20, -100]]
+        summary_list = []
+
+        for level in levels:
+            # level
+            high = level[0]
+            low = level[1]
+            # summary
+            summary = {}
+            if low >= 0:
+                if high == 100:
+                    summary['level'] = "[상승] {0}% 이상".format(low)
+                else:
+                    summary['level'] = "[상승] {0}% 이상 ~ {1}% 미만".format(low, high)
+                summary['count'] = Expiration.objects.filter(index=context_index, change__lt=high, change__gte=low)[:120].count()
+            else:
+                if low == -100:
+                    summary['level'] = "[하락] {0}% 이상".format(abs(high))
+                else:
+                    summary['level'] = "[하락] {0}% 이상 ~ {1}% 미만".format(abs(high), abs(low))
+                summary['count'] = Expiration.objects.filter(index=context_index, change__lte=high, change__gt=low)[:120].count()
+            # summary list
+            summary_list.append(summary)
+        return summary_list
 

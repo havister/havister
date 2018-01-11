@@ -12,25 +12,26 @@ def run(*args):
     if not args:
         print("missing argumnet: code")
         return
-    else:
+    # assign args
+    args_len = len(args)
+    if args_len >= 1:
         arg_code = args[0]
-    if len(args) >= 2:
+    if args_len >= 2:
         arg_action = args[1]
     else:
         arg_action = 'none'
 
-    # get index object 
-    item = Index.objects.filter(code=arg_code).first()
-    if not item:    
-        print("no code: '{0}'".format(arg_code))
+    # get index 
+    index = Index.objects.filter(code=arg_code).first()
+    if not index:    
+        print("no code")
         return
 
     # get day list
-    exists = Day.objects.filter(index=item).exists()
-    if not exists:
-        print("empty data")
+    day_list = Day.objects.filter(index=index)
+    if not day_list:
+        print("no data")
         return
-    day_list = Day.objects.filter(index=item)
 
     #
     # make cycle list
@@ -90,11 +91,11 @@ def run(*args):
         cycle_list[-1]['fix'] = False
 
     # report 
-    print_list(cycle_list, day, item)
+    print_list(cycle_list, day, index)
 
     # insert
     if arg_action == 'insert':
-        insert_list(cycle_list, item)
+        insert_list(cycle_list, index)
 
 
 def list_append(cycle_list, day):
@@ -120,9 +121,9 @@ def list_append(cycle_list, day):
     return
 
 
-def print_list(cycle_list, today, item):
-    # index item
-    print("{0}".format(item))
+def print_list(cycle_list, today, index):
+    # index
+    print("index: {0}".format(index))
 
     # list
     for cycle in cycle_list:
@@ -130,10 +131,10 @@ def print_list(cycle_list, today, item):
     return
 
 
-def insert_list(cycle_list, item):
+def insert_list(cycle_list, index):
     # table insert
     for cycle in cycle_list:
-        item.cycle_set.create(date=cycle['date'], \
+        index.cycle_set.create(date=cycle['date'], \
             base=cycle['base'], \
             close=cycle['close'], \
             diff=cycle['diff'], \

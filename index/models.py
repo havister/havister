@@ -39,13 +39,13 @@ class AbstractPoint(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['date']
 
 
 class Day(AbstractPoint):
     """일간"""
     class Meta:
         db_table = 'index_day'
+        ordering = ['date']
         verbose_name = 'day'
         verbose_name_plural = 'days'
 
@@ -54,6 +54,7 @@ class Month(AbstractPoint):
     """월간"""
     class Meta:
         db_table = 'index_month'
+        ordering = ['date']
         verbose_name = 'month'
         verbose_name_plural = 'months'
 
@@ -73,15 +74,16 @@ class Cycle(models.Model):
 
     class Meta:
         db_table = 'index_cycle'
+        ordering = ['date']
         verbose_name = 'cycle'
         verbose_name_plural = 'cycles'
-        ordering = ['date']
 
 
 class Expiration(AbstractPoint):
     """만기(월간)"""
     class Meta:
         db_table = 'index_expiration'
+        ordering = ['date']
         verbose_name = 'expiration'
         verbose_name_plural = 'expirations'
 

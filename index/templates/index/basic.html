@@ -15,7 +15,7 @@
     <!-- Content body -->
     <div class="container">
       <h3 class="section-header">월간 차트<small>&nbsp; : 기간별 최고&middot;최저&middot;마감 지수를 통해, 변동성과 성장률을 분석합니다.</small></h3>
-      <div id="month-chart" class="chart">
+      <div id="chart" class="chart">
       </div>
 
       {% if summary_list %}
@@ -64,9 +64,9 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawMonthChart);
+      google.charts.setOnLoadCallback(drawChart);
 
-      function drawMonthChart() {
+      function drawChart() {
         var data = new google.visualization.DataTable();
         data.addColumn({type: 'date', label: 'Month'});
         data.addColumn({type: 'number', label: 'Point'});
@@ -109,9 +109,9 @@
           vAxis: {textPosition: 'in'},
           explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.0, zoomDelta: 1.5},
           annotations: {stem: {color: '#333'}},
-          legend: 'none'
+          legend: {position: 'none'}
         };
-        var chart = new google.visualization.AreaChart(document.getElementById('month-chart'));
+        var chart = new google.visualization.AreaChart(document.getElementById('chart'));
         chart.draw(data, options);
       }
     </script>
