@@ -11,13 +11,14 @@ class Index(models.Model):
     market = models.BooleanField(default=False)
     future = models.BooleanField(default=False)
     option = models.BooleanField(default=False)
-    fund = models.BooleanField(default=False)
+    etf = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
 
     class Meta:
         db_table = 'index'
+        ordering = ['name']
         verbose_name = 'index'
         verbose_name_plural = 'indices'
 

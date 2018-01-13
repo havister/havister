@@ -3,17 +3,18 @@
 {% block nav_index %}active{% endblock %}
 
 {% block content-head %}
+    <!-- NavTab -->
     <div class="container-fluid content-head">
       <div class="container">
         <h1>{{ index.name }}<small> &nbsp; <span class="heading-label">{{ index.country }}</span>
           {% if index.market %} <span class="heading-label">시장</span>{% endif %}
           {% if index.future %} <span class="heading-label">선물</span>{% endif %}
           {% if index.option %} <span class="heading-label">옵션</span>{% endif %}
-          {% if index.fund %} <span class="heading-label">ETF</span>{% endif %}</small>
+          {% if index.etf %} <span class="heading-label">ETF</span>{% endif %}</small>
         </h1>
         <ul class="nav nav-tabs">
-          <li role="presentation" class="{% block tab_basic %}{% endblock %}">
-            <a href="{% url 'index:basic' index.slug %}">기초 분석</a></li>
+          <li role="presentation" class="{% block tab_month %}{% endblock %}">
+            <a href="{% url 'index:month' index.slug %}">기초 분석</a></li>
           <li role="presentation" class="{% block tab_cycle %}{% endblock %}">
             <a href="{% url 'index:cycle' index.slug %}">순환 분석</a></li>
           <li role="presentation" class="{% block tab_expiration %}{% endblock %}">

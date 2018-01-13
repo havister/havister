@@ -11,11 +11,11 @@
 {% block tab_expiration %}active{% endblock %}
 
 {% block content-body %}
-    {% if expiration_list %}
+    {% if detail_list %}
     <!-- Content body -->
     <div class="container">
       <h3 class="section-header">만기 월간 차트<small>&nbsp; : 만기일 기준 월간 지수를 통해, 파생 상품의 변동성과 행사가를 분석합니다.</small></h3>
-      <div id="chart-main" class="chart">
+      <div id="chart" class="chart">
       </div>
 
       <div class="panel panel-default">
@@ -34,16 +34,16 @@
             </tr>
           </thead>
           <tbody class="text-right">
-            {% for e in expiration_list %}
+            {% for d in detail_list %}
             <tr>
-              <td class="text-left">{{ e.date|date:'Y년 n월' }}</td>
-              <td class="active text-center"><strong>{{ e.date|date:'Y-m-d' }}</strong></td>
-              <td>{{ e.base }}</td>
-              <td class="active">{{ e.high }}</td>
-              <td>{{ e.low }}</td>
-              <td class="active"><strong>{{ e.close }}</strong></td>
-              <td>{{ e.diff }}</td>
-              <td class="active"><strong>{{ e.change }}</strong>%</td>
+              <td class="text-left">{{ d.date|date:'Y년 n월' }}</td>
+              <td class="active text-center"><strong>{{ d.date|date:'Y-m-d' }}</strong></td>
+              <td>{{ d.base }}</td>
+              <td class="active">{{ d.high }}</td>
+              <td>{{ d.low }}</td>
+              <td class="active"><strong>{{ d.close }}</strong></td>
+              <td>{{ d.diff }}</td>
+              <td class="active"><strong>{{ d.change }}</strong>%</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -51,38 +51,42 @@
         </div><!--/.panel-body -->
       </div><!--/.panel -->
 
-      {% if summary_list %}
-      <h3 class="section-header">변화율 분포 차트<small>&nbsp; : 지난 10년간의 만기 월간 변화율 분포를 분석합니다.</small></h3>
-      <div id="chart-sub" class="chart">
-      </div>
-      {% endif %}
+      <h3 class="section-header">변화율 분포 차트<small>&nbsp; : 최근 10년간의 만기 월간 변화율을 분석합니다.</small></h3>
+      <div class="chart clearfix">
+        {% if alpha_list %}
+        <div id="chart-pie" class="pull-left">
+        </div>
+        {% endif %}
+        {% if beta_list %}
+        <div id="histogram" class="pull-right">
+        </div>
+        {% endif %}
+      </div><!--/.row -->
     </div>
     {% endif %}
 {% endblock content-body %}
 
 {% block extra_script %}
-    {% if expiration_list %}
+    {% if detail_list %}
     <!-- Chart -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawMainChart);
-      google.charts.setOnLoadCallback(drawSubChart);
+      google.charts.load('current', {'packages':['corechart'], 'language': 'ko'});
+      google.charts.setOnLoadCallback(drawChart);
 
-      function drawMainChart() {
+      function drawChart() {
         var data = new google.visualization.DataTable();
         data.addColumn({type: 'date', label: 'Month'});
         data.addColumn({type: 'number', label: 'Point'});
         data.addColumn({type: 'number', label: 'Point'});
         data.addColumn({type: 'number', label: 'Point'});
         data.addColumn({type: 'number', label: 'Point'});
+        data.addColumn({type: 'string', role: 'tooltip'});
         data.addRows([
-          {% for e in expiration_list reversed %}
-          [{v:new Date({{ e.date|date:'Y,n,j' }}), f:'{{ e.date|date:'Y년 n월 j일' }}'},
-            {{ e.low }},
-            {{ e.open }},
-            {{ e.close }},
-            {{ e.high }}],
+          {% for d in detail_list reversed %}
+          [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y-m-d' }}'},
+            {{ d.low }}, {{ d.open }}, {{ d.close }}, {{ d.high }},
+            '{{ d.date|date:'Y년 n월차' }}\n{{ d.close }} ({{ d.change }}%)'],
           {% endfor %}
         ]);
         var options = {
@@ -96,26 +100,55 @@
           vAxis: {textPosition: 'in'},
           legend: {position: 'none'}
         };
-        var chart = new google.visualization.CandlestickChart(document.getElementById('chart-main'));
+        var chart = new google.visualization.CandlestickChart(document.getElementById('chart'));
         chart.draw(data, options);
       }
 
-      {% if summary_list %}
-      function drawSubChart() {
+      {% if alpha_list %}
+      google.charts.setOnLoadCallback(drawPieChart);
+      function drawPieChart() {
         var data = new google.visualization.arrayToDataTable([
           ['Level', 'Count'],
-          {% for summary in summary_list %}
-          ['{{ summary.level }}', {{ summary.count }}],
+          {% for a in alpha_list %}
+          ['{{ a.level }}', {{ a.count }}],
           {% endfor %}
         ]);
         var options = {
-          width: 750,
+          width: 570,
           height: 429,
           backgroundColor: '#f5f5f5',
-          chartArea: {left: 0, top: 15, width: 970, height: 400},
-          legend: {position: 'right', alignment: 'center'}
+          chartArea: {left: 15, top: 15, width: '100%', height: 400},
+          legend: {position: 'right', alignment: 'center', textStyle: {fontSize: 14}}
         };
-        var chart = new google.visualization.PieChart(document.getElementById('chart-sub'));
+        var chart = new google.visualization.PieChart(document.getElementById('chart-pie'));
+        chart.draw(data, options);
+      }
+      {% endif %}
+
+      {% if beta_list %}
+      google.charts.setOnLoadCallback(drawHistogram);
+      function drawHistogram() {
+        var data = new google.visualization.arrayToDataTable([
+          ['Change'],
+          {% for b in beta_list %}
+          [{{ b.change }} * 0.01],
+          {% endfor %}
+        ]);
+        var options = {
+          width: 400,
+          height: 429,
+          bar: { gap: 1 },
+          colors: ['darkslategray'],
+          backgroundColor: '#f5f5f5',
+          chartArea: {left: 0, top: 0, width: '100%', height: 400},
+          hAxis: {format: 'percent'},
+          vAxis: {textPosition: 'in'},
+          histogram: { bucketSize: 0.05 },
+          legend: {position: 'none'}
+        };
+        var formatter = new google.visualization.NumberFormat({pattern: '##.##%'});
+        formatter.format(data, 0);
+        var chart = new google.visualization.Histogram(document.getElementById('histogram'));
         chart.draw(data, options);
       }
       {% endif %}

@@ -11,14 +11,14 @@
 {% block tab_cycle %}active{% endblock %}
 
 {% block content-body %}
-    {% if cycle_list %}
+    {% if detail_list %}
     <!-- Content body -->
     <div class="container">
       <h3 class="section-header">전환 차트<small>&nbsp; : 전환별 경과일과 변화율을 통해, 순환 주기와 진폭을 분석합니다.</small></h3>
       <div id="chart" class="chart">
       </div>
 
-      {% if summary_list %}
+      {% if alpha_list %}
       <div class="panel panel-default">
         <div class="panel-body">
           <table class="table">
@@ -35,16 +35,16 @@
             </tr>
           </thead>
           <tbody class="text-right">
-            {% for summary in summary_list reversed %}
+            {% for a in alpha_list reversed %}
             <tr>
               <td class="text-left"><strong>{{ forloop.revcounter }}차</strong></td>
-              <td class="active text-left">{% if summary.fix %}확정{% else %}진행{% endif %}</td>
-              <td class="text-center">{{ summary.base_date|date:'Y-m-d' }}</td>
-              <td class="active"><strong>{{ summary.base }}</strong></td>
-              <td class="text-center">{{ summary.close_date|date:'Y-m-d' }}</td>
-              <td class="active"><strong>{{ summary.close }}</strong></td>
-              <td class="text-center">{{ summary.period }}</td>
-              <td class="active"><strong>{{ summary.change }}</strong>%</td>
+              <td class="active text-left">{% if a.fix %}확정{% else %}진행{% endif %}</td>
+              <td class="text-center">{{ a.base_date|date:'Y-m-d' }}</td>
+              <td class="active"><strong>{{ a.base }}</strong></td>
+              <td class="text-center">{{ a.close_date|date:'Y-m-d' }}</td>
+              <td class="active"><strong>{{ a.close }}</strong></td>
+              <td class="text-center">{{ a.period }}</td>
+              <td class="active"><strong>{{ a.change }}</strong>%</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -57,11 +57,11 @@
 {% endblock content-body %}
 
 {% block extra_script %}
-    {% if cycle_list %}
+    {% if detail_list %}
     <!-- Chart -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['corechart'], 'language': 'ko'});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
@@ -69,13 +69,14 @@
         data.addColumn({type: 'date', label: 'Month'});
         data.addColumn({type: 'number', label: 'Point'});
         data.addColumn({type: 'string', role: 'annotation'});
-        data.addColumn({type: 'string', role: 'annotationText'});
+        data.addColumn({type: 'string', role: 'tooltip'});
         data.addColumn({type: 'boolean', role: 'certainty'});
         data.addRows([
-          {% for cycle in cycle_list %}
-          [{v:new Date({{ cycle.date|date:'Y,n,j' }}), f:'{{ cycle.date|date:'Y년 n월 j일' }}'},
-            {{ cycle.close }}, '{{ forloop.counter0 }}차', '{{ cycle.change }}%',
-            {% if cycle.fix %}true{% else %}false{% endif %}],
+          {% for d in detail_list %}
+          [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y-m-d' }}'},
+            {{ d.close }}, '{{ forloop.counter0 }}차',
+            '{{ d.date|date:'Y년 n월 j일' }}\n{{ d.close }} ({{ d.change }}%)',
+            {% if d.fix %}true{% else %}false{% endif %}],
           {% endfor %}
         ]);
         var options = {
@@ -83,11 +84,12 @@
           height: 429,
           colors: ['#dc3912'],
           backgroundColor: '#f5f5f5',
-          chartArea: {left: 0, top: 0, width: 970, height: 400},
+          chartArea: {left: 0, top: 0, width: '100%', height: 400},
           crosshair: {color: 'black', trigger: 'selection'},
           hAxis: {format: 'y년'},
           vAxis: {textPosition: 'in'},
           explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.0, zoomDelta: 1.5},
+          annotations: {stem: {color: '#333'}},
           legend: {position: 'none'}
         };
         var chart = new google.visualization.AreaChart(document.getElementById('chart'));
