@@ -2,6 +2,8 @@
 """
 from dateutil.relativedelta import relativedelta
 from decimal import Decimal
+
+from django.http import Http404
 from django.views import generic
 
 from .models import Index, Day, Month, Cycle, Expiration
@@ -76,6 +78,8 @@ class CycleView(generic.DetailView):
 
     def get_detail_list(self, index):
         cycle_list = list(Cycle.objects.filter(index=index))
+        if not cycle_list:
+            return
         last = cycle_list[-1]
         today = Day.objects.filter(index=index).last()
 
@@ -128,6 +132,8 @@ class ExpirationView(generic.DetailView):
         context = super(ExpirationView, self).get_context_data(**kwargs)
         # index object
         index = kwargs['object']
+        if not index.future:
+            raise Http404
         # expiration list
         context['detail_list'] = Expiration.objects.filter(index=index).reverse()[:12]
         if context['detail_list']:

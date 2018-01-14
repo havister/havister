@@ -17,8 +17,8 @@
             <a href="{% url 'index:month' index.slug %}">기초 분석</a></li>
           <li role="presentation" class="{% block tab_cycle %}{% endblock %}">
             <a href="{% url 'index:cycle' index.slug %}">순환 분석</a></li>
-          <li role="presentation" class="{% block tab_expiration %}{% endblock %}">
-            <a href="{% url 'index:expiration' index.slug %}">만기 분석</a></li>
+          <li role="presentation" class="{% if not index.future %}disabled{% endif %}{% block tab_expiration %}{% endblock %}">
+            <a{% if index.future %} href="{% url 'index:expiration' index.slug %}"{% endif %}>만기 분석</a></li>
         </ul>
       </div>
     </div>

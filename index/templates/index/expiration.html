@@ -86,7 +86,7 @@
           {% for d in detail_list reversed %}
           [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y-m-d' }}'},
             {{ d.low }}, {{ d.open }}, {{ d.close }}, {{ d.high }},
-            '{{ d.date|date:'Y년 n월차' }}\n{{ d.close }} ({{ d.change }}%)'],
+            '{{ d.date|date:'Y년 n월차' }}\n시가: {{ d.open }}\n고가: {{ d.high }}\n저가: {{ d.low }}\n종가: {{ d.close }}\n변화: {{ d.change }}%'],
           {% endfor %}
         ]);
         var options = {
