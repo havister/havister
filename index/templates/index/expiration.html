@@ -18,40 +18,32 @@
       <div id="chart" class="chart">
       </div>
 
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <table class="table">
-          <thead>
-            <tr>
-              <th>월차</th>
-              <th class="active">만기일</th>
-              <th>기준 지수</th>
-              <th class="active">최고 지수</th>
-              <th>최저 지수</th>
-              <th class="active">마감 지수</th>
-              <th>변화</th>
-              <th class="active">변화율</th>
-            </tr>
-          </thead>
-          <tbody class="text-right">
-            {% for d in detail_list %}
-            <tr>
-              <td class="text-left">{{ d.date|date:'Y년 n월' }}</td>
-              <td class="active text-center"><strong>{{ d.date|date:'Y-m-d' }}</strong></td>
-              <td>{{ d.base }}</td>
-              <td class="active">{{ d.high }}</td>
-              <td>{{ d.low }}</td>
-              <td class="active"><strong>{{ d.close }}</strong></td>
-              <td>{{ d.diff }}</td>
-              <td class="active"><strong>{{ d.change }}</strong>%</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-          </table>
-        </div><!--/.panel-body -->
-      </div><!--/.panel -->
+      <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>월차</th>
+          <th>만기일</th>
+          <th>최고 지수</th>
+          <th>최저 지수</th>
+          <th>마감 지수</th>
+          <th>변화 (%)</th>
+        </tr>
+      </thead>
+      <tbody class="text-right">
+        {% for d in detail_list %}
+        <tr>
+          <td class="text-center">{{ d.date|date:'Y년 n월' }}</td>
+          <td class="text-center">{{ d.date|date:'Y-m-d' }}</td>
+          <td>{{ d.high }}</td>
+          <td>{{ d.low }}</td>
+          <td>{{ d.close }}</td>
+          <td>{{ d.change }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
 
-      <h3 class="section-header">변화율 분포 차트<small>&nbsp; : 최근 10년간의 만기 월간 변화율을 분석합니다.</small></h3>
+      <h3 class="section-header">만기 변화율 분포<small>&nbsp; : 최근 {{ period }}개월간</small></h3>
       <div class="chart clearfix">
         {% if alpha_list %}
         <div id="chart-pie" class="pull-left">

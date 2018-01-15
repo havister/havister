@@ -47,17 +47,20 @@ def run(*args):
         month = period.month
         open_date = period.open_date
         close_date = period.close_date
+        # check open_date
+        if not day_list.filter(date=open_date).exists():
+            continue
+        # subset day_list
+        days = day_list.filter(date__range=(open_date, close_date))
+        base = days.first().base
         # expiration
         expiration = {}
-        days = day_list.filter(date__range=(open_date, close_date))
         expiration['date'] = close_date
-        expiration['base'] = days.first().base
         expiration['open'] = days.first().open
         expiration['high'] = days.order_by('-high').first().high
         expiration['low'] = days.order_by('-low').last().low
         expiration['close'] = days.last().close
-        expiration['diff'] = expiration['close'] - expiration['base']
-        expiration['change'] = round(expiration['diff'] / expiration['base'] * 100, 2)
+        expiration['change'] = round((expiration['close'] - base) / base * 100, 2)
         # append
         expiration_list.append(expiration)
 
@@ -75,8 +78,8 @@ def print_list(expiration_list, index):
 
     # list
     for e in expiration_list:
-        print("{0} {1} => {2} | {3} | {4} | {5} = {6} ({7}%)".format(e['date'], e['base'], \
-            e['open'], e['high'], e['low'] , e['close'], e['diff'], e['change']))
+        print("{0} => {1} | {2} | {3} | {4} = {5}%".format(e['date'], \
+            e['open'], e['high'], e['low'] , e['close'], e['change']))
     return
 
 
@@ -85,12 +88,10 @@ def insert_list(expiration_list, index):
     for e in expiration_list:
         index.expiration_set.create(\
             date=e['date'], \
-            base=e['base'], \
             open=e['open'], \
             high=e['high'], \
             low=e['low'], \
             close=e['close'], \
-            diff=e['diff'], \
             change=e['change'])
     print("\ninsert success\n")
     return

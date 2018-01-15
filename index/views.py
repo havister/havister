@@ -3,6 +3,7 @@
 from dateutil.relativedelta import relativedelta
 from decimal import Decimal
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.views import generic
 
@@ -39,22 +40,25 @@ class MonthView(generic.DetailView):
         alpha_list = []
 
         for year in years:
-            # first month
-            first_month_date = last_month.date - relativedelta(years=year-1, months=11)
-            first_month = month_list.get(date=first_month_date)
+            # base month
+            base_month_date = last_month.date - relativedelta(years=year-1, months=12)
+            try:
+                base_month = month_list.get(date=base_month_date)
+            except ObjectDoesNotExist:
+                continue
+            base = base_month.close
             # subset month list
-            months = month_list.filter(date__gte=first_month_date)
+            months = month_list.filter(date__gt=base_month_date)
             # alpha
             alpha = {}
             alpha['year'] = year
-            alpha['base_date'] = first_month.date
-            alpha['base'] = first_month.base
+            alpha['first_date'] = months.first().date
             alpha['high'] = months.order_by('-high').first().high
-            alpha['high_change'] = round((alpha['high'] - alpha['base']) / alpha['base'] * 100, 2)
+            alpha['high_change'] = round((alpha['high'] - base) / base * 100, 2)
             alpha['low'] = months.order_by('-low').last().low
-            alpha['low_change'] = round((alpha['low'] - alpha['base']) / alpha['base'] * 100, 2)
+            alpha['low_change'] = round((alpha['low'] - base) / base * 100, 2)
             alpha['close'] = last_month.close
-            alpha['close_change'] = round((alpha['close'] - alpha['base']) / alpha['base'] * 100, 2)
+            alpha['close_change'] = round((alpha['close'] - base) / base * 100, 2)
             # alpha list
             alpha_list.append(alpha)
         return alpha_list
@@ -72,6 +76,7 @@ class CycleView(generic.DetailView):
         index = kwargs['object']
         # cycle list
         context['detail_list'] = self.get_detail_list(index)
+        # alpha list
         if context['detail_list']:
             context['alpha_list'] = self.get_alpha_list(context['detail_list'])
         return context
@@ -92,8 +97,7 @@ class CycleView(generic.DetailView):
                 diff = Decimal('0.00')
                 change = Decimal('0.00')
             # cycle
-            cycle = Cycle(date=today.date, base=last.close, close=today.close, \
-                diff=diff, change=change, fix=False, index=index)
+            cycle = Cycle(date=today.date, close=today.close, change=change, fix=False, index=index)
             # cycle list
             cycle_list.append(cycle)
         return cycle_list
@@ -111,10 +115,9 @@ class CycleView(generic.DetailView):
             # alpha
             alpha = {}
             alpha['base_date'] = base_date
-            alpha['base'] = cycle.base
             alpha['close_date'] = close_date
-            alpha['close'] = cycle.close
             alpha['period'] = "{0}년 {1}개월 {2}일".format(period.years, period.months, period.days)
+            alpha['close'] = cycle.close
             alpha['change'] = cycle.change 
             alpha['fix'] = cycle.fix 
             # alpha list
@@ -136,14 +139,20 @@ class ExpirationView(generic.DetailView):
             raise Http404
         # expiration list
         context['detail_list'] = Expiration.objects.filter(index=index).reverse()[:12]
+        # max period: 120 months
+        period = Expiration.objects.filter(index=index).count()
+        if period > 120:
+            period = 120
+        context['period'] = period
+        # alpha, beta list
         if context['detail_list']:
-            context['alpha_list'] = self.get_alpha_list(index)
-            context['beta_list'] = self.get_beta_list(index)
+            context['alpha_list'] = self.get_alpha_list(index, period)
+            context['beta_list'] = self.get_beta_list(index, period)
         return context
 
-    def get_alpha_list(self, index):
-        # 10 years: 120 months
-        start_at = Expiration.objects.filter(index=index).reverse()[119].date
+    def get_alpha_list(self, index, period):
+        # 변화율 분포
+        start_at = Expiration.objects.filter(index=index).reverse()[period-1].date
         levels = [[100, 20], [20, 10], [10, 5], [5, 0], [0, 0], [0, -5], [-5, -10], [-10, -20], [-20, -100]]
         alpha_list = []
 
@@ -172,7 +181,8 @@ class ExpirationView(generic.DetailView):
             alpha_list.append(alpha)
         return alpha_list
 
-    def get_beta_list(self, index):
-        beta_list = Expiration.objects.filter(index=index).values('change').reverse()[:120]
+    def get_beta_list(self, index, period):
+        # 변화율 리스트
+        beta_list = Expiration.objects.filter(index=index).values('change').reverse()[:period]
         return beta_list
 

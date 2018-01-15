@@ -40,17 +40,17 @@ def run(*args):
     month_list = []
     # track
     for ym in ym_list:
+        # subset day_list
         days = day_list.filter(date__year=ym.year, date__month=ym.month)
+        base = days.first().base
         # month
         month = {}
         month['date'] = ym
-        month['base'] = days.first().base
         month['open'] = days.first().open
         month['high'] = days.order_by('-high').first().high
         month['low'] = days.order_by('-low').last().low
         month['close'] = days.last().close
-        month['diff'] = month['close'] - month['base']
-        month['change'] = round(month['diff'] / month['base'] * 100, 2)
+        month['change'] = round((month['close'] - base) / base * 100, 2)
         # append
         month_list.append(month)
 
@@ -68,8 +68,8 @@ def print_list(month_list, index):
 
     # list
     for i, m in enumerate(month_list):
-        print("{0} {1} => {2} | {3} | {4} | {5} = {6} ({7}%)".format(m['date'], m['base'], \
-            m['open'], m['high'], m['low'] , m['close'], m['diff'], m['change']))
+        print("{0} => {1} | {2} | {3} | {4} = {5}%".format(m['date'], \
+            m['open'], m['high'], m['low'] , m['close'], m['change']))
     return
 
 
@@ -78,12 +78,10 @@ def insert_list(month_list, index):
     for m in month_list:
         index.month_set.create(\
             date=m['date'], \
-            base=m['base'], \
             open=m['open'], \
             high=m['high'], \
             low=m['low'], \
             close=m['close'], \
-            diff=m['diff'], \
             change=m['change'])
     print("\ninsert success\n")
     return

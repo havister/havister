@@ -19,38 +19,32 @@
       </div>
 
       {% if alpha_list %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <table class="table">
-          <thead>
-            <tr>
-              <th>전환</th>
-              <th class="active">상태</th>
-              <th>기준일</th>
-              <th class="active">: 지수</th>
-              <th>마감일</th>
-              <th class="active">: 지수</th>
-              <th>경과일</th>
-              <th class="active">변화율</th>
-            </tr>
-          </thead>
-          <tbody class="text-right">
-            {% for a in alpha_list reversed %}
-            <tr>
-              <td class="text-left"><strong>{{ forloop.revcounter }}차</strong></td>
-              <td class="active text-left">{% if a.fix %}확정{% else %}진행{% endif %}</td>
-              <td class="text-center">{{ a.base_date|date:'Y-m-d' }}</td>
-              <td class="active"><strong>{{ a.base }}</strong></td>
-              <td class="text-center">{{ a.close_date|date:'Y-m-d' }}</td>
-              <td class="active"><strong>{{ a.close }}</strong></td>
-              <td class="text-center">{{ a.period }}</td>
-              <td class="active"><strong>{{ a.change }}</strong>%</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-          </table>
-        </div><!--/.panel-body -->
-      </div><!--/.panel -->
+      <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>전환</th>
+          <th>기준일</th>
+          <th>마감일</th>
+          <th>경과일</th>
+          <th>마감 지수</th>
+          <th>변화 (%)</th>
+          <th>상태</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        {% for a in alpha_list reversed %}
+        <tr>
+          <td>{{ forloop.revcounter }}차</td>
+          <td>{{ a.base_date|date:'Y-m-d' }}</td>
+          <td>{{ a.close_date|date:'Y-m-d' }}</td>
+          <td>{{ a.period }}</td>
+          <td class="text-right">{{ a.close }}</td>
+          <td class="text-right">{{ a.change }}</td>
+          <td>{% if a.fix %}확정{% else %}진행{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
       {% endif %}
     </div>
     {% endif %}
@@ -74,7 +68,8 @@
         data.addRows([
           {% for d in detail_list %}
           [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y-m-d' }}'},
-            {{ d.close }}, '{{ forloop.counter0 }}차',
+            {{ d.close }},
+            {% if forloop.counter0 %}'{{ forloop.counter0 }}차'{% else %}null{% endif %},
             '{{ d.date|date:'Y년 n월 j일' }}\n{{ d.close }} ({{ d.change }}%)',
             {% if d.fix %}true{% else %}false{% endif %}],
           {% endfor %}

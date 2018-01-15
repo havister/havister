@@ -26,12 +26,10 @@ class Index(models.Model):
 class AbstractPoint(models.Model):
     """abstract point"""
     date = models.DateField()
-    base = models.DecimalField(max_digits=7, decimal_places=2)
     open = models.DecimalField(max_digits=7, decimal_places=2)
     high = models.DecimalField(max_digits=7, decimal_places=2)
     low = models.DecimalField(max_digits=7, decimal_places=2)
     close = models.DecimalField(max_digits=7, decimal_places=2)
-    diff = models.DecimalField(max_digits=7, decimal_places=2)
     change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
 
@@ -44,6 +42,18 @@ class AbstractPoint(models.Model):
 
 class Day(AbstractPoint):
     """일간"""
+    date = models.DateField()
+    base = models.DecimalField(max_digits=7, decimal_places=2)
+    open = models.DecimalField(max_digits=7, decimal_places=2)
+    high = models.DecimalField(max_digits=7, decimal_places=2)
+    low = models.DecimalField(max_digits=7, decimal_places=2)
+    close = models.DecimalField(max_digits=7, decimal_places=2)
+    change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
+    index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
+
+    def __str__(self):
+        return "{0} ({1})".format(self.date, self.index)
+
     class Meta:
         db_table = 'index_day'
         ordering = ['date']
@@ -63,9 +73,7 @@ class Month(AbstractPoint):
 class Cycle(models.Model):
     """순환(-30%:하락전환)"""
     date = models.DateField()
-    base = models.DecimalField(max_digits=7, decimal_places=2)
     close = models.DecimalField(max_digits=7, decimal_places=2)
-    diff = models.DecimalField(max_digits=7, decimal_places=2)
     change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
     fix = models.BooleanField(default=False)
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')

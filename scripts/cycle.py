@@ -33,57 +33,67 @@ def run(*args):
         print("no data")
         return
 
-    #
-    # make cycle list
-    #
+    # cycle list
     cycle_list = []
-    # reveral rate 30%
-    RATE = Decimal('0.3')
+
     # base day
     check = day_list[0]
-    # base direction (1: up, 2: down)
-    direction = 1;
+    list_append(cycle_list, check)
+    top = check.close
 
-    # initialize track
-    track = {}
-    track['h'] = check.base
-    track['l'] = check.base
-    track['hs'] = round(track['h'] * RATE, 2)
-    track['ls'] = round(track['l'] * RATE, 2)
+    # reversal rate 30%
+    RATE = Decimal('0.3')
 
     # track
-    for day in day_list:
+    track = {}
+    track['top'] = check.base
+    track['brick'] = round(track['top'] * RATE, 2)
+    track['bot'] = 0
+
+    # track
+    for day in day_list[1:]:
         date = day.date
         close = day.close
 
-        # 신규 고점인가?
-        if close > track['h']:
-            track['h'] = close
-            track['hs'] = round(track['h'] * RATE, 2)
-            # 전환 크기 이상인가?
-            if close >= track['l'] + track['ls']:
-                # 하락중 이었나?
-                if direction < 0:
-                    list_append(cycle_list, check)
-                    direction = 1
+        # 상승 모드인가?
+        if track['top']:
+            # 신규 고점인가?
+            if close > track['top']:
+                # 고점 리셋
+                track['top'] = close
+                track['brick'] = round(track['top'] * RATE, 2)
                 check = day
 
-        # 전환 크기 이하인가?
-        elif close <= track['h'] - track['hs']:
-            # 상승중 이었나?
-            if direction > 0:
+            # 하락 전환인가?
+            elif close <= track['top'] - track['brick']:
+                # 고점 기록
+                top = track['top']
+                # 전환 추가
                 list_append(cycle_list, check)
-                direction = -1
-                # 저점 리셋 
-                track['l'] = close
-                track['ls'] = round(track['l'] * RATE, 2)
+                check = day
+                # 모드 전환
+                track['bot'] = close
+                #track['b-brick'] = round(track['bot'] * RATE, 2)
+                track['top'] = 0
+
+        # 하락 모드인가?
+        elif track['bot']:
+            # 신규 저점인가?
+            if close < track['bot']:
+                # 저점 리셋
+                track['bot'] = close
+                #track['b-brick'] = round(track['bot'] * RATE, 2)
                 check = day
 
-            # 신규 저점인가?
-            elif close < track['l']:
-                track['l'] = close
-                track['ls'] = round(track['l'] * RATE, 2)
+            # 전 고점 회복인가?
+            elif close >= top:
+                # 전환 추가
+                list_append(cycle_list, check)
                 check = day
+                # 모드 전환
+                track['top'] = close
+                track['brick'] = round(track['top'] * RATE, 2)
+                track['bot'] = 0
         # endif
     # endfor
     else:
@@ -91,7 +101,7 @@ def run(*args):
         cycle_list[-1]['fix'] = False
 
     # report 
-    print_list(cycle_list, day, index)
+    print_list(cycle_list, index)
 
     # insert
     if arg_action == 'insert':
@@ -99,35 +109,33 @@ def run(*args):
 
 
 def list_append(cycle_list, day):
-    # base
-    if cycle_list:
-        # check date duplication
-        if cycle_list[-1]['date'] == day.date:
-            return
-        # last close
-        else:
-            base = cycle_list[-1]['close']
+    # base, close
+    if not cycle_list:
+        base = day.close
+        close = day.close
     else:
-        # initialize
-        base = day.base
-    # diff
-    diff = day.close - base
-    change = round(diff / base * 100, 2)
-
+        base = cycle_list[-1]['close']
+        close = day.close
+        # check duplication
+        last_date = cycle_list[-1]['date']
+        if last_date == day.date:
+            return
+    # change
+    change = round((close - base) / base * 100, 2)
     # cycle
-    cycle = {'date': day.date, 'base': base, 'close':day.close, 'diff': diff, 'change': change, 'fix': True}
+    cycle = {'date': day.date, 'close':day.close, 'change': change, 'fix': True}
     # cycle list
     cycle_list.append(cycle)
     return
 
 
-def print_list(cycle_list, today, index):
+def print_list(cycle_list, index):
     # index
     print("index: {0}".format(index))
 
     # list
     for cycle in cycle_list:
-        print("{0} {1} => {2} = {3}({4}%) : {5}".format(cycle['date'], cycle['base'], cycle['close'], cycle['diff'], cycle['change'], cycle['fix']))
+        print("{0} : {1} ({2}%) : {3}".format(cycle['date'], cycle['close'], cycle['change'], cycle['fix']))
     return
 
 
@@ -135,9 +143,7 @@ def insert_list(cycle_list, index):
     # table insert
     for cycle in cycle_list:
         index.cycle_set.create(date=cycle['date'], \
-            base=cycle['base'], \
             close=cycle['close'], \
-            diff=cycle['diff'], \
             change=cycle['change'], \
             fix=cycle['fix'])
     print("\ninsert success\n")

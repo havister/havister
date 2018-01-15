@@ -19,40 +19,32 @@
       </div>
 
       {% if alpha_list %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <table class="table">
-          <thead>
-            <tr>
-              <th class="active">기간</th>
-              <th>기준일</th>
-              <th class="active">: 지수</th>
-              <th>최고 지수</th>
-              <th class="active">: 변화율</th>
-              <th>최저 지수</th>
-              <th class="active">: 변화율</th>
-              <th>마감 지수</th>
-              <th class="active">: 변화율</th>
-            </tr>
-          </thead>
-          <tbody class="text-right">
-            {% for a in alpha_list %}
-            <tr>
-              <td class="active text-left"><strong>{{ a.year }}년</strong></td>
-              <td class="text-center">{{ a.base_date|date:'Y-m-d' }}</td>
-              <td class="active">{{ a.base }}</td>
-              <td>{{ a.high }}</td>
-              <td class="active"><strong>{{ a.high_change }}</strong>%</td>
-              <td>{{ a.low }}</td>
-              <td class="active"><strong>{{ a.low_change }}</strong>%</td>
-              <td>{{ a.close }}</td>
-              <td class="active"><strong>{{ a.close_change }}</strong>%</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-          </table>
-        </div><!--/.panel-body -->
-      </div><!--/.panel -->
+      <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>기간</th>
+          <th>최고 지수</th>
+          <th>: 변화 (%)</th>
+          <th>최저 지수</th>
+          <th>: 변화 (%)</th>
+          <th>마감 지수</th>
+          <th>: 변화 (%)</th>
+        </tr>
+      </thead>
+      <tbody class="text-right">
+        {% for a in alpha_list %}
+        <tr>
+          <td class="text-center">{{ a.year }}년</td>
+          <td>{{ a.high }}</td>
+          <td>{{ a.high_change }}</td>
+          <td>{{ a.low }}</td>
+          <td>{{ a.low_change }}</td>
+          <td>{{ a.close }}</td>
+          <td>{{ a.close_change }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
       {% endif %}
     </div>
     {% endif %}
@@ -83,18 +75,18 @@
         {% if alpha_list %}
         // get annotation date
         var years = [];
-        var base_dates = [];
+        var first_dates = [];
         {% for a in alpha_list %}
         years.push('{{ a.year }}년');
-        base_dates.push((new Date({{ a.base_date|date:'Y,n,j' }})).getTime());
+        first_dates.push((new Date({{ a.first_date|date:'Y,n,j' }})).getTime());
         {% endfor %}
         var rows = data.getNumberOfRows();
         var ri = rows - 1;
         var len = years.length;
-        // reset annotation
+        // set annotation
         for (i = 0; i < len; i++) {
           for (; ri >= 0; ri--) {
-            if (base_dates[i] === data.getValue(ri, 0).getTime()) {
+            if (first_dates[i] === data.getValue(ri, 0).getTime()) {
               data.setValue(ri, 2, years[i]);
               break;
             }
