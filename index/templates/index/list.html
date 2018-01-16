@@ -43,7 +43,7 @@
             <tr>
               <td><a href="{% url 'index:month' index.slug %}">{{ index.name }}</a></td>
               <td>{{ index.country }}</td>
-              <td>{% if index.market %}종합{% endif %}</td>
+              <td>{{ index.type }}</td>
               <td>{% if index.future %}기초{% endif %}</td>
               <td>{% if index.option %}기초{% endif %}</td>
               <td>{% if index.etf %}기초{% endif %}</td>

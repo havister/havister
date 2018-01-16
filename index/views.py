@@ -14,7 +14,7 @@ class ListView(generic.ListView):
     template_name = 'index/list.html'
 
     def get_queryset(self):
-        return Index.objects.order_by('-market', '-future', '-option', '-etf')
+        return Index.objects.all()
 
 
 class MonthView(generic.DetailView):

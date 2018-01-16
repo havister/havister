@@ -4,11 +4,36 @@ from django.db import models
 
 class Index(models.Model):
     """지수"""
+    # country choice
+    KOREA = '한국'
+    AMERICA = '미국'
+    CHINA = '중국'
+    JAPAN = '일본'
+    COUNTRY_CHOICES = (
+        (KOREA, '한국'),
+        (AMERICA, '미국'),
+        (CHINA, '중국'),
+        (JAPAN, '일본'),
+    )
+    # type choice
+    COMPOSITE = '종합'
+    BLUECHIP = '대표'
+    SECTOR = '업종'
+    THEMATICS = '테마'
+    UNKNOWN = '미정'
+    TYPE_CHOICES = (
+        (COMPOSITE, '종합'),
+        (BLUECHIP, '대표'),
+        (SECTOR, '업종'),
+        (THEMATICS, '테마'),
+        (UNKNOWN, '미정'),
+    )
+    # filed
     code = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
-    country = models.CharField(max_length=50)
-    market = models.BooleanField(default=False)
+    country = models.CharField(max_length=2, choices=COUNTRY_CHOICES, default=KOREA)
+    type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=UNKNOWN)
     future = models.BooleanField(default=False)
     option = models.BooleanField(default=False)
     etf = models.BooleanField(default=False)
@@ -18,7 +43,7 @@ class Index(models.Model):
 
     class Meta:
         db_table = 'index'
-        ordering = ['name']
+        ordering = ['code']
         verbose_name = 'index'
         verbose_name_plural = 'indices'
 
