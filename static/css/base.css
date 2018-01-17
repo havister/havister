@@ -75,7 +75,7 @@ body,
  * Custom Extra
 */
 .navbar {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .navbar-inverse {
@@ -100,30 +100,13 @@ body,
     box-shadow: 0px -1px 0px #ddd inset;
 }
 
+.content-head .page-header {
+    margin: 0 0 20px 0;
+    border-bottom: 1px solid #ddd;
+}
+
 .content-head h1 {
-    margin-top: 10px;
-}
-
-.nav-tabs {
-    margin-top: 20px;
-}
-
-small {
-    font-size: 50%;
-    vertical-align: 30%;
-}
-
-.heading-label {
-    display: inline;
-    padding: .2em .5em .2em .5em;
-    font-size: 60%;
-    font-weight: 500;
-    line-height: 1;
-    color: #fff;
-    background-color: #5cb85c;
-    text-align: center;
-    white-space: nowrap;
-    border-radius: .25em;
+    margin: 0 0 20px 0;
 }
 
 .container .jumbotron {
@@ -132,23 +115,10 @@ small {
     border: 1px solid #bce8f1;
 }
 
-.page-header {
-    border-bottom: 1px solid #ddd;
-}
-
 .section-header {
     margin: 40px 0 20px 0;
     padding-bottom: 9px;
     border-bottom: 1px solid #ddd;
-}
-
-.section {
-    padding: 20px 0 20px 0;
-}
-
-.section img {
-    width: 880px;
-    height: 400px;
 }
 
 .panel {
@@ -159,12 +129,22 @@ small {
     padding: 15px;
 }
 
+.panel-body h1 {
+    margin: 40px 0 10px 0;
+}
+
 .panel .table {
     margin-bottom: 0;
 }
 
 .lead {
     font-size: 16px;
+}
+
+.w880h400 {
+    width: 880px;
+    height: 400px;
+    margin: 20px 0 20px 0;
 }
 
 .chart {
@@ -196,5 +176,23 @@ small {
 .footer ul > li {
     display: inline;
     margin-left: 12px;
+}
+
+small {
+    font-size: 50%;
+    vertical-align: 30%;
+}
+
+.heading-label {
+    display: inline;
+    padding: .2em .5em .2em .5em;
+    font-size: 60%;
+    font-weight: 500;
+    line-height: 1;
+    color: #fff;
+    background-color: #5cb85c;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: .25em;
 }
 

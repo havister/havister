@@ -10,52 +10,45 @@
 
 {% load staticfiles %}
 
-{% block content-head %}
-    <!-- Content head -->
-    <div class="container">
-      <div class="jumbotron text-center">
-        <h1>Havister</h1>
-        <p class="lead">봄이 오면 씨를 뿌리고, 가을이 오면 수확해야 합니다.<br>
-          하비스터는 계절의 변화를 주시합니다.</p>
-      </div>
-    </div>
-{% endblock content-head %}
-
 {% block content-body %}
     <!-- Content body -->
     <div class="container">
       <div class="panel panel-default">
         <div class="panel-body">
-          <div class="section text-center">
-            <h2>경기는 순환합니다.</h2>
+          <div class="text-center">
+            <h1>경기는 순환합니다.</h1>
             <p class="lead">
               봄이 지나면 경기가 정점에 오르고, 가을이 지나면 경기가 바닥에 이릅니다.<br>
               계절들의 순환과 비슷합니다.</p>
-            <p><img src="{% static 'images/the-business-cycle.png' %}" alt="The Business Cycle Image"></p>
+            <p><img class="w880h400" src="{% static 'images/the-business-cycle.png' %}" alt="The Business Cycle Image"></p>
           </div>
         </div><!--/.panel-body -->
       </div><!--/.panel -->
+    </div>
 
+    <div class="container">
       <div class="panel panel-default">
         <div class="panel-body">
-          <div class="section text-center">
-            <h2>투자 심리는 어떨까요?</h2>
+          <div class="text-center">
+            <h1>투자 심리는 어떨까요?</h1>
             <p class="lead">
-              봄이 지나 여름이 오면 흥분하며, 가을이 지나 겨울이 오면 절망에 빠집니다.<br>
+              봄이 지나 여름이 오면 흥분하며, 가을이 지나 겨울이 오면 절망합니다.<br>
               심리도 경기를 쫓아 순환합니다.</p>
-            <p><img src="{% static 'images/investor-sentiment.png' %}" alt="Investor Sentiment Image"></p>
+            <p><img class="w880h400" src="{% static 'images/investor-sentiment.png' %}" alt="Investor Sentiment Image"></p>
           </div>
         </div><!--/.panel-body -->
       </div><!--/.panel -->
+    </div>
 
+    <div class="container">
       <div class="panel panel-default">
         <div class="panel-body">
-          <div class="section text-center">
-            <h2>언제 씨를 뿌려야 할까요?</h2>
+          <div class="text-center">
+            <h1>언제 씨를 뿌려야 할까요?</h1>
             <p class="lead">
               겨울에 준비하고 봄에 씨를 뿌리세요. 그러면 가을에 수확할 수 있습니다.<br>
-              기다리면, 겨울은 찾아오기 마련입니다.</p>
-            <p><img src="{% static 'images/timing-for-investment.png' %}" alt="Timing for Investment Image"></p>
+              기다리면, 계절은 찾아오기 마련입니다.</p>
+            <p><img class="w880h400" src="{% static 'images/timing-for-investment.png' %}" alt="Timing for Investment Image"></p>
           </div>
         </div><!--/.panel-body -->
       </div><!--/.panel -->
