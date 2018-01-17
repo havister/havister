@@ -74,6 +74,10 @@ body,
 /*
  * Custom Extra
 */
+.navbar {
+    margin-bottom: 30px;
+}
+
 .navbar-inverse {
     background-color: #444;
     border-color: black;

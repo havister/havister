@@ -14,7 +14,7 @@
     {% if detail_list %}
     <!-- Content body -->
     <div class="container">
-      <h3 class="section-header">전환 차트<small>&nbsp; : 전환별 경과일과 변화율을 통해, 순환 주기와 진폭을 분석합니다.</small></h3>
+      <h3 class="section-header">전환 차트<small>&nbsp; : 전환별 경과일과 변화를 통해, 순환 <mark>주기</mark>와 <mark>진폭</mark> 분석</small></h3>
       <div id="chart" class="chart">
       </div>
 
@@ -27,7 +27,7 @@
           <th>마감일</th>
           <th>경과일</th>
           <th>마감 지수</th>
-          <th>변화 (%)</th>
+          <th>변화</th>
           <th>상태</th>
         </tr>
       </thead>
@@ -39,7 +39,7 @@
           <td>{{ a.close_date|date:'Y-m-d' }}</td>
           <td>{{ a.period }}</td>
           <td class="text-right">{{ a.close }}</td>
-          <td class="text-right">{{ a.change }}</td>
+          <td class="text-right">{{ a.change }} <span class="text-muted">%</span></td>
           <td>{% if a.fix %}확정{% else %}진행{% endif %}</td>
         </tr>
         {% endfor %}
@@ -70,7 +70,7 @@
           [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y-m-d' }}'},
             {{ d.close }},
             {% if forloop.counter0 %}'{{ forloop.counter0 }}차'{% else %}null{% endif %},
-            '{{ d.date|date:'Y년 n월 j일' }}\n{{ d.close }} ({{ d.change }}%)',
+            '{{ d.date|date:'Y년 n월 j일' }}\n마감: {{ d.close }}\n변화: {{ d.change }}%',
             {% if d.fix %}true{% else %}false{% endif %}],
           {% endfor %}
         ]);

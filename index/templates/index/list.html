@@ -27,10 +27,13 @@
       {% if index_list %}
       <div class="panel panel-default">
         <div class="panel-body">
-          <table class="table table-striped">
+          <table class="table table-hover">
           <thead>
             <tr>
               <th>지수</th>
+              <th>기초</th>
+              <th>순환</th>
+              <th>만기</th>
               <th>국가</th>
               <th>시장</th>
               <th>선물</th>
@@ -41,7 +44,10 @@
           <tbody>
             {% for index in index_list %}
             <tr>
-              <td><a href="{% url 'index:month' index.slug %}">{{ index.name }}</a></td>
+              <td>{{ index.name }}</td>
+              <td><a href="{% url 'index:month' index.slug %}">분석</a></td>
+              <td><a href="{% url 'index:cycle' index.slug %}">분석</a></td>
+              <td>{% if index.future %}<a href="{% url 'index:expiration' index.slug %}">분석</a>{% endif %}</td>
               <td>{{ index.country }}</td>
               <td>{{ index.type }}</td>
               <td>{% if index.future %}기초{% endif %}</td>

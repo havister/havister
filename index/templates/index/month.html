@@ -14,7 +14,7 @@
     {% if detail_list %}
     <!-- Content body -->
     <div class="container">
-      <h3 class="section-header">월간 차트<small>&nbsp; : 기간별 변동성과 성장률을 분석합니다.</small></h3>
+      <h3 class="section-header">월간 차트<small>&nbsp; : 기간별 <mark>변동성</mark>과 <mark>성장률</mark> 분석</small></h3>
       <div id="chart" class="chart">
       </div>
 
@@ -24,11 +24,11 @@
         <tr>
           <th>기간</th>
           <th>최고 지수</th>
-          <th>: 변화 (%)</th>
+          <th>: 변화</th>
           <th>최저 지수</th>
-          <th>: 변화 (%)</th>
+          <th>: 변화</th>
           <th>마감 지수</th>
-          <th>: 변화 (%)</th>
+          <th>: 변화</th>
         </tr>
       </thead>
       <tbody class="text-right">
@@ -36,11 +36,11 @@
         <tr>
           <td class="text-center">{{ a.year }}년</td>
           <td>{{ a.high }}</td>
-          <td>{{ a.high_change }}</td>
+          <td>{{ a.high_change }} <span class="text-muted">%</span></td>
           <td>{{ a.low }}</td>
-          <td>{{ a.low_change }}</td>
+          <td>{{ a.low_change }} <span class="text-muted">%</span></td>
           <td>{{ a.close }}</td>
-          <td>{{ a.close_change }}</td>
+          <td>{{ a.close_change }} <span class="text-muted">%</span></td>
         </tr>
         {% endfor %}
       </tbody>
@@ -68,7 +68,7 @@
           {% for d in detail_list %}
           [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y년 n월' }}'},
             {{ d.close }}, null,
-            '{{ d.date|date:'Y년 n월' }}\n{{ d.close }} ({{ d.change }}%)'],
+            '{{ d.date|date:'Y년 n월' }}\n마감: {{ d.close }}\n변화: {{ d.change }}%'],
           {% endfor %}
         ]);
 

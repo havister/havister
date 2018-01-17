@@ -112,11 +112,25 @@ class CycleView(generic.DetailView):
             base_date = close_date
             close_date = cycle.date
             period = relativedelta(close_date, base_date)
+            delta = ""
+            if period.years:
+                years = "{0}년".format(period.years)
+                delta = years
+            if period.months:
+                if delta:
+                    delta += ", "
+                months = "{0}개월".format(period.months)
+                delta += months
+            if period.days:
+                if delta:
+                    delta += ", "
+                days = "{0}일".format(period.days)
+                delta += days
             # alpha
             alpha = {}
             alpha['base_date'] = base_date
             alpha['close_date'] = close_date
-            alpha['period'] = "{0}년 {1}개월 {2}일".format(period.years, period.months, period.days)
+            alpha['period'] = delta
             alpha['close'] = cycle.close
             alpha['change'] = cycle.change 
             alpha['fix'] = cycle.fix 

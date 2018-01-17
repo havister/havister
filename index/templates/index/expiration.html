@@ -14,7 +14,7 @@
     {% if detail_list %}
     <!-- Content body -->
     <div class="container">
-      <h3 class="section-header">만기 월간 차트<small>&nbsp; : 만기일 기준 월간 지수를 통해, 파생 상품의 변동성과 행사가를 분석합니다.</small></h3>
+      <h3 class="section-header">만기 월간 차트<small>&nbsp; : 만기일 기준 <mark>변동성</mark>과 파생 상품의 <mark>행사가</mark> 분석</small></h3>
       <div id="chart" class="chart">
       </div>
 
@@ -26,7 +26,7 @@
           <th>최고 지수</th>
           <th>최저 지수</th>
           <th>마감 지수</th>
-          <th>변화 (%)</th>
+          <th>변화</th>
         </tr>
       </thead>
       <tbody class="text-right">
@@ -37,13 +37,13 @@
           <td>{{ d.high }}</td>
           <td>{{ d.low }}</td>
           <td>{{ d.close }}</td>
-          <td>{{ d.change }}</td>
+          <td>{{ d.change }} <span class="text-muted">%</span></td>
         </tr>
         {% endfor %}
       </tbody>
       </table>
 
-      <h3 class="section-header">만기 변화율 분포<small>&nbsp; : 최근 {{ period }}개월간</small></h3>
+      <h3 class="section-header">만기 변화율 분포<small>&nbsp; : 최근 <mark>{{ period }}</mark> 개월간</small></h3>
       <div class="chart clearfix">
         {% if alpha_list %}
         <div id="chart-pie" class="pull-left">
@@ -78,7 +78,7 @@
           {% for d in detail_list reversed %}
           [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y-m-d' }}'},
             {{ d.low }}, {{ d.open }}, {{ d.close }}, {{ d.high }},
-            '{{ d.date|date:'Y년 n월차' }}\n시가: {{ d.open }}\n고가: {{ d.high }}\n저가: {{ d.low }}\n종가: {{ d.close }}\n변화: {{ d.change }}%'],
+            '{{ d.date|date:'Y년 n월차' }}\n시작: {{ d.open }}\n최고: {{ d.high }}\n최저: {{ d.low }}\n마감: {{ d.close }}\n변화: {{ d.change }}%'],
           {% endfor %}
         ]);
         var options = {
@@ -132,10 +132,11 @@
           bar: { gap: 1 },
           colors: ['darkslategray'],
           backgroundColor: '#f5f5f5',
-          chartArea: {left: 0, top: 0, width: '100%', height: 400},
+          chartArea: {left: 0, top: 0, width: '100%', height: 385},
           hAxis: {format: 'percent'},
           vAxis: {textPosition: 'in'},
           histogram: { bucketSize: 0.05 },
+          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 1.0, maxZoomOut: 1.5, zoomDelta: 1.5},
           legend: {position: 'none'}
         };
         var formatter = new google.visualization.NumberFormat({pattern: '##.##%'});
