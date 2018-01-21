@@ -83,8 +83,9 @@
           crosshair: {color: 'black', trigger: 'selection'},
           hAxis: {format: 'y년'},
           vAxis: {textPosition: 'in'},
-          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.0, zoomDelta: 1.5},
-          annotations: {stem: {color: '#333'}},
+          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.5, zoomDelta: 1.5},
+          pointShape: 'circle',
+          pointSize: 8,
           legend: {position: 'none'}
         };
         var chart = new google.visualization.AreaChart(document.getElementById('chart'));

@@ -2,7 +2,8 @@
  * static/css/base.css
 */
 
-/* Non-responsive overrides
+/*
+ * Non-responsive overrides
  *
  * Utilize the following CSS to disable the responsive-ness of the container,
  * grid system, and navbar.
@@ -79,8 +80,8 @@ body,
 }
 
 .navbar-inverse {
-    background-color: #444;
-    border-color: black;
+    background-color: #30363c;
+    border-color: transparent;
 }
 
 .navbar-inverse .navbar-brand {
@@ -88,12 +89,21 @@ body,
 }
 
 .navbar-inverse .navbar-nav > li > a {
-    color: #bbb;
+    color: #b0b6bc;
     font-weight: bold;
 }
 
 .navbar-inverse .navbar-nav > .active > a {
     background-color: black;
+}
+
+.navbar-inverse .navbar-nav > .disabled > a {
+    color: #b0b6bc;
+}
+
+.navbar-inverse .navbar-nav > .disabled > a:focus,
+.navbar-inverse .navbar-nav > .disabled > a:hover {
+    color: #50565c;
 }
 
 .container-fluid.content-head {
@@ -107,12 +117,6 @@ body,
 
 .content-head h1 {
     margin: 0 0 20px 0;
-}
-
-.container .jumbotron {
-    margin-bottom: 20px;
-    background-color: #d9edf7;
-    border: 1px solid #bce8f1;
 }
 
 .section-header {
@@ -137,21 +141,17 @@ body,
     margin-bottom: 0;
 }
 
-.lead {
-    font-size: 16px;
+.chart {
+    width: 100%;
+    height: 430px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
 }
 
 .w880h400 {
     width: 880px;
     height: 400px;
     margin: 20px 0 20px 0;
-}
-
-.chart {
-    width: 100%;
-    height: 430px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ddd;
 }
 
 .footer {
@@ -176,6 +176,10 @@ body,
 .footer ul > li {
     display: inline;
     margin-left: 12px;
+}
+
+.lead {
+    font-size: 16px;
 }
 
 small {

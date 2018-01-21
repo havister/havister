@@ -62,12 +62,13 @@
         var data = new google.visualization.DataTable();
         data.addColumn({type: 'date', label: 'Month'});
         data.addColumn({type: 'number', label: 'Point'});
+        data.addColumn({type:'string', role:'style'});
         data.addColumn({type:'string', role:'annotation'});
         data.addColumn({type: 'string', role: 'tooltip'});
         data.addRows([
           {% for d in detail_list %}
           [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y년 n월' }}'},
-            {{ d.close }}, null,
+            {{ d.close }}, null, null,
             '{{ d.date|date:'Y년 n월' }}\n마감: {{ d.close }}\n변화: {{ d.change }}%'],
           {% endfor %}
         ]);
@@ -87,7 +88,8 @@
         for (i = 0; i < len; i++) {
           for (; ri >= 0; ri--) {
             if (first_dates[i] === data.getValue(ri, 0).getTime()) {
-              data.setValue(ri, 2, years[i]);
+              data.setValue(ri, 2, 'point { shape-type: circle; size: 5; visible: true');
+              data.setValue(ri, 3, years[i]);
               break;
             }
           }
@@ -102,8 +104,7 @@
           crosshair: {color: 'black', trigger: 'selection'},
           hAxis: {format: 'y년'},
           vAxis: {textPosition: 'in'},
-          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.0, zoomDelta: 1.5},
-          annotations: {stem: {color: '#333'}},
+          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.5, zoomDelta: 1.5},
           legend: {position: 'none'}
         };
         var chart = new google.visualization.AreaChart(document.getElementById('chart'));
