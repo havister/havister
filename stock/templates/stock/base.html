@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block nav_stock %}active{% endblock %}
+
+{% block content-head %}
+    <!-- NavTab -->
+    <div class="container-fluid content-head">
+      <div class="container">
+        <h1>{{ stock.name }}<small> &nbsp; <span class="heading-label">{{ stock.country }}</span>
+          <span class="heading-label">{{ stock.market }}</span>
+          {% if stock.future %} <span class="heading-label">선물</span>{% endif %}
+          {% if stock.option %} <span class="heading-label">옵션</span>{% endif %}
+        </h1>
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="{% block tab_month %}{% endblock %}">
+            <a href="{% url 'stock:month' stock.slug %}">기초 분석</a></li>
+          <li role="presentation" class="{% block tab_cycle %}{% endblock %}">
+            <a href="{% url 'stock:cycle' stock.slug %}">순환 분석</a></li>
+          <li role="presentation" class="{% if not stock.future %}disabled{% endif %}{% block tab_expiration %}{% endblock %}">
+            <a{% if stock.future %} href="{% url 'stock:expiration' stock.slug %}"{% endif %}>만기 분석</a></li>
+        </ul>
+      </div>
+    </div>
+{% endblock content-head %}
+

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'expiration.apps.ExpirationConfig',
     'index.apps.IndexConfig',
+    'stock.apps.StockConfig',
 ]
 
 MIDDLEWARE = [

@@ -10,7 +10,7 @@
 
 {% block nav_index %}active{% endblock %}
 
-{% block content-head %}
+{% block content_head %}
     <!-- Content head -->
     <div class="container content-head">
       <h1 class="page-header">지수<small>&nbsp; : Index</small></h1>
@@ -19,9 +19,9 @@
         시장 종합 지수들과 &nbsp;선물 &middot; 옵션 &middot; ETF의 기초로 활용되는 주요 지수들을 선정하여 분석합니다.
       </div>
     </div>
-{% endblock content-head %}
+{% endblock content_head %}
 
-{% block content-body %}
+{% block content_body %}
     <!-- Content body -->
     <div class="container">
       {% if index_list %}
@@ -61,5 +61,5 @@
       </div>
       {% endif %}
     </div>
-{% endblock content-body %}
+{% endblock content_body %}
 

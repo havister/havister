@@ -1,4 +1,4 @@
-"""havister index tests
+"""havister stock tests
 """
 from django.test import TestCase
 
