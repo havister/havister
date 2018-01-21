@@ -30,12 +30,12 @@
           <table class="table table-hover">
           <thead>
             <tr>
+              <th>국가</th>
+              <th>시장</th>
               <th>종목</th>
               <th>기초</th>
               <th>순환</th>
               <th>만기</th>
-              <th>국가</th>
-              <th>시장</th>
               <th>선물</th>
               <th>옵션</th>
             </tr>
@@ -43,14 +43,14 @@
           <tbody>
             {% for stock in stock_list %}
             <tr>
+              <td class="text-muted">{{ stock.country }}</td>
+              <td class="text-muted">{{ stock.market }}</td>
               <td>{{ stock.name }}</td>
               <td><a href="{% url 'stock:month' stock.slug %}">분석</a></td>
               <td><a href="{% url 'stock:cycle' stock.slug %}">분석</a></td>
               <td>{% if stock.future %}<a href="{% url 'stock:expiration' stock.slug %}">분석</a>{% endif %}</td>
-              <td>{{ stock.country }}</td>
-              <td>{{ stock.market }}</td>
-              <td>{% if stock.future %}기초{% endif %}</td>
-              <td>{% if stock.option %}기초{% endif %}</td>
+              <td class="text-muted">{% if stock.future %}기초{% endif %}</td>
+              <td class="text-muted">{% if stock.option %}기초{% endif %}</td>
             </tr>
             {% endfor %}
           </tbody>
