@@ -48,7 +48,7 @@ class Index(models.Model):
         verbose_name_plural = 'indices'
 
 
-class AbstractPoint(models.Model):
+class AbstractOHLC(models.Model):
     """abstract point"""
     date = models.DateField()
     open = models.DecimalField(max_digits=7, decimal_places=2)
@@ -65,14 +65,14 @@ class AbstractPoint(models.Model):
         abstract = True
 
 
-class Day(AbstractPoint):
+class Day(models.Model):
     """일간"""
     date = models.DateField()
-    base = models.DecimalField(max_digits=7, decimal_places=2)
     open = models.DecimalField(max_digits=7, decimal_places=2)
     high = models.DecimalField(max_digits=7, decimal_places=2)
     low = models.DecimalField(max_digits=7, decimal_places=2)
     close = models.DecimalField(max_digits=7, decimal_places=2)
+    diff = models.DecimalField(max_digits=6, decimal_places=2)
     change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
 
@@ -86,7 +86,7 @@ class Day(AbstractPoint):
         verbose_name_plural = 'days'
 
 
-class Month(AbstractPoint):
+class Month(AbstractOHLC):
     """월간"""
     class Meta:
         db_table = 'index_month'
@@ -113,7 +113,7 @@ class Cycle(models.Model):
         verbose_name_plural = 'cycles'
 
 
-class Expiration(AbstractPoint):
+class Expiration(AbstractOHLC):
     """만기(월간)"""
     class Meta:
         db_table = 'index_expiration'
