@@ -8,6 +8,11 @@
 
 {% block title %}지수 : Havister{% endblock %}
 
+{% block extra_style %}
+    <!-- Extra style -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
 {% block nav_index %}active{% endblock %}
 
 {% block content_head %}
@@ -30,29 +35,31 @@
           <table class="table table-hover">
           <thead>
             <tr>
-              <th>지수</th>
-              <th>기초</th>
-              <th>순환</th>
-              <th>만기</th>
+              <th class="text-muted">#</th>
               <th>국가</th>
               <th>구분</th>
+              <th>지수</th>
               <th>선물</th>
               <th>옵션</th>
               <th>ETF</th>
+              <th>기초</th>
+              <th>순환</th>
+              <th>만기</th>
             </tr>
           </thead>
           <tbody>
             {% for index in index_list %}
             <tr>
+              <td class="text-muted">{{ forloop.counter }}</td>
+              <td>{{ index.country }}</td>
+              <td>{{ index.type }}</td>
               <td>{{ index.name }}</td>
+              <td>{% if index.future %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
+              <td>{% if index.option %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
+              <td>{% if index.etf %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
               <td><a href="{% url 'index:month' index.slug %}">분석</a></td>
               <td><a href="{% url 'index:cycle' index.slug %}">분석</a></td>
               <td>{% if index.future %}<a href="{% url 'index:expiration' index.slug %}">분석</a>{% endif %}</td>
-              <td>{{ index.country }}</td>
-              <td>{{ index.type }}</td>
-              <td>{% if index.future %}기초{% endif %}</td>
-              <td>{% if index.option %}기초{% endif %}</td>
-              <td>{% if index.etf %}기초{% endif %}</td>
             </tr>
             {% endfor %}
           </tbody>

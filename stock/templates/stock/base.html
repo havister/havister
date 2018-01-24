@@ -6,10 +6,10 @@
     <!-- NavTab -->
     <div class="container-fluid content-head">
       <div class="container">
-        <h1>{{ stock.name }}<small> &nbsp; <span class="heading-label">{{ stock.country }}</span>
+        <h1>{{ stock.name }}<sup> &nbsp; <span class="heading-label">{{ stock.country }}</span>
           <span class="heading-label">{{ stock.market }}</span>
           {% if stock.future %} <span class="heading-label">선물</span>{% endif %}
-          {% if stock.option %} <span class="heading-label">옵션</span>{% endif %}
+          {% if stock.option %} <span class="heading-label">옵션</span>{% endif %}</sup>
         </h1>
         <ul class="nav nav-tabs">
           <li role="presentation" class="{% block tab_month %}{% endblock %}">

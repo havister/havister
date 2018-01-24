@@ -14,7 +14,7 @@ class ListView(generic.ListView):
     template_name = 'stock/list.html'
 
     def get_queryset(self):
-        return Stock.objects.all()
+        return Stock.objects.filter(option=True)
 
 
 class MonthView(generic.DetailView):

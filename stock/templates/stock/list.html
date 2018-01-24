@@ -8,6 +8,11 @@
 
 {% block title %}주식 : Havister{% endblock %}
 
+{% block extra_style %}
+    <!-- Extra style -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
 {% block nav_stock %}active{% endblock %}
 
 {% block content_head %}
@@ -16,7 +21,7 @@
       <h1 class="page-header">주식<small>&nbsp; : Stock</small></h1>
       <div class="alert alert-info" role="alert">
         <strong>종목 선정!</strong> &nbsp;
-        주식 시장에서 개별 선물 &middot; 개별 옵션의 기초로 활용되는 주요 종목들을 선정하여 분석합니다.
+        시장에서 개별 주식 선물 &middot; 개별 주식 옵션의 기초로 활용되는 주식 종목들을 선정하여 분석합니다.
       </div>
     </div>
 {% endblock content_head %}
@@ -31,28 +36,28 @@
           <thead>
             <tr>
               <th class="text-muted">#</th>
+              <th>국가</th>
+              <th>시장</th>
               <th>종목</th>
+              <th>선물</th>
+              <th>옵션</th>
               <th>기초</th>
               <th>순환</th>
               <th>만기</th>
-              <th>국가</th>
-              <th>시장</th>
-              <th>선물</th>
-              <th>옵션</th>
             </tr>
           </thead>
           <tbody>
             {% for stock in stock_list %}
             <tr>
               <td class="text-muted">{{ forloop.counter }}</td>
+              <td>{{ stock.country }}</td>
+              <td>{{ stock.market }}</td>
               <td>{{ stock.name }}</td>
+              <td>{% if stock.future %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
+              <td>{% if stock.option %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
               <td><a href="{% url 'stock:month' stock.slug %}">분석</a></td>
               <td><a href="{% url 'stock:cycle' stock.slug %}">분석</a></td>
               <td>{% if stock.future %}<a href="{% url 'stock:expiration' stock.slug %}">분석</a>{% endif %}</td>
-              <td>{{ stock.country }}</td>
-              <td>{{ stock.market }}</td>
-              <td>{% if stock.future %}기초{% endif %}</td>
-              <td>{% if stock.option %}기초{% endif %}</td>
             </tr>
             {% endfor %}
           </tbody>
