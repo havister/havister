@@ -2,6 +2,23 @@
 """
 from django.db import models
 
+class AbstractOHLC(models.Model):
+    """abstract"""
+    date = models.DateField()
+    open = models.DecimalField(max_digits=7, decimal_places=2)
+    high = models.DecimalField(max_digits=7, decimal_places=2)
+    low = models.DecimalField(max_digits=7, decimal_places=2)
+    close = models.DecimalField(max_digits=7, decimal_places=2)
+    change = models.DecimalField('change(%)', max_digits=7, decimal_places=2)
+    index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
+
+    def __str__(self):
+        return "{0} ({1})".format(self.date, self.index)
+
+    class Meta:
+        abstract = True
+
+
 class Index(models.Model):
     """지수"""
     # country choice
@@ -48,23 +65,6 @@ class Index(models.Model):
         verbose_name_plural = 'indices'
 
 
-class AbstractOHLC(models.Model):
-    """abstract point"""
-    date = models.DateField()
-    open = models.DecimalField(max_digits=7, decimal_places=2)
-    high = models.DecimalField(max_digits=7, decimal_places=2)
-    low = models.DecimalField(max_digits=7, decimal_places=2)
-    close = models.DecimalField(max_digits=7, decimal_places=2)
-    change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
-    index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
-
-    def __str__(self):
-        return "{0} ({1})".format(self.date, self.index)
-
-    class Meta:
-        abstract = True
-
-
 class Day(models.Model):
     """일간"""
     date = models.DateField()
@@ -72,8 +72,8 @@ class Day(models.Model):
     high = models.DecimalField(max_digits=7, decimal_places=2)
     low = models.DecimalField(max_digits=7, decimal_places=2)
     close = models.DecimalField(max_digits=7, decimal_places=2)
-    diff = models.DecimalField(max_digits=6, decimal_places=2)
-    change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
+    diff = models.DecimalField(max_digits=7, decimal_places=2)
+    change = models.DecimalField('change(%)', max_digits=7, decimal_places=2)
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
 
     def __str__(self):
@@ -99,7 +99,7 @@ class Cycle(models.Model):
     """순환(-30%:하락전환)"""
     date = models.DateField()
     close = models.DecimalField(max_digits=7, decimal_places=2)
-    change = models.DecimalField('change(%)', max_digits=5, decimal_places=2)
+    change = models.DecimalField('change(%)', max_digits=7, decimal_places=2)
     fix = models.BooleanField(default=False)
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
 

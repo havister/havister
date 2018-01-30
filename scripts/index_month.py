@@ -1,7 +1,7 @@
-# scripts/month.py
+# scripts/index_month.py
 #
 # Usage:
-# python manage.py runscript month --script-args arg_code arg_action
+# python manage.py runscript index_month --script-args arg_code arg_action
 
 from decimal import Decimal
 
@@ -42,7 +42,7 @@ def run(*args):
     for ym in ym_list:
         # subset day_list
         days = day_list.filter(date__year=ym.year, date__month=ym.month)
-        base = days.first().base
+        base = days.first().close - days.first().diff
         # month
         month = {}
         month['date'] = ym

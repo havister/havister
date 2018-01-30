@@ -1,7 +1,7 @@
-# scripts/day.py
+# scripts/index_day_update.py
 #
 # Usage:
-# python manage.py runscript day --script-args arg_code
+# python manage.py runscript index_day_update --script-args arg_code
 
 from decimal import Decimal
 
@@ -16,6 +16,10 @@ def run(*args):
     args_len = len(args)
     if args_len >= 1:
         arg_code = args[0]
+    if args_len >= 2:
+        arg_action = args[1]
+    else:
+        arg_action = 'none'
 
     # get index
     index = Index.objects.filter(code=arg_code).first()
@@ -31,16 +35,9 @@ def run(*args):
 
     # track
     for day in day_list:
-        if day.diff:
-            continue
-        diff = day.close - day.base
-        change = round(diff / day.base * 100, 2)
-        if change == day.change:
-            day.diff = diff
-            day.save()
-            print(day)
-        else:
-            print("{0} d:{1} {2} {3}".format(day.date, diff, change, day.change))
-            break;
+        base = day.close - day.diff
+        day.change = round(day.diff / base * 100, 2)
+        day.save()
+        print(day)
     return
 

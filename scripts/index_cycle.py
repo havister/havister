@@ -1,7 +1,7 @@
-# scripts/cycle.py
+# scripts/index_cycle.py
 #
 # Usage:
-# python manage.py runscript cycle --script-args arg_code arg_action
+# python manage.py runscript index_cycle --script-args arg_code arg_action
 
 from decimal import Decimal
 
@@ -46,7 +46,7 @@ def run(*args):
 
     # track
     track = {}
-    track['top'] = check.base
+    track['top'] = check.close - check.diff
     track['brick'] = round(track['top'] * RATE, 2)
     track['bot'] = 0
 
@@ -73,7 +73,6 @@ def run(*args):
                 check = day
                 # 모드 전환
                 track['bot'] = close
-                #track['b-brick'] = round(track['bot'] * RATE, 2)
                 track['top'] = 0
 
         # 하락 모드인가?
@@ -82,7 +81,6 @@ def run(*args):
             if close < track['bot']:
                 # 저점 리셋
                 track['bot'] = close
-                #track['b-brick'] = round(track['bot'] * RATE, 2)
                 check = day
 
             # 전 고점 회복인가?

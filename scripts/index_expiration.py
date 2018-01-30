@@ -1,7 +1,7 @@
-# scripts/expiration.py
+# scripts/index_expiration.py
 #
 # Usage:
-# python manage.py runscript expiration --script-args arg_code arg_action
+# python manage.py runscript index_expiration --script-args arg_code arg_action
 
 from decimal import Decimal
 
@@ -52,7 +52,7 @@ def run(*args):
             continue
         # subset day_list
         days = day_list.filter(date__range=(open_date, close_date))
-        base = days.first().base
+        base = days.first().close - days.first().diff
         # expiration
         expiration = {}
         expiration['date'] = close_date

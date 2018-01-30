@@ -3,7 +3,7 @@
 from django.db import models
 
 class Period(models.Model):
-    """기간"""
+    """만기기간"""
     month = models.DateField(primary_key=True)
     open_date = models.DateField()
     close_date = models.DateField()
@@ -13,7 +13,7 @@ class Period(models.Model):
 
     class Meta:
         db_table = 'expiration_period'
+        ordering = ['month']
         verbose_name = 'period'
         verbose_name_plural = 'periods'
-        ordering = ['month']
 

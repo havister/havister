@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.views import generic
 
-from .models import Stock #, Day, Month, Cycle, Expiration
+from .models import Stock, Day, Month, Cycle, Expiration
 
 class ListView(generic.ListView):
     context_object_name = 'stock_list'
