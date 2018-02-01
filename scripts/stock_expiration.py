@@ -1,10 +1,11 @@
 # scripts/stock_expiration.py
 #
+# stock_day 테이블에서 일별 데이터를 집계하여 만기별 데이터를 생성
+#
 # Usage:
 # python manage.py runscript stock_expiration --script-args arg_name arg_action
 
-import decimal
-from decimal import Decimal
+from decimal import Decimal, getcontext, ROUND_HALF_UP
 
 from expiration.models import Period 
 from stock.models import Stock, Day, Expiration
@@ -14,6 +15,9 @@ def run(*args):
     if not args:
         print("missing argumnet: name")
         return
+
+    # 실수 연산 반올림 보정
+    getcontext().rounding = ROUND_HALF_UP
 
     # assign args
     args_len = len(args)
@@ -81,7 +85,7 @@ def get_expiration_list(day_list, period_list):
         expiration['high'] = days.order_by('-high').first().high
         expiration['low'] = days.order_by('-low').last().low
         expiration['close'] = days.last().close
-        expiration['change'] = round((expiration['close'] - base) / base * 100, 2)
+        expiration['change'] = round(Decimal(str((expiration['close'] - base) / base)) * 100, 2)
         # append
         expiration_list.append(expiration)
     # count expiration
@@ -93,11 +97,11 @@ def print_list(expiration_list):
     # list
     print("")
     for v in expiration_list[:5]:
-        print("{0} => {1} | {2} | {3} | {4} = {5}%".format(v['date'], \
+        print("{0} : {1} | {2} | {3} | {4} = {5}%".format(v['date'], \
             v['open'], v['high'], v['low'] , v['close'], v['change']))
     print("")
     for v in expiration_list[-5:]:
-        print("{0} => {1} | {2} | {3} | {4} = {5}%".format(v['date'], \
+        print("{0} : {1} | {2} | {3} | {4} = {5}%".format(v['date'], \
             v['open'], v['high'], v['low'] , v['close'], v['change']))
     print("")
     return

@@ -1,10 +1,12 @@
 # scripts/stock_month.py
 #
+# stock_day 테이블에서 일별 데이터를 집계하여 월별 데이터를 생성
+#
 # Usage:
 # python manage.py runscript stock_month --script-args arg_name arg_action
 
-import decimal
-from decimal import Decimal
+import calendar
+from decimal import Decimal, getcontext, ROUND_HALF_UP
 
 from stock.models import Stock, Day, Month
 
@@ -13,6 +15,9 @@ def run(*args):
     if not args:
         print("missing argumnet: name")
         return
+
+    # 실수 연산 반올림 보정
+    getcontext().rounding = ROUND_HALF_UP
 
     # assign args
     args_len = len(args)
@@ -66,12 +71,12 @@ def get_month_list(day_list):
         base = days.first().close - days.first().diff
         # month
         month = {}
-        month['date'] = ym
+        month['date'] = get_last_day(ym.year, ym.month)
         month['open'] = days.first().open
         month['high'] = days.order_by('-high').first().high
         month['low'] = days.order_by('-low').last().low
         month['close'] = days.last().close
-        month['change'] = round((month['close'] - base) / base * 100, 2)
+        month['change'] = round(Decimal(str((month['close'] - base) / base)) * 100, 2)
         # append
         month_list.append(month)
     # count month
@@ -79,15 +84,21 @@ def get_month_list(day_list):
     return month_list
 
 
+def get_last_day(year, month):
+    day = calendar.monthrange(year, month)[1]
+    last_day = "{0}-{1:02}-{2}".format(year, month, day)
+    return last_day
+
+
 def print_list(month_list):
     # list
     print("")
     for v in month_list[:5]:
-        print("{0} => {1} | {2} | {3} | {4} = {5}%".format(v['date'], \
+        print("{0} : {1} | {2} | {3} | {4} = {5}%".format(v['date'], \
             v['open'], v['high'], v['low'] , v['close'], v['change']))
     print("")
     for v in month_list[-5:]:
-        print("{0} => {1} | {2} | {3} | {4} = {5}%".format(v['date'], \
+        print("{0} : {1} | {2} | {3} | {4} = {5}%".format(v['date'], \
             v['open'], v['high'], v['low'] , v['close'], v['change']))
     print("")
     return

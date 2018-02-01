@@ -1,10 +1,11 @@
 # scripts/stock_cycle.py
 #
+# stock_day 테이블에서 일별 데이터를 집계하여 순환별 데이터를 생성
+#
 # Usage:
 # python manage.py runscript stock_cycle --script-args arg_name arg_action
 
-import decimal
-from decimal import Decimal
+from decimal import Decimal, getcontext, ROUND_HALF_UP
 
 from stock.models import Stock, Day, Cycle
 
@@ -13,6 +14,9 @@ def run(*args):
     if not args:
         print("missing argumnet: name")
         return
+
+    # 실수 연산 반올림 보정
+    getcontext().rounding = ROUND_HALF_UP
 
     # assign args
     args_len = len(args)
@@ -136,7 +140,7 @@ def list_append(cycle_list, day):
         if last_date == day.date:
             return
     # change
-    change = round((close - base) / base * 100, 2)
+    change = round(Decimal(str((close - base) / base)) * 100, 2)
     # cycle
     cycle = {'date': day.date, 'close':day.close, 'change': change, 'fix': True}
     # cycle list
