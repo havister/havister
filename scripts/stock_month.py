@@ -17,7 +17,9 @@ def run(*args):
         return
 
     # 실수 연산 반올림 보정
-    getcontext().rounding = ROUND_HALF_UP
+    context = getcontext()
+    context.prec = 9
+    context.rounding = ROUND_HALF_UP
 
     # assign args
     args_len = len(args)
