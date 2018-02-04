@@ -29,31 +29,40 @@ def run(*args):
     if args_len >= 2:
         arg_action = args[1]
 
-    # get stock 
-    stock = Stock.objects.filter(name=arg_name).first()
-    if not stock:    
+    # get stock_list
+    stock_list = []
+    if arg_name == 'all:future':
+        stock_list = Stock.objects.filter(future=True)
+    elif arg_name == 'all:option':
+        stock_list = Stock.objects.filter(option=True)
+    else:
+        stock_list = Stock.objects.filter(name=arg_name)
+    if not stock_list:
         print("no name")
         return
-    print("{name} : {code}".format(name=stock.name, code=stock.code))
 
-    # get day list
-    day_list = Day.objects.filter(stock=stock)
-    if not day_list:
-        print("no data")
-        return
+    # iterate stock_list
+    for i, stock in enumerate(stock_list):
+        print("{no}) {name} : {code}".format(no=i+1, name=stock.name, code=stock.code))
 
-    # get cycle list
-    cycle_list = get_cycle_list(day_list)
-    if not cycle_list:
-        print("no data")
-        return
+        # get day list
+        day_list = Day.objects.filter(stock=stock)
+        if not day_list:
+            print("no data : day\n")
+            continue
 
-    # print list 
-    print_list(cycle_list)
+        # get cycle list
+        cycle_list = get_cycle_list(day_list)
+        if not cycle_list:
+            print("no data : cycle\n")
+            continue
 
-    # insert
-    if arg_action == 'insert':
-        insert_list(cycle_list, stock)
+        # print list 
+        print_list(cycle_list)
+
+        # insert
+        if arg_action == 'insert':
+            insert_list(cycle_list, stock)
     return
 
 

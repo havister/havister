@@ -65,8 +65,7 @@ class Day(models.Model):
     high = models.PositiveIntegerField()
     low = models.PositiveIntegerField()
     close = models.PositiveIntegerField()
-    diff = models.IntegerField()
-    change = models.DecimalField('change(%)', max_digits=7, decimal_places=2)
+    diff = models.IntegerField(null=True)
     stock = models.ForeignKey('Stock', db_column='stock_code', on_delete=models.CASCADE, unique_for_date='date')
 
     def __str__(self):
@@ -93,7 +92,7 @@ class Cycle(models.Model):
     date = models.DateField()
     close = models.PositiveIntegerField()
     change = models.DecimalField('change(%)', max_digits=7, decimal_places=2)
-    fix = models.BooleanField(default=False)
+    certainty = models.BooleanField(default=False)
     stock = models.ForeignKey('Stock', db_column='stock_code', on_delete=models.CASCADE, unique_for_date='date')
 
     def __str__(self):

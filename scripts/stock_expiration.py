@@ -30,37 +30,46 @@ def run(*args):
     if args_len >= 2:
         arg_action = args[1]
 
-    # get stock
-    stock = Stock.objects.filter(name=arg_name).first()
-    if not stock:
-        print("no stock")
-        return
-    print("{name} : {code}".format(name=stock.name, code=stock.code))
-
-    # get day list
-    day_list = Day.objects.filter(stock=stock)
-    if not day_list:
-        print("no data")
-        return
-
     # get expiration period
     period_list = Period.objects.all()
     if not period_list:
         print("no period")
         return
 
-    # get expiration list
-    expiration_list = get_expiration_list(day_list, period_list)
-    if not expiration_list:
-        print("no data")
+    # get stock_list
+    stock_list = []
+    if arg_name == 'all:future':
+        stock_list = Stock.objects.filter(future=True)
+    elif arg_name == 'all:option':
+        stock_list = Stock.objects.filter(option=True)
+    else:
+        stock_list = Stock.objects.filter(name=arg_name)
+    if not stock_list:
+        print("no stock\n")
         return
 
-    # print list
-    print_list(expiration_list)
+    # iterate stock_list
+    for i, stock in enumerate(stock_list):
+        print("{no}) {name} : {code}".format(no=i+1, name=stock.name, code=stock.code))
 
-    # insert
-    if arg_action == 'insert':
-        insert_list(expiration_list, stock)
+        # get day list
+        day_list = Day.objects.filter(stock=stock)
+        if not day_list:
+            print("no data : day\n")
+            continue
+
+        # get expiration list
+        expiration_list = get_expiration_list(day_list, period_list)
+        if not expiration_list:
+            print("no data : expiration\n")
+            continue
+
+        # print list
+        print_list(expiration_list)
+
+        # insert
+        if arg_action == 'insert':
+            insert_list(expiration_list, stock)
     return
 
 
@@ -74,11 +83,10 @@ def get_expiration_list(day_list, period_list):
         month = period.month
         open_date = period.open_date
         close_date = period.close_date
-        # check open_date
-        if not day_list.filter(date=open_date).exists():
-            continue
         # subset day_list
         days = day_list.filter(date__range=(open_date, close_date))
+        if not days:
+            continue
         base = days.first().close - days.first().diff
         # expiration
         expiration = {}

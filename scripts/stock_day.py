@@ -8,7 +8,6 @@
 
 import requests
 from bs4 import BeautifulSoup
-from decimal import Decimal, getcontext, ROUND_HALF_UP
 
 from stock.models import Stock, Day
 
@@ -18,14 +17,9 @@ def run(*args):
         print("missing argumnet: name")
         return
 
-    # 실수 연산 반올림 보정
-    context = getcontext()
-    context.prec = 9
-    context.rounding = ROUND_HALF_UP
-
     # assign args
     args_len = len(args)
-    arg_base_date = '2017-12-01'
+    arg_base_date = '2018-01-01'
     arg_action = 'none'
 
     if args_len >= 1:
@@ -105,17 +99,14 @@ def get_day_list(code, base_date):
     # sort by date
     day_list.reverse()
 
-    # diff, change
+    # diff
     first_day = day_list[0]
     first_day['diff'] = 0
-    first_day['change'] = Decimal('0.00')
     base = first_day['close']
 
     for day in day_list[1:]:
         # diff
         day['diff'] = day['close'] - base
-        # change
-        day['change'] = round(Decimal(str(day['diff'] / base)) * 100, 2)
         base = day['close']
     # day_list
     return day_list
@@ -150,12 +141,12 @@ def print_list(day_list):
     # list
     print("")
     for v in day_list[:5]:
-        print("{0} : {1} | {2} | {3} | {4} = {5} ({6}%)".format(v['date'], \
-            v['open'], v['high'], v['low'] , v['close'], v['diff'], v['change']))
+        print("{0} : {1} | {2} | {3} | {4} = {5}".format(v['date'], \
+            v['open'], v['high'], v['low'] , v['close'], v['diff']))
     print("")
     for v in day_list[-5:]:
-        print("{0} : {1} | {2} | {3} | {4} = {5} ({6}%)".format(v['date'], \
-            v['open'], v['high'], v['low'] , v['close'], v['diff'], v['change']))
+        print("{0} : {1} | {2} | {3} | {4} = {5}".format(v['date'], \
+            v['open'], v['high'], v['low'] , v['close'], v['diff']))
     print("")
     return
 
@@ -170,8 +161,7 @@ def insert_list(day_list, stock):
             high=v['high'], \
             low=v['low'], \
             close=v['close'], \
-            diff=v['diff'], \
-            change=v['change'])
+            diff=v['diff'])
     print("success\n")
     return
 
