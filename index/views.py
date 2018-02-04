@@ -97,7 +97,7 @@ class CycleView(generic.DetailView):
                 diff = Decimal('0.00')
                 change = Decimal('0.00')
             # cycle
-            cycle = Cycle(date=today.date, close=today.close, change=change, fix=False, index=index)
+            cycle = Cycle(date=today.date, close=today.close, change=change, certainty=False, index=index)
             # cycle list
             cycle_list.append(cycle)
         return cycle_list
@@ -133,7 +133,7 @@ class CycleView(generic.DetailView):
             alpha['period'] = delta
             alpha['close'] = cycle.close
             alpha['change'] = cycle.change 
-            alpha['fix'] = cycle.fix 
+            alpha['certainty'] = cycle.certainty 
             # alpha list
             alpha_list.append(alpha)
         return alpha_list

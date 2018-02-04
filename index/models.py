@@ -100,7 +100,7 @@ class Cycle(models.Model):
     date = models.DateField()
     close = models.DecimalField(max_digits=7, decimal_places=2)
     change = models.DecimalField('change(%)', max_digits=7, decimal_places=2)
-    fix = models.BooleanField(default=False)
+    certainty = models.BooleanField(default=False)
     index = models.ForeignKey('Index', db_column='index_code', on_delete=models.CASCADE, unique_for_date='date')
 
     def __str__(self):

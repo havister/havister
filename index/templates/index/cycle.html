@@ -40,7 +40,7 @@
           <td>{{ a.period }}</td>
           <td class="text-right">{{ a.close }}</td>
           <td class="text-right">{{ a.change }} <span class="text-muted">%</span></td>
-          <td>{% if a.fix %}확정{% else %}진행{% endif %}</td>
+          <td>{% if a.certainty %}확정{% else %}진행{% endif %}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -71,7 +71,7 @@
             {{ d.close }},
             {% if forloop.counter0 %}'{{ forloop.counter0 }}차'{% else %}null{% endif %},
             '{{ d.date|date:'Y년 n월 j일' }}\n마감: {{ d.close }}\n변화: {{ d.change }}%',
-            {% if d.fix %}true{% else %}false{% endif %}],
+            {% if d.certainty %}true{% else %}false{% endif %}],
           {% endfor %}
         ]);
         var options = {
