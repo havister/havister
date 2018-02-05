@@ -1,12 +1,12 @@
-{% extends 'index/base.html' %}
+{% extends 'stock/base.html' %}
 
 {% block meta %}
     <!-- Custom metas -->
-    <meta name="description" content="{{ index.name }} : Index : Havister">
-    <meta name="keywords" content="{{ index.name }} Index">
+    <meta name="description" content="{{ stock.name }} : 주식 : Havister">
+    <meta name="keywords" content="{{ stock.name }} 주식">
 {% endblock %}
 
-{% block title %}{{ index.name }} : Index : Havister{% endblock %}
+{% block title %}{{ stock.name }} : 주식 : Havister{% endblock %}
 
 {% block tab_cycle %}active{% endblock %}
 
@@ -26,7 +26,7 @@
           <th>기준일</th>
           <th>마감일</th>
           <th>경과일</th>
-          <th>마감 지수</th>
+          <th>마감 주가</th>
           <th>변화</th>
           <th>상태</th>
         </tr>
@@ -40,7 +40,7 @@
           <td>{{ a.period }}</td>
           <td class="text-right">{{ a.close }}</td>
           <td class="text-right">{{ a.change }} <span class="text-muted">%</span></td>
-          <td>{% if a.fix %}확정{% else %}진행{% endif %}</td>
+          <td>{% if a.certainty %}확정{% else %}진행{% endif %}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -71,7 +71,7 @@
             {{ d.close }},
             {% if forloop.counter0 %}'{{ forloop.counter0 }}차'{% else %}null{% endif %},
             '{{ d.date|date:'Y년 n월 j일' }}\n마감: {{ d.close }}\n변화: {{ d.change }}%',
-            {% if d.fix %}true{% else %}false{% endif %}],
+            {% if d.certainty %}true{% else %}false{% endif %}],
           {% endfor %}
         ]);
         var options = {

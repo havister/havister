@@ -1,12 +1,12 @@
-{% extends 'index/base.html' %}
+{% extends 'stock/base.html' %}
 
 {% block meta %}
     <!-- Custom metas -->
-    <meta name="description" content="{{ index.name }} : Index : Havister">
-    <meta name="keywords" content="{{ index.name }} Index">
+    <meta name="description" content="{{ stock.name }} : 주식 : Havister">
+    <meta name="keywords" content="{{ stock.name }} 주식">
 {% endblock %}
 
-{% block title %}{{ index.name }} : Index : Havister{% endblock %}
+{% block title %}{{ stock.name }} : 주식 : Havister{% endblock %}
 
 {% block tab_month %}active{% endblock %}
 
@@ -23,11 +23,11 @@
       <thead>
         <tr>
           <th>기간</th>
-          <th>최고 지수</th>
+          <th>최고 주가</th>
           <th>: 변화</th>
-          <th>최저 지수</th>
+          <th>최저 주가</th>
           <th>: 변화</th>
-          <th>마감 지수</th>
+          <th>마감 주가</th>
           <th>: 변화</th>
         </tr>
       </thead>
