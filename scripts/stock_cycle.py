@@ -131,7 +131,7 @@ def get_cycle_list(day_list):
     # endfor
     else:
         list_append(cycle_list, check)
-        cycle_list[-1]['fix'] = False
+        cycle_list[-1]['certainty'] = False
 
     # count cycle
     print("{0}".format(len(cycle_list)))
@@ -153,7 +153,7 @@ def list_append(cycle_list, day):
     # change
     change = round(Decimal(str((close - base) / base)) * 100, 2)
     # cycle
-    cycle = {'date': day.date, 'close':day.close, 'change': change, 'fix': True}
+    cycle = {'date': day.date, 'close':day.close, 'change': change, 'certainty': True}
     # cycle list
     cycle_list.append(cycle)
     return
@@ -163,7 +163,7 @@ def print_list(cycle_list):
     # list
     print("")
     for v in cycle_list:
-        print("{0} : {1} ({2}%) : {3}".format(v['date'], v['close'], v['change'], v['fix']))
+        print("{0} : {1} ({2}%) : {3}".format(v['date'], v['close'], v['change'], v['certainty']))
     print("")
     return
 
@@ -175,7 +175,7 @@ def insert_list(cycle_list, stock):
         stock.cycle_set.create(date=cycle['date'], \
             close=cycle['close'], \
             change=cycle['change'], \
-            fix=cycle['fix'])
+            certainty=cycle['certainty'])
     print("success\n")
     return
 

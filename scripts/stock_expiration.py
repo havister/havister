@@ -83,6 +83,9 @@ def get_expiration_list(day_list, period_list):
         month = period.month
         open_date = period.open_date
         close_date = period.close_date
+        # check date
+        if not day_list.filter(date__gte=close_date).first():
+            break;
         # subset day_list
         days = day_list.filter(date__range=(open_date, close_date))
         if not days:
