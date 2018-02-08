@@ -38,12 +38,10 @@ def run(*args):
 
     # get stock_list
     stock_list = []
-    if arg_name == 'all:future':
-        stock_list = Stock.objects.filter(future=True)
-    elif arg_name == 'all:option':
+    if arg_name == 'all:option':
         stock_list = Stock.objects.filter(option=True)
     else:
-        stock_list = Stock.objects.filter(name=arg_name)
+        stock_list = Stock.objects.filter(name=arg_name, option=True)
     if not stock_list:
         print("no stock\n")
         return

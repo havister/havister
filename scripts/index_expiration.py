@@ -31,7 +31,7 @@ def run(*args):
         arg_action = args[1]
 
     # get index
-    index = Index.objects.filter(code=arg_code).first()
+    index = Index.objects.filter(code=arg_code, option=True).first()
     if not index:
         print("no index")
         return
