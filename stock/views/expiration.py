@@ -1,5 +1,7 @@
 """havister stock views
 """
+from dateutil.relativedelta import relativedelta
+
 from django.http import Http404
 from django.views import generic
 
@@ -24,8 +26,9 @@ class ExpirationView(generic.DetailView):
         if period > 120:
             period = 120
         context['period'] = period
-        # alpha, beta list
+        # extra
         if context['detail_list']:
+            context['max_date'] = context['detail_list'].first().date + relativedelta(months=1)
             context['alpha_list'] = self.get_alpha_list(stock, period)
             context['beta_list'] = self.get_beta_list(stock, period)
         return context

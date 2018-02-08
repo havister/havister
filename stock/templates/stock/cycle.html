@@ -84,9 +84,9 @@
           backgroundColor: 'white',
           chartArea: {left: 0, top: 0, width: '100%', height: 400},
           crosshair: {color: 'black', trigger: 'selection'},
-          hAxis: {format: 'y년'},
+          hAxis: {format: 'y년', viewWindow: {max: new Date({{ max_date|date:'Y,n,j' }})}},
           vAxis: {textPosition: 'in'},
-          explorer: {axis: 'horizontal', keepInBounds: false, maxZoomIn: 0.25, maxZoomOut: 1.5, zoomDelta: 1.5},
+          explorer: {axis: 'horizontal', keepInBounds: true, maxZoomIn: 0.25, maxZoomOut: 1.0, zoomDelta: 1.5},
           pointShape: 'circle',
           pointSize: 8,
           legend: {position: 'none'}
