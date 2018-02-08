@@ -1,12 +1,14 @@
 {% extends 'index/base.html' %}
 
+{% load humanize %}
+
 {% block meta %}
     <!-- Custom metas -->
-    <meta name="description" content="{{ index.name }} : Index : Havister">
-    <meta name="keywords" content="{{ index.name }} Index">
+    <meta name="description" content="{{ index.name }} : 지수 : Havister">
+    <meta name="keywords" content="{{ index.name }} 지수">
 {% endblock %}
 
-{% block title %}{{ index.name }} : Index : Havister{% endblock %}
+{% block title %}{{ index.name }} : 지수 : Havister{% endblock %}
 
 {% block tab_month %}active{% endblock %}
 
@@ -14,33 +16,36 @@
     {% if detail_list %}
     <!-- Content body -->
     <div class="container">
-      <h3 class="section-header">월간 차트<small>&nbsp; : 기간별 변동성과 성장률 분석</small></h3>
+      <h2 class="section-header">월간 차트<sup><small> &nbsp; 기간별 변동성과 성장률 확인</small></sup></h2>
       <div id="chart" class="chart">
       </div>
 
       {% if alpha_list %}
-      <table class="table table-bordered table-hover">
+      <table class="table table-hover">
       <thead>
         <tr>
-          <th>기간</th>
+          <th class="active">기간</th>
           <th>최고 지수</th>
-          <th>: 변화</th>
+          <th>: 수익률</th>
           <th>최저 지수</th>
-          <th>: 변화</th>
+          <th>: 수익률</th>
           <th>마감 지수</th>
-          <th>: 변화</th>
+          <th>: 수익률</th>
         </tr>
       </thead>
       <tbody class="text-right">
         {% for a in alpha_list %}
         <tr>
-          <td class="text-center">{{ a.year }}년</td>
-          <td>{{ a.high }}</td>
-          <td>{{ a.high_change }} <span class="text-muted">%</span></td>
-          <td>{{ a.low }}</td>
-          <td>{{ a.low_change }} <span class="text-muted">%</span></td>
-          <td>{{ a.close }}</td>
-          <td>{{ a.close_change }} <span class="text-muted">%</span></td>
+          <td class="active">{{ a.year }}년</td>
+          <td>{{ a.high|intcomma }}</td>
+          <td class="{% if a.high_change > 0 %}text-up{% elif a.high_change < 0 %}text-down{% endif %}">
+            {% if a.high_change > 0 %}+{% endif %}{{ a.high_change|intcomma }}%</td>
+          <td>{{ a.low|intcomma }}</td>
+          <td class="{% if a.low_change > 0 %}text-up{% elif a.low_change < 0 %}text-down{% endif %}">
+            {% if a.low_change > 0 %}+{% endif %}{{ a.low_change|intcomma }}%</td>
+          <td>{{ a.close|intcomma }}</td>
+          <td class="{% if a.close_change > 0 %}text-up{% elif a.close_change < 0 %}text-down{% endif %}">
+            {% if a.close_change > 0 %}+{% endif %}{{ a.close_change|intcomma }}%</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -69,7 +74,7 @@
           {% for d in detail_list %}
           [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y년 n월' }}'},
             {{ d.close }}, null, null,
-            '{{ d.date|date:'Y년 n월' }}\n마감: {{ d.close }}\n변화: {{ d.change }}%'],
+            '{{ d.date|date:'Y년 n월' }}\n마감: {{ d.close|intcomma }}\n변화: {{ d.change|intcomma }}%'],
           {% endfor %}
         ]);
 
@@ -99,7 +104,7 @@
         var options = {
           width: 970,
           height: 429,
-          backgroundColor: '#f9f9f9',
+          backgroundColor: 'white',
           chartArea: {left: 0, top: 0, width: '100%', height: 400},
           crosshair: {color: 'black', trigger: 'selection'},
           hAxis: {format: 'y년'},

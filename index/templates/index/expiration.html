@@ -1,12 +1,14 @@
 {% extends 'index/base.html' %}
 
+{% load humanize %}
+
 {% block meta %}
     <!-- Custom metas -->
-    <meta name="description" content="{{ index.name }} : Index : Havister">
-    <meta name="keywords" content="{{ index.name }} Index">
+    <meta name="description" content="{{ index.name }} : 지수 : Havister">
+    <meta name="keywords" content="{{ index.name }} 지수">
 {% endblock %}
 
-{% block title %}{{ index.name }} : Index : Havister{% endblock %}
+{% block title %}{{ index.name }} : 지수 : Havister{% endblock %}
 
 {% block tab_expiration %}active{% endblock %}
 
@@ -14,30 +16,33 @@
     {% if detail_list %}
     <!-- Content body -->
     <div class="container">
-      <h3 class="section-header">만기 차트<small>&nbsp; : 만기일 기준 월간 변동성과 파생상품 행사가 분석</small></h3>
+      <h2 class="section-header">만기 차트<sup><small> &nbsp; 만기일 기준: 월간 변동성과 옵션 행사가 확인</small></sup></h2>
       <div id="chart" class="chart">
       </div>
 
-      <table class="table table-bordered table-hover">
+      <table class="table table-hover">
       <thead>
         <tr>
-          <th>월차</th>
+          <th class="active">월차</th>
           <th>만기일</th>
+          <th>시작 지수</th>
           <th>최고 지수</th>
           <th>최저 지수</th>
           <th>마감 지수</th>
-          <th>변화</th>
+          <th>수익률</th>
         </tr>
       </thead>
       <tbody class="text-right">
         {% for d in detail_list %}
         <tr>
-          <td class="text-center">{{ d.date|date:'Y년 n월' }}</td>
-          <td class="text-center">{{ d.date|date:'Y-m-d' }}</td>
-          <td>{{ d.high }}</td>
-          <td>{{ d.low }}</td>
-          <td>{{ d.close }}</td>
-          <td>{{ d.change }} <span class="text-muted">%</span></td>
+          <td class="active">{{ d.date|date:'Y년 n월' }}</td>
+          <td>{{ d.date|date:'Y-m-d' }}</td>
+          <td>{{ d.open|intcomma }}</td>
+          <td>{{ d.high|intcomma }}</td>
+          <td>{{ d.low|intcomma }}</td>
+          <td class="{% if d.change > 0 %}text-up{% elif d.change < 0 %}text-down{% endif %}">{{ d.close|intcomma }}</td>
+          <td class="{% if d.change > 0 %}text-up{% elif d.change < 0 %}text-down{% endif %}">
+            {% if d.change > 0 %}+{% endif %}{{ d.change|intcomma }}%</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -45,7 +50,7 @@
     </div>
 
     <div class="container">
-      <h3 class="section-header">만기 변화율 분포<small>&nbsp; : 최근 <mark>{{ period }}</mark> 개월간</small></h3>
+      <h2 class="section-header">수익률 분포<sup><small> &nbsp; 만기월 기준: 최근 <mark>{{ period }}</mark>개월</small></sup></h2>
       <div class="chart clearfix">
         {% if alpha_list %}
         <div id="chart-pie" class="pull-left">
@@ -80,7 +85,8 @@
           {% for d in detail_list reversed %}
           [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y-m-d' }}'},
             {{ d.low }}, {{ d.open }}, {{ d.close }}, {{ d.high }},
-            '{{ d.date|date:'Y년 n월차' }}\n시작: {{ d.open }}\n최고: {{ d.high }}\n최저: {{ d.low }}\n마감: {{ d.close }}\n변화: {{ d.change }}%'],
+            '{{ d.date|date:'Y년 n월차' }}\n시작: {{ d.open|intcomma }}\n최고: {{ d.high|intcomma }}\n' +
+            '최저: {{ d.low|intcomma }}\n마감: {{ d.close|intcomma }}\n변화: {{ d.change|intcomma }}%'],
           {% endfor %}
         ]);
         var options = {
@@ -88,7 +94,7 @@
           height: 429,
           bar: { groupWidth: '90%' },
           colors: ['#109618'],
-          backgroundColor: '#f9f9f9',
+          backgroundColor: 'white',
           chartArea: {left: 0, top: 0, width: 970, height: 400},
           hAxis: {format: 'y년 M월'},
           vAxis: {textPosition: 'in'},
@@ -108,7 +114,7 @@
           {% endfor %}
         ]);
         var options = {
-          width: 570,
+          width: 670,
           height: 429,
           backgroundColor: '#f9f9f9',
           chartArea: {left: 15, top: 15, width: '100%', height: 400},
@@ -129,7 +135,7 @@
           {% endfor %}
         ]);
         var options = {
-          width: 400,
+          width: 300,
           height: 429,
           bar: { gap: 1 },
           colors: ['darkslategray'],

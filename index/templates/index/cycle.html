@@ -1,12 +1,14 @@
 {% extends 'index/base.html' %}
 
+{% load humanize %}
+
 {% block meta %}
     <!-- Custom metas -->
-    <meta name="description" content="{{ index.name }} : Index : Havister">
-    <meta name="keywords" content="{{ index.name }} Index">
+    <meta name="description" content="{{ index.name }} : 지수 : Havister">
+    <meta name="keywords" content="{{ index.name }} 지수">
 {% endblock %}
 
-{% block title %}{{ index.name }} : Index : Havister{% endblock %}
+{% block title %}{{ index.name }} : 지수 : Havister{% endblock %}
 
 {% block tab_cycle %}active{% endblock %}
 
@@ -14,33 +16,34 @@
     {% if detail_list %}
     <!-- Content body -->
     <div class="container">
-      <h3 class="section-header">순환 차트<small>&nbsp; : 순환 주기와 진폭 분석</small></h3>
+      <h2 class="section-header">순환 차트<sup><small> &nbsp; 순환 주기와 진폭 확인</small></sup></h2>
       <div id="chart" class="chart">
       </div>
 
       {% if alpha_list %}
-      <table class="table table-bordered table-hover">
+      <table class="table table-hover">
       <thead>
         <tr>
-          <th>전환</th>
+          <th class="active">차수</th>
           <th>기준일</th>
           <th>마감일</th>
           <th>경과일</th>
           <th>마감 지수</th>
-          <th>변화</th>
+          <th>수익률</th>
           <th>상태</th>
         </tr>
       </thead>
-      <tbody class="text-center">
+      <tbody class="text-right">
         {% for a in alpha_list reversed %}
         <tr>
-          <td>{{ forloop.revcounter }}차</td>
+          <td class="active">{{ forloop.revcounter }}차</td>
           <td>{{ a.base_date|date:'Y-m-d' }}</td>
           <td>{{ a.close_date|date:'Y-m-d' }}</td>
           <td>{{ a.period }}</td>
-          <td class="text-right">{{ a.close }}</td>
-          <td class="text-right">{{ a.change }} <span class="text-muted">%</span></td>
-          <td>{% if a.certainty %}확정{% else %}진행{% endif %}</td>
+          <td class="{% if a.change > 0 %}text-up{% elif a.change < 0 %}text-down{% endif %}">{{ a.close|intcomma }}</td>
+          <td class="{% if a.change > 0 %}text-up{% elif a.change < 0 %}text-down{% endif %}">
+            {% if a.change > 0 %}+{% endif %}{{ a.change|intcomma }}%</td>
+          <td><span class="{% if not a.certainty %}text-muted{% endif %}">{{ a.certainty|yesno:'확정,진행' }}</span></td>
         </tr>
         {% endfor %}
       </tbody>
@@ -70,7 +73,7 @@
           [{v:new Date({{ d.date|date:'Y,n,j' }}), f:'{{ d.date|date:'Y-m-d' }}'},
             {{ d.close }},
             {% if forloop.counter0 %}'{{ forloop.counter0 }}차'{% else %}null{% endif %},
-            '{{ d.date|date:'Y년 n월 j일' }}\n마감: {{ d.close }}\n변화: {{ d.change }}%',
+            '{{ d.date|date:'Y년 n월 j일' }}\n마감: {{ d.close|intcomma }}\n변화: {{ d.change|intcomma }}%',
             {% if d.certainty %}true{% else %}false{% endif %}],
           {% endfor %}
         ]);
@@ -78,7 +81,7 @@
           width: 970,
           height: 429,
           colors: ['#dc3912'],
-          backgroundColor: '#f9f9f9',
+          backgroundColor: 'white',
           chartArea: {left: 0, top: 0, width: '100%', height: 400},
           crosshair: {color: 'black', trigger: 'selection'},
           hAxis: {format: 'y년'},

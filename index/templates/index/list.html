@@ -6,7 +6,7 @@
     <meta name="keywords" content="Index, 지수">
 {% endblock %}
 
-{% block title %}지수 : Havister{% endblock %}
+{% block title %}주가 지수 : Havister{% endblock %}
 
 {% block extra_style %}
     <!-- Extra style -->
@@ -18,11 +18,7 @@
 {% block content_head %}
     <!-- Content head -->
     <div class="container content-head">
-      <h1 class="page-header">지수<small>&nbsp; : Index</small></h1>
-      <div class="alert alert-info" role="alert">
-        <strong>지수 선정!</strong> &nbsp;
-        시장 종합 지수들과 &nbsp;선물 &middot; 옵션 &middot; ETF의 기초로 활용되는 주요 지수들을 선정하여 분석합니다.
-      </div>
+      <h1>주가 지수<sup><small> &nbsp; 선물 &middot; 옵션 &middot; ETF의 기초 지수들</small></sup></h1>
     </div>
 {% endblock content_head %}
 
@@ -42,7 +38,7 @@
               <th>선물</th>
               <th>옵션</th>
               <th>ETF</th>
-              <th>기초</th>
+              <th>월간</th>
               <th>순환</th>
               <th>만기</th>
             </tr>
@@ -57,9 +53,9 @@
               <td>{% if index.future %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
               <td>{% if index.option %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
               <td>{% if index.etf %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
-              <td><a href="{% url 'index:month' index.slug %}">분석</a></td>
-              <td><a href="{% url 'index:cycle' index.slug %}">분석</a></td>
-              <td>{% if index.future %}<a href="{% url 'index:expiration' index.slug %}">분석</a>{% endif %}</td>
+              <td><a href="{% url 'index:month' index.slug %}">차트</a></td>
+              <td><a href="{% url 'index:cycle' index.slug %}">차트</a></td>
+              <td>{% if index.option %}<a href="{% url 'index:expiration' index.slug %}">차트</a>{% endif %}</td>
             </tr>
             {% endfor %}
           </tbody>
