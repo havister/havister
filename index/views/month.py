@@ -25,8 +25,9 @@ class MonthView(generic.DetailView):
         index = kwargs['object']
         # month list
         context['detail_list'] = Month.objects.filter(index=index)
-        # alpha list 
+        # extra 
         if context['detail_list']:
+            context['max_date'] = context['detail_list'].last().date + relativedelta(years=1)
             context['alpha_list'] = self.get_alpha_list(context['detail_list'])
         return context
 

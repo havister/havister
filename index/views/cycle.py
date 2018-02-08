@@ -24,8 +24,9 @@ class CycleView(generic.DetailView):
         index = kwargs['object']
         # cycle list
         context['detail_list'] = self.get_detail_list(index)
-        # alpha list
+        # extra
         if context['detail_list']:
+            context['max_date'] = context['detail_list'][-1].date + relativedelta(years=1)
             context['alpha_list'] = self.get_alpha_list(context['detail_list'])
         return context
 
