@@ -18,11 +18,7 @@
 {% block content_head %}
     <!-- Content head -->
     <div class="container content-head">
-      <h1 class="page-header">주식<small>&nbsp; : Stock</small></h1>
-      <div class="alert alert-info" role="alert">
-        <strong>종목 선정!</strong> &nbsp;
-        시장에서 개별 주식 선물 &middot; 개별 주식 옵션의 기초로 활용되는 주식 종목들을 선정하여 분석합니다.
-      </div>
+      <h1>주식<sup><small> &nbsp; 개별 주식 선물 &middot; 옵션의 기초 주식들</small></sup></h1>
     </div>
 {% endblock content_head %}
 
@@ -41,7 +37,7 @@
               <th>종목</th>
               <th>선물</th>
               <th>옵션</th>
-              <th>기초</th>
+              <th>월간</th>
               <th>순환</th>
               <th>만기</th>
             </tr>
@@ -55,9 +51,9 @@
               <td>{{ stock.name }}</td>
               <td>{% if stock.future %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
               <td>{% if stock.option %}&nbsp; <i class="material-icons check">check</i>{% endif %}</td>
-              <td><a href="{% url 'stock:month' stock.slug %}">분석</a></td>
-              <td><a href="{% url 'stock:cycle' stock.slug %}">분석</a></td>
-              <td>{% if stock.future %}<a href="{% url 'stock:expiration' stock.slug %}">분석</a>{% endif %}</td>
+              <td><a href="{% url 'stock:month' stock.slug %}">차트</a></td>
+              <td><a href="{% url 'stock:cycle' stock.slug %}">차트</a></td>
+              <td>{% if stock.option %}<a href="{% url 'stock:expiration' stock.slug %}">차트</a>{% endif %}</td>
             </tr>
             {% endfor %}
           </tbody>

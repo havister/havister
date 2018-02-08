@@ -1,11 +1,9 @@
 """havister stock views
 """
-from dateutil.relativedelta import relativedelta
-from decimal import Decimal
 import decimal
+from decimal import Decimal
+from dateutil.relativedelta import relativedelta
 
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
 from django.views import generic
 
 from stock.models import Stock, Day, Cycle
@@ -14,6 +12,11 @@ class CycleView(generic.DetailView):
     model = Stock
     context_object_name = 'stock'
     template_name = 'stock/cycle.html'
+
+    def __init__(self):
+        dc = decimal.getcontext()
+        dc.prec = 9
+        dc.rounding = decimal.ROUND_HALF_UP
 
     def get_context_data(self, **kwargs):
         # base
@@ -37,10 +40,8 @@ class CycleView(generic.DetailView):
         if today.date > last.date:
             # today
             if today.close != last.close:
-                diff = today.close - last.close
-                change = round(diff / last.close * 100, 2)
+                change = round(Decimal(str((today.close - last.close) / last.close)) * 100, 2)
             else:
-                diff = Decimal('0.00')
                 change = Decimal('0.00')
             # cycle
             cycle = Cycle(date=today.date, close=today.close, change=change, certainty=False, stock=stock)

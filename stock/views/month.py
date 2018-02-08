@@ -1,11 +1,10 @@
 """havister stock views
 """
-from dateutil.relativedelta import relativedelta
-from decimal import Decimal
 import decimal
+from decimal import Decimal
+from dateutil.relativedelta import relativedelta
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
 from django.views import generic
 
 from stock.models import Stock, Day, Month
@@ -14,6 +13,11 @@ class MonthView(generic.DetailView):
     model = Stock
     context_object_name = 'stock'
     template_name = 'stock/month.html'
+
+    def __init__(self):
+        dc = decimal.getcontext()
+        dc.prec = 9
+        dc.rounding = decimal.ROUND_HALF_UP
 
     def get_context_data(self, **kwargs):
         # base
@@ -47,11 +51,11 @@ class MonthView(generic.DetailView):
             alpha['year'] = year
             alpha['first_date'] = months.first().date
             alpha['high'] = months.order_by('-high').first().high
-            alpha['high_change'] = round((alpha['high'] - base) / base * 100, 2)
+            alpha['high_change'] = round(Decimal(str((alpha['high'] - base) / base)) * 100, 2)
             alpha['low'] = months.order_by('-low').last().low
-            alpha['low_change'] = round((alpha['low'] - base) / base * 100, 2)
+            alpha['low_change'] = round(Decimal(str((alpha['low'] - base) / base)) * 100, 2)
             alpha['close'] = last_month.close
-            alpha['close_change'] = round((alpha['close'] - base) / base * 100, 2)
+            alpha['close_change'] = round(Decimal(str((alpha['close'] - base) / base)) * 100, 2)
             # alpha list
             alpha_list.append(alpha)
         return alpha_list

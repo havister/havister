@@ -1,10 +1,5 @@
 """havister stock views
 """
-from dateutil.relativedelta import relativedelta
-from decimal import Decimal
-import decimal
-
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.views import generic
 
@@ -20,7 +15,7 @@ class ExpirationView(generic.DetailView):
         context = super(ExpirationView, self).get_context_data(**kwargs)
         # stock object
         stock = kwargs['object']
-        if not stock.future:
+        if not stock.option:
             raise Http404
         # expiration list
         context['detail_list'] = Expiration.objects.filter(stock=stock).reverse()[:12]
