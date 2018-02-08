@@ -84,41 +84,34 @@ body {
     margin-bottom: 40px;
 }
 
-.navbar-inverse {
-    background-color: #30363c;
-    border-color: transparent;
-}
-
-.navbar-inverse .navbar-brand {
-    color: white;
-    font-weight: 400;
-}
-
-.navbar-inverse .navbar-nav > li > a {
-    color: #b0b6bc;
+.navbar-default {
     font-weight: 500;
 }
 
-.navbar-inverse .navbar-nav > .active > a {
-    background-color: black;
+.navbar-default a.navbar-brand,
+.navbar-default a.navbar-brand:focus,
+.navbar-default a.navbar-brand:hover {
+    color: black !important;
 }
 
-.navbar-inverse .navbar-nav > .disabled > a {
-    color: #b0b6bc;
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+    color: black;
 }
 
-.navbar-inverse .navbar-nav > .disabled > a:focus,
-.navbar-inverse .navbar-nav > .disabled > a:hover {
-    color: #50565c;
+.navbar-default .navbar-nav > li > a {
+    color: gray;
+}
+
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > li > a:hover {
+    color: black;
 }
 
 .container-fluid.content-head {
+    margin-bottom: 20px;
     box-shadow: 0px -1px 0px #ddd inset;
-}
-
-.content-head .page-header {
-    margin: 0 0 20px 0;
-    border-bottom: 1px solid #ddd;
 }
 
 .content-head h1 {
@@ -126,9 +119,7 @@ body {
 }
 
 .section-header {
-    margin: 40px 0 20px 0;
-    padding-bottom: 9px;
-    border-bottom: 1px solid #ddd;
+    margin: 20px 0 20px 0;
 }
 
 .panel {
@@ -151,7 +142,10 @@ body {
     width: 100%;
     height: 430px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #ddd;
+}
+
+.chart + table > tbody {
+    font-size: 13px;
 }
 
 .w880h400 {
@@ -162,15 +156,21 @@ body {
 
 .footer {
     width: 100%;
-    margin-top: 30px;
+    margin-top: 50px;
     font-size: 12px;
     font-weight: 400;
 }
 
-.footer > .container {
-    padding-top: 30px;
-    padding-bottom: 20px;
+.footer > .footer-body {
+    margin-bottom: 10px;
+    padding-top: 10px;
     border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.footer > .footer-tail {
+    color: gray;
+    font-weight: 300;
 }
 
 .footer ul {
@@ -190,7 +190,7 @@ body {
 
 h1 > sup > span.heading-label {
     display: inline;
-    padding: 0.05em 0.5em 0.2em 0.5em;
+    padding: 0.1em 0.5em 0.2em 0.5em;
     font-size: 12px;
     font-weight: 400;
     line-height: 1;
@@ -204,5 +204,13 @@ h1 > sup > span.heading-label {
 .material-icons.check {
     font-size: 14px;
     font-weight: 700;
+}
+
+.text-up {
+    color: #ef1c18;
+}
+
+.text-down {
+    color: #005dde;
 }
 

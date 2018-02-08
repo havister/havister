@@ -36,7 +36,7 @@
 
   <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-inverse navbar-static-top">
+    <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="navbar-header">
           <a class="navbar-brand" href="{% url 'home' %}">Havister</a>
@@ -45,13 +45,12 @@
           <ul class="nav navbar-nav">
             <li class="{% block nav_index %}{% endblock %}"><a href="{% url 'index:list' %}">지수</a></li>
             <li class="{% block nav_stock %}{% endblock %}"><a href="{% url 'stock:list' %}">주식</a></li>
-            <li class="{% block nav_bond %}disabled{% endblock %}"><a href="#bond">채권</a></li>
-            <li class="{% block nav_commodity %}disabled{% endblock %}"><a href="#commodity">원자재</a></li>
-            <li class="{% block nav_currency %}disabled{% endblock %}"><a href="#currency">외환</a></li>
+            <li class="{% block nav_future %}disabled{% endblock %}"><a href="#">선물</a></li>
+            <li class="{% block nav_option %}disabled{% endblock %}"><a href="#">옵션</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="{% block nav_partner %}disabled{% endblock %}">
-              <a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; 파트너</a></li>
+            <li class="{% block nav_robot %}disabled{% endblock %}">
+              <a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp; 트레이딩 로봇</a></li>
             <li class="{% block nav_donation %}disabled{% endblock %}">
               <a href="#"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp; 기부</a></li>
           </ul>
@@ -64,15 +63,14 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="container">
+      <div class="container footer-body">
         <div class="row">
           <div class="col-xs-4">
             <ul>
               <li><a href="{% url 'index:list' %}">지수</a></li>
               <li><a href="{% url 'stock:list' %}">주식</a></li>
-              <li><span class="text-muted">채권</span></li>
-              <li><span class="text-muted">원자재</span></li>
-              <li><span class="text-muted">외환</span></li>
+              <li><span class="text-muted">선물</span></li>
+              <li><span class="text-muted">옵션</span></li>
             </ul>
           </div>
           <div class="col-xs-4 text-center">
@@ -80,13 +78,18 @@
           </div>
           <div class="col-xs-4 text-right">
             <ul>
-              <li><span class="text-muted">법적고지</span></li>
-              <li><a href="mailto:contact@havister.com">문의</a></li>
-              <li><span class="text-muted">파트너</span></li>
+              <li><span class="text-muted">트레이딩 로봇</span></li>
               <li><span class="text-muted">기부</span></li>
+              <li><a href="mailto:contact@havister.com">문의</a></li>
             </ul>
           </div>
         </div><!--/.row -->
+      </div>
+      <div class="container footer-tail">
+        <p class="text-center">
+          하비스터(Havister)에서 제공하는 금융정보는 투자 참고 사항이며, 오류가 발생할 수 있고 지연될 수 있습니다.&nbsp;
+          하비스터는 제공된 정보에 의한 이용자의 투자결과에 대해 법적책임을 지지 않습니다.
+        </p>
       </div>
     </footer>
 
